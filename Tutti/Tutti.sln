@@ -7,11 +7,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Application
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{16D0D77B-5524-401D-93E1-F44E6A651A48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TouchUI", "Applications\TouchUI\TouchUI.csproj", "{D347D07B-DC25-4404-9166-67DBE3B4F0D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TouchUI", "Applications\TouchUI\TouchUI.csproj", "{D347D07B-DC25-4404-9166-67DBE3B4F0D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataService", "Services\DataService\DataService.csproj", "{47038D35-1112-443C-9A18-847A1DABE323}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataService", "Services\DataService\DataService.csproj", "{47038D35-1112-443C-9A18-847A1DABE323}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataServiceSql", "Services\DataServiceSql\DataServiceSql.csproj", "{BBEAE1E4-2880-44A3-8459-4959154EB7B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataServiceSql", "Services\DataServiceSql\DataServiceSql.csproj", "{BBEAE1E4-2880-44A3-8459-4959154EB7B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
