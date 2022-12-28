@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Autofac;
+using Autofac.Features.ResolveAnything;
 using Services.DataService;
 using Services.DataServiceSql;
 using System.Windows;
+using TouchUI.ViewModels;
 
 namespace TouchUI
 {
@@ -10,28 +12,17 @@ namespace TouchUI
     /// </summary>
     public partial class App : Application
     {
-        private ServiceProvider _serviceProvider;
-
-        public App()
+        protected override void OnStartup(StartupEventArgs e)
         {
-            ServiceCollection services = new ServiceCollection();
-            ConfigureServices(services);
+            base.OnStartup(e);
 
-            _serviceProvider = services.BuildServiceProvider();
-        }
+            var builder = new ContainerBuilder();
+            builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
+            builder.RegisterType<DataServiceSql>().As<IDataService>().SingleInstance();
 
-        private void ConfigureServices(ServiceCollection services)
-        {
-            services.AddSingleton<MainWindow>();
+            IContainer container = builder.Build();
 
-            services.AddSingleton<IDataService, DataServiceSql>();
-        }
-
-        private void OnStartup(object sender, StartupEventArgs e)
-        {
-            var mainWindow = _serviceProvider.GetService<MainWindow>();
-
-            mainWindow.Show();
+            DISource.Resolver = (type) => { return container.Resolve(type); };
         }
     }
 }
