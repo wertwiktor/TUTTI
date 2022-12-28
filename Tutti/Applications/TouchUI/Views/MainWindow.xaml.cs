@@ -1,7 +1,7 @@
-﻿using Services.DataServiceSql;
+﻿using Services.DataService;
 using System.Windows;
 
-namespace TouchUI
+namespace TouchUI.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -11,8 +11,6 @@ namespace TouchUI
         public MainWindow()
         {
             InitializeComponent();
-            var dbService = new DataServiceSql();
-            var allUsers = dbService.GetAllUsers();
         }
     }
 }
