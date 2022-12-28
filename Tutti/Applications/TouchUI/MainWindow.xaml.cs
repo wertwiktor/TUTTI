@@ -1,4 +1,5 @@
-﻿using Services.DataServiceSql;
+﻿using Services.DataService;
+using Services.DataServiceSql;
 using System.Windows;
 
 namespace TouchUI
@@ -8,11 +9,11 @@ namespace TouchUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(IDataService dataService)
         {
             InitializeComponent();
-            var dbService = new DataServiceSql();
-            var allUsers = dbService.GetAllUsers();
+
+            var allUsers = dataService.GetAllUsers();
         }
     }
 }
