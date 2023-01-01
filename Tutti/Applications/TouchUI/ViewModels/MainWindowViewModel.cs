@@ -11,7 +11,7 @@ namespace TouchUI.ViewModels
         public MainWindowViewModel(IDataService dataService)
         {
             _dataService = dataService;
-            InitializeAvailableUsers();        
+            InitializeAvailableUsers();   
         }
 
         private void InitializeAvailableUsers()

@@ -14,5 +14,7 @@ namespace Services.DataServiceSql.DataModels
         }
 
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<TimeStamp> TimeStamps { get; set; }
+
     }
 }
