@@ -26,6 +26,22 @@
                    HorizontalAlignment="Center"
                    FontSize="50"
                    FontWeight="Bold"/>
+            <Label Content="Last recognied identificator:"
+                   HorizontalAlignment="Center"
+                   FontSize="20"/>
+            <Label Content="{Binding LastIdentificator}"
+                   HorizontalAlignment="Center"
+                   FontSize="20"/>
+        </StackPanel>
+        <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Label Content="Simulate card reader"
+                   HorizontalAlignment="Center"
+                   FontSize="20"/>
+            <TextBox Text="{Binding CardIdentifcatorToBeSimulated, UpdateSourceTrigger=PropertyChanged}"
+                     Width="200"/>
+            <Button Command="{Binding SimulateCardIdentificationCommand}"
+                    Content="Simulate"
+                    HorizontalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Window>
