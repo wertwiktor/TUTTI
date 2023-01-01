@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TouchUI
 {
-    public abstract class ViewModelBase
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

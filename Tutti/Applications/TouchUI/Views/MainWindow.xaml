@@ -5,27 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:touchUI="clr-namespace:TouchUI"
         xmlns:vm="clr-namespace:TouchUI.ViewModels"
+        xmlns:mwpf="http://schemas.modernwpf.com/2019"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="TUTTI - Touch UI" Height="450" Width="800"
+        mwpf:WindowHelper.UseModernWindowStyle="True"
         DataContext="{touchUI:DISource Type=vm:MainWindowViewModel}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel>
-            <Label Content="Available users found in Database:"/>
-            <DataGrid ItemsSource="{Binding AvailableUsers}" AutoGenerateColumns="False" IsReadOnly="True">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Id}" Width="Auto"/>
-                    <DataGridTextColumn Binding="{Binding Name}" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Label Content="{Binding CurrentDateTime}"
+                   ContentStringFormat="HH:mm:ss"
+                   HorizontalAlignment="Center"
+                   FontSize="50"
+                   FontWeight="Bold"/>
         </StackPanel>
     </Grid>
 </Window>

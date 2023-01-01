@@ -1,39 +1,44 @@
 ﻿using DataService.Models;
 using Services.DataService;
+using System;
 using System.Collections.ObjectModel;
+using System.Windows.Threading;
 
 namespace TouchUI.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
         private IDataService _dataService;
-        private ObservableCollection<User> _availableUsers;
+        private DateTime _currentDateTime;
         public MainWindowViewModel(IDataService dataService)
         {
             _dataService = dataService;
-            InitializeAvailableUsers();   
+            InitializeDispatcherTimer();
         }
 
-        private void InitializeAvailableUsers()
+        private void InitializeDispatcherTimer()
         {
-            if (_dataService == null)
-            {
-                return;
-            }
-
-            AvailableUsers = new ObservableCollection<User>(_dataService.GetAllUsers());
+            var dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            dispatcherTimer.Tick += OnDispatcherTimerElapsed;
+            dispatcherTimer.Start();
         }
 
-        public ObservableCollection<User> AvailableUsers
+        private void OnDispatcherTimerElapsed(object? sender, EventArgs e)
         {
-            set
-            {
-                _availableUsers = value;
-                OnPropertyChanged();
-            }
+            CurrentDateTime = DateTime.Now;
+        }
+
+        public DateTime CurrentDateTime
+        {
             get
             {
-                return _availableUsers;
+                return _currentDateTime;
+            }
+            set
+            {
+                _currentDateTime = value;
+                OnPropertyChanged();
             }
         }
     }
