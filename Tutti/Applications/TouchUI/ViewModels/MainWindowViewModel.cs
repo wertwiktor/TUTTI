@@ -1,5 +1,5 @@
-﻿using Services.DataService;
-using Services.DataService.Entities.Models;
+﻿using DataService.Models;
+using Services.DataService;
 using System.Collections.ObjectModel;
 
 namespace TouchUI.ViewModels

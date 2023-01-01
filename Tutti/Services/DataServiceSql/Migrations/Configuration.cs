@@ -1,19 +1,16 @@
-﻿namespace Services.DataService.Migrations
+﻿namespace Services.DataServiceSql.Migrations
 {
-    using System;
-    using System.Configuration;
-    using System.Data.Entity;
+    using Services.DataServiceSql.DataModels;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<DataService.Entities.TuttiDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<TuttiDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(DataService.Entities.TuttiDbContext context)
+        protected override void Seed(TuttiDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

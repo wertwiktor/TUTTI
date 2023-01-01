@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.DataService.Entities.Models
+namespace DataService.Models
 {
     public class TimeStamp
     {

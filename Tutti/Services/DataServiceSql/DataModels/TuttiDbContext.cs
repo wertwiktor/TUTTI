@@ -1,8 +1,8 @@
-﻿using Services.DataService.Entities.Models;
+﻿using DataService.Models;
 using System.Data.Entity;
 
 
-namespace Services.DataService.Entities
+namespace Services.DataServiceSql.DataModels
 {
     public class TuttiDbContext : DbContext
     {

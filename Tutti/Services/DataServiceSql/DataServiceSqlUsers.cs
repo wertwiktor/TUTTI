@@ -1,9 +1,4 @@
-﻿using Services.DataService.Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataService.Models;
 
 namespace Services.DataServiceSql
 {

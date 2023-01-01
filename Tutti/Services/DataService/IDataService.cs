@@ -1,4 +1,4 @@
-﻿using Services.DataService.Entities.Models;
+﻿using DataService.Models;
 
 namespace Services.DataService
 {
