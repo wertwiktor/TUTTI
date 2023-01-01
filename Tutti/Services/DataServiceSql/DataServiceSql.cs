@@ -1,6 +1,5 @@
 ﻿using Services.DataService;
-using Services.DataService.Entities;
-using Services.DataService.Entities.Models;
+using Services.DataServiceSql.DataModels;
 
 namespace Services.DataServiceSql
 {

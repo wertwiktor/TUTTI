@@ -1,8 +1,8 @@
-﻿using Services.DataService.Entities.Models;
+﻿using DataService.Models;
 using System.Data.Entity;
 
 
-namespace Services.DataService.Entities
+namespace Services.DataServiceSql.DataModels
 {
     public class TuttiDbContext : DbContext
     {
@@ -14,5 +14,7 @@ namespace Services.DataService.Entities
         }
 
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<TimeStamp> TimeStamps { get; set; }
+
     }
 }
