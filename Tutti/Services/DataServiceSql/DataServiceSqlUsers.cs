@@ -37,6 +37,14 @@ namespace Services.DataServiceSql
             }
         }
 
+        public User GetUserByIdentifier(string identifier)
+        {
+            using (var context = GetDbContext())
+            {
+                return context.Users.FirstOrDefault(user => user.Identifier == identifier);
+            }
+        }
+
         public List<User> GetAllUsers()
         {
             var users = new List<User>();

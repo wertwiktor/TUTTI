@@ -6,6 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Threading;
+using TouchUI.Models.Enums;
 
 namespace TouchUI.ViewModels
 {
@@ -17,6 +18,7 @@ namespace TouchUI.ViewModels
         private DateTime _currentDateTime;
         private string _cardIdentifcatorToBeSimulated;
         private string _lastIdentificator;
+        private IdentificationMode _identificationMode;
 
         public MainWindowViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService)
         {
@@ -29,7 +31,10 @@ namespace TouchUI.ViewModels
 
         private void InitializeCommands() 
         {
-            SimulateCardIdentificationCommand = new RelayCommand(SimulateCardIdentification);   
+            SimulateCardIdentificationCommand = new RelayCommand(SimulateCardIdentification);
+            SetIdentificationModeToEntryCommand = new RelayCommand(() => IdentificationMode = IdentificationMode.Entry);
+            SetIdentificationModeToExitCommand = new RelayCommand(() => IdentificationMode = IdentificationMode.Exit);
+            SetIdentificationModeToInfoCommand = new RelayCommand(() => IdentificationMode = IdentificationMode.Info);
         }
 
         private void InitializeDispatcherTimer()
@@ -94,6 +99,51 @@ namespace TouchUI.ViewModels
             }
         }
 
-        public ICommand SimulateCardIdentificationCommand { get; set; }  
+        public IdentificationMode IdentificationMode
+        {
+            get
+            {
+                return _identificationMode;
+            }
+            set
+            {
+                _identificationMode= value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsIdentificationModeEntry));
+                OnPropertyChanged(nameof(IsIdentificationModeExit));
+                OnPropertyChanged(nameof(IsIdentificationModeInfo));
+            }
+        }
+
+        public bool IsIdentificationModeEntry
+        {
+            get
+            {
+                return IdentificationMode == IdentificationMode.Entry;
+            }
+        }
+
+        public bool IsIdentificationModeExit
+        {
+            get
+            {
+                return IdentificationMode == IdentificationMode.Exit;
+            }
+        }
+
+        public bool IsIdentificationModeInfo
+        {
+            get
+            {
+                return IdentificationMode == IdentificationMode.Info;
+            }
+        }
+
+        public ICommand SimulateCardIdentificationCommand { get; set; }
+        public ICommand SetIdentificationModeToEntryCommand { get; set; }
+        public ICommand SetIdentificationModeToExitCommand { get; set; }
+        public ICommand SetIdentificationModeToInfoCommand { get; set; }
+
+
     }
 }
