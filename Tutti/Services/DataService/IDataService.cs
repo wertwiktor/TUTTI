@@ -7,6 +7,7 @@ namespace Services.DataService
         void AddUser(User user);
         void DeleteUser(long id);
         User GetUser(long id);
+        User GetUserByIdentifier(string identifier);
         List<User> GetAllUsers();
 
         void AddTimeStamp(TimeStamp timeStamp);
