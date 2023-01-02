@@ -5,8 +5,9 @@ using Services.IdentificationDeviceServiceBaltech;
 using Services.DataService;
 using Services.DataServiceSql;
 using System.Windows;
-using TouchUI.ViewModels;
-using Services.IdentificationDeviceService;
+using Serilog;
+using System;
+using System.IO;
 
 namespace TouchUI
 {
@@ -15,9 +16,12 @@ namespace TouchUI
     /// </summary>
     public partial class App : Application
     {
+        private ILogger _logger;
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            InitializeLogger();
 
             var builder = new ContainerBuilder();
             builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
@@ -26,7 +30,23 @@ namespace TouchUI
 
             IContainer container = builder.Build();
 
-            DISource.Resolver = (type) => { return container.Resolve(type); };
+            DISource.Resolver = container.Resolve;
+        }
+
+        private void InitializeLogger()
+        {
+            Log.Logger = new LoggerConfiguration().WriteTo.File(CreateLoggingFilePath(),
+                                                                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                                                                shared: true, 
+                                                                rollingInterval: RollingInterval.Day).CreateLogger();
+            _logger = Log.Logger.ForContext<App>();
+            _logger.Information("Starting the application.");
+        }
+
+        private string CreateLoggingFilePath()
+        {
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "TUTTI\\Logs\\Log.log");
+            return path;
         }
     }
 }

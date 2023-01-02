@@ -1,10 +1,13 @@
-﻿using Services.IdentificationDeviceService;
+﻿using Serilog;
+using Services.IdentificationDeviceService;
 using Services.IdentificationDeviceService.DataContracts;
 
 namespace Services.IdentificationDeviceServiceBaltech
 {
     public class IdentificationDeviceServiceBaltech : IIdentificationDeviceService
     {
+        private readonly ILogger _logger = Log.ForContext<IdentificationDeviceServiceBaltech>();
+
         public event EventHandler<IdentificationOccuredEventArgs> IdentificationOccured;
 
         public void SimulateIdentificationEvent(string identifier)
@@ -19,6 +22,8 @@ namespace Services.IdentificationDeviceServiceBaltech
             { 
                 simulatedId= identifier;
             }
+
+            _logger.Information("Simulating identifier: {identifier}", simulatedId);
 
             IdentificationOccured?.Invoke(this, new IdentificationOccuredEventArgs(simulatedId));
         }
