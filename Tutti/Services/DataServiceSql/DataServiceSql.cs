@@ -1,10 +1,13 @@
-﻿using Services.DataService;
+﻿using Serilog;
+using Services.DataService;
 using Services.DataServiceSql.DataModels;
+using System.Data.Entity.Infrastructure.Interception;
 
 namespace Services.DataServiceSql
 {
     public partial class DataServiceSql : IDataService
     {
+        private readonly ILogger _logger = Log.Logger.ForContext<DataServiceSql>();
         private TuttiDbContext GetDbContext()
         {
             TuttiDbContext result = null;
@@ -18,7 +21,7 @@ namespace Services.DataServiceSql
             }
             catch (Exception e)
             {
-                //TODO: Implement error handling
+                _logger.Error(e, "Error while creating Database context.");
             }
 
             return result;
