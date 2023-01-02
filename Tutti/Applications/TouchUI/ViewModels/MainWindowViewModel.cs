@@ -1,4 +1,5 @@
 ﻿using DataService.Models;
+using Serilog;
 using Services.DataService;
 using Services.IdentificationDeviceService;
 using Services.IdentificationDeviceService.DataContracts;
@@ -12,6 +13,7 @@ namespace TouchUI.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private readonly ILogger _logger = Log.Logger.ForContext<MainWindowViewModel>();
         private IDataService _dataService;
         private IIdentificationDeviceService _idDeviceService;
 
@@ -22,6 +24,7 @@ namespace TouchUI.ViewModels
 
         public MainWindowViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService)
         {
+            _logger.Debug("Creating main view model.");
             _dataService = dataService;
             _idDeviceService = idDeviceService;
             _idDeviceService.IdentificationOccured += OnIdServiceIdentificationOccured;
@@ -106,8 +109,9 @@ namespace TouchUI.ViewModels
                 return _identificationMode;
             }
             set
-            {
-                _identificationMode= value;
+            {               
+                _identificationMode = value;
+                _logger.Information("Changed identification mode to {identificationMode}", value);
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsIdentificationModeEntry));
                 OnPropertyChanged(nameof(IsIdentificationModeExit));

@@ -23,7 +23,7 @@ namespace Services.IdentificationDeviceServiceBaltech
                 simulatedId= identifier;
             }
 
-            _logger.Information("Simulating identifier: {identifier}", simulatedId);
+            _logger.Debug("Simulating identifier: {identifier}", simulatedId);
 
             IdentificationOccured?.Invoke(this, new IdentificationOccuredEventArgs(simulatedId));
         }
