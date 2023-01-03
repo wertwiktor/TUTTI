@@ -37,7 +37,7 @@ namespace TouchUI
 
         private void InitializeLogger()
         {
-            Log.Logger = new LoggerConfiguration().WriteTo.File(CreateLoggingFilePath(),
+            Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File(CreateLoggingFilePath(),
                                                                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
                                                                 shared: true, 
                                                                 rollingInterval: RollingInterval.Day).CreateLogger();
