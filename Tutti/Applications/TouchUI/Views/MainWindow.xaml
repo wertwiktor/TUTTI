@@ -22,18 +22,6 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
-            <Label Content="Simulate card reader"
-                   HorizontalAlignment="Center"
-                   FontSize="20" />
-            <TextBox Text="{Binding CardIdentifcatorToBeSimulated, UpdateSourceTrigger=PropertyChanged}"
-                     Width="200" />
-            <Button Command="{Binding SimulateCardIdentificationCommand}"
-                    Content="Simulate"
-                    HorizontalAlignment="Center" />
-        </StackPanel>
         <StackPanel Grid.Column="1"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Center">

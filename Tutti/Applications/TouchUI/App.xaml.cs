@@ -8,6 +8,7 @@ using System.Windows;
 using Serilog;
 using System;
 using System.IO;
+using TouchUI.Views;
 
 namespace TouchUI
 {
@@ -31,6 +32,7 @@ namespace TouchUI
             IContainer container = builder.Build();
 
             DISource.Resolver = container.Resolve;
+            InitializeDevelopersWindow();
         }
 
         private void InitializeLogger()
@@ -47,6 +49,12 @@ namespace TouchUI
         {
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "TUTTI\\Logs\\Log.log");
             return path;
+        }
+
+        private void InitializeDevelopersWindow()
+        {
+            var devWindow = new DevelopersWindow();
+            devWindow.Show();
         }
     }
 }

@@ -18,7 +18,6 @@ namespace TouchUI.ViewModels
         private IIdentificationDeviceService _idDeviceService;
 
         private DateTime _currentDateTime;
-        private string _cardIdentifcatorToBeSimulated;
         private string _lastIdentificator;
         private IdentificationMode _identificationMode;
 
@@ -34,7 +33,6 @@ namespace TouchUI.ViewModels
 
         private void InitializeCommands() 
         {
-            SimulateCardIdentificationCommand = new RelayCommand(SimulateCardIdentification);
             SetIdentificationModeToEntryCommand = new RelayCommand(() => IdentificationMode = IdentificationMode.Entry);
             SetIdentificationModeToExitCommand = new RelayCommand(() => IdentificationMode = IdentificationMode.Exit);
             SetIdentificationModeToInfoCommand = new RelayCommand(() => IdentificationMode = IdentificationMode.Info);
@@ -51,11 +49,6 @@ namespace TouchUI.ViewModels
         private void OnDispatcherTimerElapsed(object? sender, EventArgs e)
         {
             CurrentDateTime = DateTime.Now;
-        }
-
-        private void SimulateCardIdentification()
-        {
-            _idDeviceService.SimulateIdentificationEvent(CardIdentifcatorToBeSimulated);
         }
 
         private void OnIdServiceIdentificationOccured(object sender, IdentificationOccuredEventArgs eventArgs)
@@ -75,19 +68,6 @@ namespace TouchUI.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public string CardIdentifcatorToBeSimulated
-        {
-            get
-            {
-                return _cardIdentifcatorToBeSimulated;
-            }
-            set
-            {
-                _cardIdentifcatorToBeSimulated= value;
-                OnPropertyChanged();
-            }
-        }    
 
         public string LastIdentificator
         {
@@ -143,7 +123,6 @@ namespace TouchUI.ViewModels
             }
         }
 
-        public ICommand SimulateCardIdentificationCommand { get; set; }
         public ICommand SetIdentificationModeToEntryCommand { get; set; }
         public ICommand SetIdentificationModeToExitCommand { get; set; }
         public ICommand SetIdentificationModeToInfoCommand { get; set; }
