@@ -1,0 +1,26 @@
+﻿<Window x:Class="TouchUI.Views.DevelopersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TouchUI.Views"
+        xmlns:touchUI="clr-namespace:TouchUI"
+        xmlns:vm="clr-namespace:TouchUI.ViewModels"
+        mc:Ignorable="d"
+        DataContext="{touchUI:DISource Type=vm:DevelopersWindowViewModel}"
+        Title="DevelopersWindow" Height="250" Width="400">
+    <Grid>
+        <StackPanel Grid.Column="0"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <Label Content="Simulate card reader"
+                   HorizontalAlignment="Center"
+                   FontSize="20" />
+            <TextBox Text="{Binding CardIdentifcatorToBeSimulated, UpdateSourceTrigger=PropertyChanged}"
+                     Width="200" />
+            <Button Command="{Binding SimulateCardIdentificationCommand}"
+                    Content="Simulate"
+                    HorizontalAlignment="Center" />
+        </StackPanel>
+    </Grid>
+</Window>
