@@ -13,5 +13,6 @@ namespace Services.DataService
         void AddTimeStamp(TimeStamp timeStamp);
         void DeleteTimeStamp(long id);
         List<TimeStamp> GetTimeStamps(long userId, DateTime minDateTime, DateTime maxDateTime);
+        TimeStamp GetLastTimeStampByUserId(long userId);
     }
 }

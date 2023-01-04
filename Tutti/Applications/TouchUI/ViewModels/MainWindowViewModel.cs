@@ -19,7 +19,6 @@ namespace TouchUI.ViewModels
         private IIdentificationDeviceService _idDeviceService;
 
         private DateTime _currentDateTime = DateTime.Now;
-        private IdentificationMode _identificationMode = IdentificationMode.Entry;
         private string _mainMessage;
         private DispatcherTimer _mainMessageTimer = new DispatcherTimer();
 
@@ -34,11 +33,9 @@ namespace TouchUI.ViewModels
             InitializeMainMessageTimer();
         }
 
-        private void InitializeCommands() 
+        private void InitializeCommands()
         {
-            SetIdentificationModeToEntryCommand = new RelayCommand(() => IdentificationMode = IdentificationMode.Entry);
-            SetIdentificationModeToExitCommand = new RelayCommand(() => IdentificationMode = IdentificationMode.Exit);
-            SetIdentificationModeToInfoCommand = new RelayCommand(() => IdentificationMode = IdentificationMode.Info);
+
         }
 
         private void InitializeClockDisplayTimer()
@@ -73,10 +70,10 @@ namespace TouchUI.ViewModels
 
         private void OnIdServiceIdentificationOccured(object sender, IdentificationOccuredEventArgs eventArgs)
         {
-            if(eventArgs == null)
+            if (eventArgs == null)
             {
                 _logger.Error("Received IdentificationOccured event with null event arguments.");
-                return; 
+                return;
             }
 
             if (string.IsNullOrEmpty(eventArgs.Identifier))
@@ -85,34 +82,28 @@ namespace TouchUI.ViewModels
                 return;
             }
 
-            _logger.Information("Received IdentificationOccured event with identifier {identifier}. Current application mode: {idMode}", eventArgs.Identifier, IdentificationMode);
+            _logger.Information("Received IdentificationOccured event with identifier {identifier}.");
 
-            ProcessUserIdentification(eventArgs.Identifier);           
+            ProcessUserIdentification(eventArgs.Identifier);
         }
 
         private void ProcessUserIdentification(string identifier)
         {
             User user;
-            if (TryGetUserFromDatabaseByIdentifier(identifier, out user))
+            if (!TryGetUserFromDatabaseByIdentifier(identifier, out user))
             {
-                switch (IdentificationMode)
-                {
-                    case IdentificationMode.Entry:
-                        ProcessUserEntry(user);
-                        break;
-                    case IdentificationMode.Exit:
-                        ProcessUserExit(user);
-                        break;
-                    case IdentificationMode.Info:
-                        ProcessUserInfo(user);
-                        break;
-                    default:
-                        break;
-                }
+                _logger.Information("Attempted user identifiation for unknown user with identifier {identifier}. This use case is not implemented yet.", identifier);
+                return;
+            }
+
+            var lastTimeStamp = _dataService.GetLastTimeStampByUserId(user.Id);
+            if (lastTimeStamp == null || lastTimeStamp.Direction == (int)TimeStampDirection.Exit)
+            {
+                ProcessUserEntry(user);
             }
             else
             {
-                _logger.Information("Attempted user identifiation for unknown user with id {identifier}. This use case is not implemented yet.", identifier);
+                ProcessUserExit(user);
             }
         }
 
@@ -128,11 +119,6 @@ namespace TouchUI.ViewModels
             var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Exit, UserId = user.Id };
             _dataService.AddTimeStamp(timeStamp);
             MainMessage = $"Goodbye, {user.Name}";
-        }
-
-        private void ProcessUserInfo(User user)
-        {
-            MainMessage = $"This is not implemented.";
         }
 
         private bool TryGetUserFromDatabaseByIdentifier(string identifier, out User user)
@@ -159,47 +145,6 @@ namespace TouchUI.ViewModels
             }
         }
 
-        public IdentificationMode IdentificationMode
-        {
-            get
-            {
-                return _identificationMode;
-            }
-            set
-            {               
-                _identificationMode = value;
-                _logger.Information("Changed identification mode to {identificationMode}", value);
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsIdentificationModeEntry));
-                OnPropertyChanged(nameof(IsIdentificationModeExit));
-                OnPropertyChanged(nameof(IsIdentificationModeInfo));
-            }
-        }
-
-        public bool IsIdentificationModeEntry
-        {
-            get
-            {
-                return IdentificationMode == IdentificationMode.Entry;
-            }
-        }
-
-        public bool IsIdentificationModeExit
-        {
-            get
-            {
-                return IdentificationMode == IdentificationMode.Exit;
-            }
-        }
-
-        public bool IsIdentificationModeInfo
-        {
-            get
-            {
-                return IdentificationMode == IdentificationMode.Info;
-            }
-        }
-
         public string MainMessage
         {
             get
@@ -209,16 +154,12 @@ namespace TouchUI.ViewModels
             set
             {
                 _mainMessage = value;
-                if(!string.IsNullOrEmpty(_mainMessage))
+                if (!string.IsNullOrEmpty(_mainMessage))
                 {
                     StartMainMessageTimer();
                 }
                 OnPropertyChanged();
             }
-        }
-
-        public ICommand SetIdentificationModeToEntryCommand { get; set; }
-        public ICommand SetIdentificationModeToExitCommand { get; set; }
-        public ICommand SetIdentificationModeToInfoCommand { get; set; }
+        } 
     }
 }

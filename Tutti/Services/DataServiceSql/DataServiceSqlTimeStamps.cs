@@ -41,5 +41,13 @@ namespace Services.DataServiceSql
             }
             return timeStamps;
         }
+
+        public TimeStamp GetLastTimeStampByUserId(long userId)
+        {
+            using (var context = GetDbContext())
+            {
+                return context.TimeStamps.Where(p => p.User.Id == userId).OrderByDescending(p => p.DateTime).FirstOrDefault();
+            }
+        }
     }
 }

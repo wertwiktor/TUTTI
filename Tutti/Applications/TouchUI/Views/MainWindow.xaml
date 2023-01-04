@@ -40,32 +40,5 @@
             <Label Content="{Binding MainMessage}"
                    FontSize="30" />
         </StackPanel>
-        <ToggleButton Content="Entry"
-                      Command="{Binding SetIdentificationModeToEntryCommand}"
-                      IsChecked="{Binding IsIdentificationModeEntry, Mode=OneWay}"
-                      Grid.Row="2"
-                      Grid.Column="0"
-                      Height="50"
-                      Width="100"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center" />
-        <ToggleButton Content="Exit"
-                      Command="{Binding SetIdentificationModeToExitCommand}"
-                      IsChecked="{Binding IsIdentificationModeExit, Mode=OneWay}"
-                      Grid.Row="2"
-                      Grid.Column="1"
-                      Height="50"
-                      Width="100"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center" />
-        <ToggleButton Content="Info"
-                      Command="{Binding SetIdentificationModeToInfoCommand}"
-                      IsChecked="{Binding IsIdentificationModeInfo, Mode=OneWay}"
-                      Grid.Row="2"
-                      Grid.Column="2"
-                      Height="50"
-                      Width="100"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center" />
     </Grid>
 </Window>

@@ -11,5 +11,6 @@ namespace DataService.Models
         public DateTime DateTime { get; set; }
         public int Direction { get; set; }
         public long UserId { get; set; }
+        public User User { get; set; }
     }
 }
