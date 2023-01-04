@@ -119,11 +119,13 @@ namespace TouchUI.ViewModels
 
         private async void ProcessUserExit(User user)
         {
-            _ = await _userExitDialogController.ShowDialog(user.Name);
-            var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Exit, UserId = user.Id };
-            _dataService.AddTimeStamp(timeStamp);
-            MainMessage = $"Goodbye, {user.Name}";
-
+            var userExitConfirmation = await _userExitDialogController.ShowDialog(user.Name);
+            if(userExitConfirmation)
+            {
+                var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Exit, UserId = user.Id };
+                _dataService.AddTimeStamp(timeStamp);
+                MainMessage = $"Goodbye, {user.Name}";
+            }
         }
 
         private bool TryGetUserFromDatabaseByIdentifier(string identifier, out User user)

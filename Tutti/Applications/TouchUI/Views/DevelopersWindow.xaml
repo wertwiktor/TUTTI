@@ -12,7 +12,7 @@
     <Grid>
         <StackPanel Grid.Column="0"
                     VerticalAlignment="Center"
-                    HorizontalAlignment="Left">
+                    HorizontalAlignment="Center">
             <Label Content="Simulate card reader"
                    HorizontalAlignment="Center"
                    FontSize="20" />
@@ -20,7 +20,7 @@
                      Width="200" />
             <Button Command="{Binding SimulateCardIdentificationCommand}"
                     Content="Simulate"
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Center" />
         </StackPanel>
     </Grid>
 </Window>

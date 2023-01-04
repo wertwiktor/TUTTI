@@ -9,6 +9,6 @@ namespace TouchUI.Dialogs.UserExit
 {
     public interface IUserExitDialogController
     {
-        Task<ContentDialogResult> ShowDialog(string userName);
+        Task<bool> ShowDialog(string userName);
     }
 }

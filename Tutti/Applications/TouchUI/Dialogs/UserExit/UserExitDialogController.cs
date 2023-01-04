@@ -14,11 +14,12 @@ namespace TouchUI.Dialogs.UserExit
         
         }
 
-        public Task<ContentDialogResult> ShowDialog(string userName)
+        public async Task<bool> ShowDialog(string userName)
         {
             var dialog = new UserExitDialog();
             dialog.Initialize(userName);
-            return dialog.ShowAsync();
+            var result = await dialog.ShowAsync();
+            return result == ContentDialogResult.Primary;
         }
     }
 }
