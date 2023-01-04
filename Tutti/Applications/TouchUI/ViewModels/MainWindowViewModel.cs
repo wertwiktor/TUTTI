@@ -6,6 +6,7 @@ using Services.IdentificationDeviceService.DataContracts;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Tracing;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TouchUI.Dialogs.UserExit;
@@ -71,7 +72,7 @@ namespace TouchUI.ViewModels
             MainMessage = string.Empty;
         }
 
-        private void OnIdServiceIdentificationOccured(object sender, IdentificationOccuredEventArgs eventArgs)
+        private async void OnIdServiceIdentificationOccured(object sender, IdentificationOccuredEventArgs eventArgs)
         {
             if (eventArgs == null)
             {
@@ -87,10 +88,10 @@ namespace TouchUI.ViewModels
 
             _logger.Information("Received IdentificationOccured event with identifier {identifier}.");
 
-            ProcessUserIdentification(eventArgs.Identifier);
+            await ProcessUserIdentification(eventArgs.Identifier);
         }
 
-        private void ProcessUserIdentification(string identifier)
+        private async Task ProcessUserIdentification(string identifier)
         {
             User user;
             if (!TryGetUserFromDatabaseByIdentifier(identifier, out user))
@@ -106,7 +107,7 @@ namespace TouchUI.ViewModels
             }
             else
             {
-                ProcessUserExit(user);
+                await ProcessUserExit(user);
             }
         }
 
@@ -117,9 +118,9 @@ namespace TouchUI.ViewModels
             MainMessage = $"Hello, {user.Name}";
         }
 
-        private async void ProcessUserExit(User user)
+        private async Task ProcessUserExit(User user)
         {
-            var userExitConfirmation = await _userExitDialogController.ShowDialog(user.Name);
+            var userExitConfirmation =  await _userExitDialogController.ShowDialog(user.Name);
             if(userExitConfirmation)
             {
                 var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Exit, UserId = user.Id };
@@ -161,11 +162,11 @@ namespace TouchUI.ViewModels
             set
             {
                 _mainMessage = value;
+                OnPropertyChanged();
                 if (!string.IsNullOrEmpty(_mainMessage))
                 {
                     StartMainMessageTimer();
-                }
-                OnPropertyChanged();
+                }              
             }
         }
     }
