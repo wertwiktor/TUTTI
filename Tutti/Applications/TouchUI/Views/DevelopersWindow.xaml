@@ -8,11 +8,11 @@
         xmlns:vm="clr-namespace:TouchUI.ViewModels"
         mc:Ignorable="d"
         DataContext="{touchUI:DISource Type=vm:DevelopersWindowViewModel}"
-        Title="DevelopersWindow" Height="250" Width="400">
+        Title="DevelopersWindow" Height="250" Width="500">
     <Grid>
         <StackPanel Grid.Column="0"
                     VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
+                    HorizontalAlignment="Left">
             <Label Content="Simulate card reader"
                    HorizontalAlignment="Center"
                    FontSize="20" />
@@ -20,7 +20,7 @@
                      Width="200" />
             <Button Command="{Binding SimulateCardIdentificationCommand}"
                     Content="Simulate"
-                    HorizontalAlignment="Center" />
+                    HorizontalAlignment="Left" />
         </StackPanel>
     </Grid>
 </Window>

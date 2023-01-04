@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.Tracing;
 using System.Windows.Input;
 using System.Windows.Threading;
+using TouchUI.Dialogs.UserExit;
 using TouchUI.Models.Enums;
 
 namespace TouchUI.ViewModels
@@ -15,18 +16,20 @@ namespace TouchUI.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly ILogger _logger = Log.Logger.ForContext<MainWindowViewModel>();
-        private IDataService _dataService;
-        private IIdentificationDeviceService _idDeviceService;
+        private readonly IDataService _dataService;
+        private readonly IIdentificationDeviceService _idDeviceService;
+        private readonly IUserExitDialogController _userExitDialogController;
 
         private DateTime _currentDateTime = DateTime.Now;
         private string _mainMessage;
         private DispatcherTimer _mainMessageTimer = new DispatcherTimer();
 
-        public MainWindowViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService)
+        public MainWindowViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService, IUserExitDialogController userExitDialogController)
         {
             _logger.Debug("Creating main view model.");
             _dataService = dataService;
             _idDeviceService = idDeviceService;
+            _userExitDialogController = userExitDialogController;
             InitializeSubscribtions();
             InitializeCommands();
             InitializeClockDisplayTimer();
@@ -114,11 +117,13 @@ namespace TouchUI.ViewModels
             MainMessage = $"Hello, {user.Name}";
         }
 
-        private void ProcessUserExit(User user)
+        private async void ProcessUserExit(User user)
         {
+            _ = await _userExitDialogController.ShowDialog(user.Name);
             var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Exit, UserId = user.Id };
             _dataService.AddTimeStamp(timeStamp);
             MainMessage = $"Goodbye, {user.Name}";
+
         }
 
         private bool TryGetUserFromDatabaseByIdentifier(string identifier, out User user)
@@ -160,6 +165,6 @@ namespace TouchUI.ViewModels
                 }
                 OnPropertyChanged();
             }
-        } 
+        }
     }
 }
