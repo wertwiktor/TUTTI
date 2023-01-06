@@ -9,6 +9,6 @@ namespace TouchUI.Dialogs.UserExit
 {
     public interface IUserExitDialogController
     {
-        Task<bool> ShowDialog(string userName);
+        Task<bool> ConfirmUserExitAsync(string userName, TimeSpan estimatedRecordedTime);
     }
 }

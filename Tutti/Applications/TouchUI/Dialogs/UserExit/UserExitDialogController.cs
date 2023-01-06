@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using TouchUI.Views;
 
 namespace TouchUI.Dialogs.UserExit
@@ -16,13 +17,23 @@ namespace TouchUI.Dialogs.UserExit
         
         }
 
-        public async Task<bool> ShowDialog(string userName)
+        //ShowDialogAsync is not awaited and instead, additional TaskCompletionSource is used 
+        // as it allows faster return to the calling thread.
+        public Task<bool> ConfirmUserExitAsync(string userName, TimeSpan estimatedRecordedTime)
         {
-            var dialog = new UserExitDialog();
+            var dialog = new UserExitDialog(userName, estimatedRecordedTime);
             dialog.Owner = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-            dialog.Initialize(userName);
-            var result = await dialog.ShowAsync();
-            return result == ContentDialogResult.Primary;
-        }
+            var taskCompletionSource = new TaskCompletionSource<bool>();
+            dialog.PrimaryButtonClick += (o, e) =>
+            {
+                taskCompletionSource.SetResult(true);
+            };
+            dialog.SecondaryButtonClick += (o, e) =>
+            {
+                taskCompletionSource.SetResult(false);
+            };
+            dialog.ShowAsync();
+            return taskCompletionSource.Task;
+        }        
     }
 }

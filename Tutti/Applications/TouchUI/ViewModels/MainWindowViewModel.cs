@@ -107,7 +107,7 @@ namespace TouchUI.ViewModels
             }
             else
             {
-                await ProcessUserExit(user);
+                await ProcessUserExit(user, lastTimeStamp);
             }
         }
 
@@ -118,9 +118,10 @@ namespace TouchUI.ViewModels
             MainMessage = $"Hello, {user.Name}";
         }
 
-        private async Task ProcessUserExit(User user)
+        private async Task ProcessUserExit(User user, TimeStamp lastTimeStamp)
         {
-            var userExitConfirmation =  await _userExitDialogController.ShowDialog(user.Name);
+            var estimatedRecordedTime = DateTime.Now - lastTimeStamp.DateTime;
+            var userExitConfirmation =  await _userExitDialogController.ConfirmUserExitAsync(user.Name, estimatedRecordedTime);
             if(userExitConfirmation)
             {
                 var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Exit, UserId = user.Id };

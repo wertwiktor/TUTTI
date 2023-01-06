@@ -21,14 +21,10 @@ namespace TouchUI.Dialogs.UserExit
     /// </summary>
     public partial class UserExitDialog : ContentDialog
     {
-        public UserExitDialog()
+        public UserExitDialog(string userName, TimeSpan estimatedRecordedTime)
         {
             InitializeComponent();
-        }
-
-        public void Initialize(params object[] parameters)
-        {
-            (DataContext as UserExitDialogViewModel)?.Initialize(parameters);
+            (DataContext as UserExitDialogViewModel)?.Initialize(userName, estimatedRecordedTime);
         }
     }
 }

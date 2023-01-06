@@ -9,6 +9,6 @@ namespace TouchUI.Dialogs
 {
     public abstract class DialogViewModelBase : ViewModelBase
     {
-        public abstract void Initialize(params object[] parameters);
+
     }
 }

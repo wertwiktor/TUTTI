@@ -9,6 +9,7 @@ namespace TouchUI.Dialogs.UserExit
     public class UserExitDialogViewModel : DialogViewModelBase
     {
         private string _userName;
+        private TimeSpan _workTime;
 
         public string UserName
         {
@@ -23,14 +24,23 @@ namespace TouchUI.Dialogs.UserExit
             }
         }
 
-        public override void Initialize(params object[] parameters)
+        public TimeSpan WorkTime
         {
-            if (parameters == null || parameters.Length == 0)
+            get
             {
-                return;
+                return _workTime;
             }
+            set
+            {
+                _workTime = value;
+                OnPropertyChanged();
+            }
+        }
 
-            UserName = parameters[0] as string;
+        public void Initialize(string userName, TimeSpan estimatedRecordedTime)
+        {
+            UserName = userName;
+            WorkTime = estimatedRecordedTime;
         }
     }
 }
