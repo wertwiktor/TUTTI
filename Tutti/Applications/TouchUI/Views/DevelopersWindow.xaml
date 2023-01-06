@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:TouchUI.ViewModels"
         mc:Ignorable="d"
         DataContext="{touchUI:DISource Type=vm:DevelopersWindowViewModel}"
-        Title="DevelopersWindow" Height="250" Width="400">
+        Title="DevelopersWindow" Height="250" Width="500">
     <Grid>
         <StackPanel Grid.Column="0"
                     VerticalAlignment="Center"

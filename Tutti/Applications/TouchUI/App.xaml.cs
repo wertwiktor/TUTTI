@@ -9,6 +9,8 @@ using Serilog;
 using System;
 using System.IO;
 using TouchUI.Views;
+using TouchUI.Dialogs;
+using TouchUI.Dialogs.UserExit;
 
 namespace TouchUI
 {
@@ -28,9 +30,9 @@ namespace TouchUI
             builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
             builder.RegisterType<DataServiceSql>().As<IDataService>().SingleInstance();
             builder.RegisterType<IdentificationDeviceServiceBaltech>().As<IIdentificationDeviceService>().SingleInstance();
+            builder.RegisterType<UserExitDialogController>().As<IUserExitDialogController>().SingleInstance();
 
             IContainer container = builder.Build();
-
             DISource.Resolver = container.Resolve;
             InitializeDevelopersWindow();
         }
