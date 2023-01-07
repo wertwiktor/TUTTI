@@ -27,6 +27,7 @@
                     VerticalAlignment="Top"
                     HorizontalAlignment="Center">
             <Label Content="{Binding CurrentDateTime}"
+                   d:Content="Design time value"
                    ContentStringFormat="HH:mm:ss"
                    HorizontalAlignment="Center"
                    FontSize="50"
