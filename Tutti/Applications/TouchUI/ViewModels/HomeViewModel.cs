@@ -14,9 +14,9 @@ using TouchUI.Models.Enums;
 
 namespace TouchUI.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class HomeViewModel : ViewModelBase
     {
-        private readonly ILogger _logger = Log.Logger.ForContext<MainWindowViewModel>();
+        private readonly ILogger _logger = Log.Logger.ForContext<HomeViewModel>();
         private readonly IDataService _dataService;
         private readonly IIdentificationDeviceService _idDeviceService;
         private readonly IUserExitDialogController _userExitDialogController;
@@ -25,7 +25,7 @@ namespace TouchUI.ViewModels
         private string _mainMessage;
         private DispatcherTimer _mainMessageTimer = new DispatcherTimer();
 
-        public MainWindowViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService, IUserExitDialogController userExitDialogController)
+        public HomeViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService, IUserExitDialogController userExitDialogController)
         {
             _logger.Debug("Creating main view model.");
             _dataService = dataService;

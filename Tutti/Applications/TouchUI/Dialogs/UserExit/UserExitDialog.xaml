@@ -4,7 +4,6 @@
                     xmlns:mwpf="http://schemas.modernwpf.com/2019"
                     xmlns:touchUI="clr-namespace:TouchUI"
                     xmlns:local="clr-namespace:TouchUI.Dialogs.UserExit"
-                    DataContext="{touchUI:DISource Type=local:UserExitDialogViewModel}"
                     Title="Confirm end of work"
                     PrimaryButtonText="Confirm"
                     SecondaryButtonText="Cancel"
