@@ -16,24 +16,37 @@ namespace TouchUI.Services.Navigation
 
         public event Action<ViewModelBase> NavigationChanged;
 
-        public void Navigate<TViewModel>()
+        public void Navigate(Type viewModelType)
         {
             ViewModelBase viewModel; 
                 
-            if(_viewModels.TryGetValue(typeof(TViewModel), out viewModel))
+            if(_viewModels.TryGetValue(viewModelType, out viewModel))
             {
                 NavigationChanged?.Invoke(viewModel);
             }
             else
             {
-                _logger.Error("Attempted to navigate to an unknown ViewModel: {viewModel}", nameof(TViewModel));
+                _logger.Error("Attempted to navigate to an unknown ViewModel.");
             }
         }
 
-        public void Register<TViewModel>(ViewModelBase viewModel)
-            where TViewModel : ViewModelBase
+        public void Navigate<TViewModel>()
         {
-            _viewModels[typeof(TViewModel)] = viewModel;
+            ViewModelBase viewModel;
+
+            if (_viewModels.TryGetValue(typeof(TViewModel), out viewModel))
+            {
+                NavigationChanged?.Invoke(viewModel);
+            }
+            else
+            {
+                _logger.Error("Attempted to navigate to an unknown ViewModel.");
+            }
+        }
+
+        public void Register(ViewModelBase viewModel)
+        {
+            _viewModels[viewModel.GetType()] = viewModel;
         }
     }
 }

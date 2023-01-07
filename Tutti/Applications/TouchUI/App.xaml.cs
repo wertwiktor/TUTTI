@@ -9,7 +9,6 @@ using Serilog;
 using System;
 using System.IO;
 using TouchUI.Views;
-using TouchUI.Dialogs.UserExit;
 using TouchUI.Services.Navigation;
 using System.Linq;
 using TouchUI.ViewModels;
@@ -59,12 +58,12 @@ namespace TouchUI
             //Backend services
             builder.RegisterType<DataServiceSql>().As<IDataService>().SingleInstance();
             builder.RegisterType<IdentificationDeviceServiceBaltech>().As<IIdentificationDeviceService>().SingleInstance();
-            builder.RegisterType<UserExitDialogController>().As<IUserExitDialogController>().SingleInstance();
             //Frontend services
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
             //ViewModels
             builder.RegisterType<MainViewModel>().SingleInstance();
             builder.RegisterType<HomeViewModel>().SingleInstance();
+            builder.RegisterType<RegisterViewModel>().SingleInstance();
 
             _diContainer = builder.Build();
         }
@@ -75,7 +74,8 @@ namespace TouchUI
             var registeredViewModelsTypes = _diContainer.ComponentRegistry.Registrations.Where(r => typeof(ViewModelBase).IsAssignableFrom(r.Activator.LimitType)).Select(r => r.Activator.LimitType);
             foreach (var viewModelType in registeredViewModelsTypes)
             {
-                var viewModel = _diContainer.Resolve(viewModelType);
+                var viewModel = _diContainer.Resolve(viewModelType) as ViewModelBase;
+                navigationService.Register(viewModel);
             }
 
         }
@@ -83,6 +83,7 @@ namespace TouchUI
         private void InitializeDevelopersWindow()
         {
             var devWindow = new DevelopersWindow();
+            devWindow.DataContext = _diContainer.Resolve<DevelopersWindowViewModel>();
             devWindow.Show();
         }
 

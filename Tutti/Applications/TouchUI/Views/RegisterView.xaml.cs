@@ -1,5 +1,4 @@
-﻿using ModernWpf.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TouchUI.Dialogs.UserExit
+namespace TouchUI.Views
 {
     /// <summary>
-    /// Interaction logic for UserExitDialog.xaml
+    /// Interaction logic for RegisterView.xaml
     /// </summary>
-    public partial class UserExitDialog : ContentDialog
+    public partial class RegisterView : UserControl
     {
-        public UserExitDialog(string userName, TimeSpan estimatedRecordedTime)
+        public RegisterView()
         {
             InitializeComponent();
-            (DataContext as UserExitDialogViewModel)?.Initialize(userName, estimatedRecordedTime);
         }
     }
 }

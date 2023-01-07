@@ -4,42 +4,52 @@ using Services.DataService;
 using Services.IdentificationDeviceService;
 using Services.IdentificationDeviceService.DataContracts;
 using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics.Tracing;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Threading;
-using TouchUI.Dialogs.UserExit;
+using TouchUI.Commands;
 using TouchUI.Models.Enums;
+using TouchUI.Services.Navigation;
+using TouchUI.Tools.Navigation;
 
 namespace TouchUI.ViewModels
 {
-    public class HomeViewModel : ViewModelBase
+    public class HomeViewModel : NavigationViewModelBase
     {
         private readonly ILogger _logger = Log.Logger.ForContext<HomeViewModel>();
         private readonly IDataService _dataService;
         private readonly IIdentificationDeviceService _idDeviceService;
-        private readonly IUserExitDialogController _userExitDialogController;
+        private readonly INavigationService _navigationService;
 
         private DateTime _currentDateTime = DateTime.Now;
         private string _mainMessage;
         private DispatcherTimer _mainMessageTimer = new DispatcherTimer();
 
-        public HomeViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService, IUserExitDialogController userExitDialogController)
+        private ICommand _navigationCommand;
+
+        public HomeViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService, INavigationService navigationService)
+            : base()
         {
             _logger.Debug("Creating main view model.");
             _dataService = dataService;
             _idDeviceService = idDeviceService;
-            _userExitDialogController = userExitDialogController;
+            _navigationService = navigationService;
             InitializeSubscribtions();
             InitializeCommands();
             InitializeClockDisplayTimer();
             InitializeMainMessageTimer();
         }
 
+        protected override void InitializeNavigatableViewModels()
+        {
+            NavigatableViewModels.Clear();
+            NavigatableViewModels.Add(new NavigationTarget(typeof(RegisterViewModel), "Register", true));
+        }
+
+
         private void InitializeCommands()
         {
-
+            _navigationCommand = new NavigationCommand(_navigationService);
         }
 
         private void InitializeClockDisplayTimer()
@@ -72,8 +82,9 @@ namespace TouchUI.ViewModels
             MainMessage = string.Empty;
         }
 
-        private async void OnIdServiceIdentificationOccured(object sender, IdentificationOccuredEventArgs eventArgs)
+        private void OnIdServiceIdentificationOccured(object sender, IdentificationOccuredEventArgs eventArgs)
         {
+
             if (eventArgs == null)
             {
                 _logger.Error("Received IdentificationOccured event with null event arguments.");
@@ -88,10 +99,10 @@ namespace TouchUI.ViewModels
 
             _logger.Information("Received IdentificationOccured event with identifier {identifier}.");
 
-            await ProcessUserIdentification(eventArgs.Identifier);
+            ProcessUserIdentification(eventArgs.Identifier);
         }
 
-        private async Task ProcessUserIdentification(string identifier)
+        private void ProcessUserIdentification(string identifier)
         {
             User user;
             if (!TryGetUserFromDatabaseByIdentifier(identifier, out user))
@@ -107,7 +118,7 @@ namespace TouchUI.ViewModels
             }
             else
             {
-                await ProcessUserExit(user, lastTimeStamp);
+                ProcessUserExit(user);
             }
         }
 
@@ -118,16 +129,11 @@ namespace TouchUI.ViewModels
             MainMessage = $"Hello, {user.Name}";
         }
 
-        private async Task ProcessUserExit(User user, TimeStamp lastTimeStamp)
+        private void ProcessUserExit(User user)
         {
-            var estimatedRecordedTime = DateTime.Now - lastTimeStamp.DateTime;
-            var userExitConfirmation =  await _userExitDialogController.ConfirmUserExitAsync(user.Name, estimatedRecordedTime);
-            if(userExitConfirmation)
-            {
-                var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Exit, UserId = user.Id };
-                _dataService.AddTimeStamp(timeStamp);
-                MainMessage = $"Goodbye, {user.Name}";
-            }
+            var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Exit, UserId = user.Id };
+            _dataService.AddTimeStamp(timeStamp);
+            MainMessage = $"Goodbye, {user.Name}";
         }
 
         private bool TryGetUserFromDatabaseByIdentifier(string identifier, out User user)
@@ -167,7 +173,20 @@ namespace TouchUI.ViewModels
                 if (!string.IsNullOrEmpty(_mainMessage))
                 {
                     StartMainMessageTimer();
-                }              
+                }
+            }
+        }
+
+        public ICommand NavigationCommand
+        {
+            get
+            {
+                return _navigationCommand;
+            }
+            set
+            {
+                _navigationCommand = value;
+                OnPropertyChanged();
             }
         }
     }

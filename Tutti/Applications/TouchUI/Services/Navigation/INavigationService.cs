@@ -9,7 +9,11 @@ namespace TouchUI.Services.Navigation
 {
     public interface INavigationService
     {
-        void Navigate<TViewModel> ();
+        void Navigate(Type viewModelType);
+
+        void Navigate<TViewModel>();
+
+        void Register(ViewModelBase viewModel);
 
         public event Action<ViewModelBase> NavigationChanged;
     }
