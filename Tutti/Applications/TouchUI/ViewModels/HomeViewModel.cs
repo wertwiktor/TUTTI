@@ -19,26 +19,22 @@ namespace TouchUI.ViewModels
         private readonly ILogger _logger = Log.Logger.ForContext<HomeViewModel>();
         private readonly IDataService _dataService;
         private readonly IIdentificationDeviceService _idDeviceService;
-        private readonly INavigationService _navigationService;
 
         private DateTime _currentDateTime = DateTime.Now;
         private string _mainMessage;
         private DispatcherTimer _mainMessageTimer = new DispatcherTimer();
-
-        private ICommand _navigationCommand;
+        private DispatcherTimer _clockDisplayTimer = new DispatcherTimer();
 
         public HomeViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService, INavigationService navigationService)
-            : base()
+            : base(navigationService)
         {
             _logger.Debug("Creating main view model.");
             _dataService = dataService;
             _idDeviceService = idDeviceService;
-            _navigationService = navigationService;
             InitializeSubscribtions();
-            InitializeCommands();
             InitializeClockDisplayTimer();
             InitializeMainMessageTimer();
-        }
+        }       
 
         protected override void InitializeNavigatableViewModels()
         {
@@ -46,18 +42,27 @@ namespace TouchUI.ViewModels
             NavigatableViewModels.Add(new NavigationTarget(typeof(RegisterViewModel), "Register", true));
         }
 
-
-        private void InitializeCommands()
+        public override void Uninitialize()
         {
-            _navigationCommand = new NavigationCommand(_navigationService);
+            UninitializeSubscribtions();
+            UninitializeTimers();
+        }       
+
+        private void InitializeSubscribtions()
+        {
+            _idDeviceService.IdentificationOccured += OnIdServiceIdentificationOccured;
+        }
+
+        private void UninitializeSubscribtions()
+        {
+            _idDeviceService.IdentificationOccured -= OnIdServiceIdentificationOccured;
         }
 
         private void InitializeClockDisplayTimer()
         {
-            var clockDisplayTimer = new DispatcherTimer();
-            clockDisplayTimer.Interval = TimeSpan.FromSeconds(1);
-            clockDisplayTimer.Tick += OnClockDisplayTimerElapsed;
-            clockDisplayTimer.Start();
+            _clockDisplayTimer.Interval = TimeSpan.FromSeconds(1);
+            _clockDisplayTimer.Tick += OnClockDisplayTimerElapsed;
+            _clockDisplayTimer.Start();
         }
 
         private void InitializeMainMessageTimer()
@@ -66,9 +71,10 @@ namespace TouchUI.ViewModels
             _mainMessageTimer.Tick += OnMainMessageTimerElapsed;
         }
 
-        private void InitializeSubscribtions()
+        private void UninitializeTimers()
         {
-            _idDeviceService.IdentificationOccured += OnIdServiceIdentificationOccured;
+            _mainMessageTimer.Stop();
+            _clockDisplayTimer.Stop();
         }
 
         private void OnClockDisplayTimerElapsed(object? sender, EventArgs e)
@@ -174,19 +180,6 @@ namespace TouchUI.ViewModels
                 {
                     StartMainMessageTimer();
                 }
-            }
-        }
-
-        public ICommand NavigationCommand
-        {
-            get
-            {
-                return _navigationCommand;
-            }
-            set
-            {
-                _navigationCommand = value;
-                OnPropertyChanged();
             }
         }
     }

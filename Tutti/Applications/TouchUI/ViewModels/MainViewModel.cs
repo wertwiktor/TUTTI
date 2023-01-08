@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
 using TouchUI.Services.Navigation;
 
 namespace TouchUI.ViewModels
@@ -12,19 +13,19 @@ namespace TouchUI.ViewModels
     {
         private readonly INavigationService _navigationService;
 
-        private ViewModelBase _currentViewModel;
+        private NavigationViewModelBase _currentViewModel;
         public MainViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
             _navigationService.NavigationChanged += OnNavigationServiceNavigationChanged;
         }
 
-        private void OnNavigationServiceNavigationChanged(ViewModelBase navigatedViewModel)
+        private void OnNavigationServiceNavigationChanged(NavigationViewModelBase navigatedViewModel)
         {
             CurrentViewModel= navigatedViewModel;
         }
 
-        public ViewModelBase CurrentViewModel
+        public NavigationViewModelBase CurrentViewModel
         {
             get
             {
@@ -32,6 +33,7 @@ namespace TouchUI.ViewModels
             }
             set
             {
+                _currentViewModel?.Uninitialize();
                 _currentViewModel = value;
                 OnPropertyChanged();
             }

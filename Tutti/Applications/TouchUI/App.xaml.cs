@@ -13,6 +13,7 @@ using TouchUI.Services.Navigation;
 using System.Linq;
 using TouchUI.ViewModels;
 using System.Collections.Generic;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace TouchUI
 {
@@ -22,7 +23,6 @@ namespace TouchUI
     public partial class App : Application
     {
         private ILogger _logger;
-        private IContainer _diContainer;
          
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -31,8 +31,6 @@ namespace TouchUI
             InitializeLogger();
             InitializeDependencyInjectionContainer();
             RegisterViewModelsInNavigationService();
-            InitializeDevelopersWindow();
-            InitializeMainWindow();
         }
 
         private void InitializeLogger()
@@ -62,44 +60,39 @@ namespace TouchUI
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
             //ViewModels
             builder.RegisterType<MainViewModel>().SingleInstance();
-            builder.RegisterType<HomeViewModel>().SingleInstance();
-            builder.RegisterType<RegisterViewModel>().SingleInstance();
+            builder.RegisterType<HomeViewModel>().InstancePerDependency();
+            builder.RegisterType<RegisterViewModel>().InstancePerDependency();
 
-            _diContainer = builder.Build();
+            var diContainer = builder.Build();
+            InitializeDevelopersWindow(diContainer);
+            InitializeMainWindow(diContainer);
         }
 
         private void RegisterViewModelsInNavigationService()
         {
-            var navigationService = _diContainer.Resolve<INavigationService>();
-            var registeredViewModelsTypes = _diContainer.ComponentRegistry.Registrations.Where(r => typeof(ViewModelBase).IsAssignableFrom(r.Activator.LimitType)).Select(r => r.Activator.LimitType);
-            foreach (var viewModelType in registeredViewModelsTypes)
-            {
-                var viewModel = _diContainer.Resolve(viewModelType) as ViewModelBase;
-                navigationService.Register(viewModel);
-            }
-
+            return;
         }
 
-        private void InitializeDevelopersWindow()
+        private void InitializeDevelopersWindow(ILifetimeScope scope)
         {
             var devWindow = new DevelopersWindow();
-            devWindow.DataContext = _diContainer.Resolve<DevelopersWindowViewModel>();
+            using( var localScope = scope.BeginLifetimeScope())
+            {
+                devWindow.DataContext = localScope.Resolve<DevelopersWindowViewModel>();
+            }
             devWindow.Show();
         }
 
-        private void InitializeMainWindow()
+        private void InitializeMainWindow(ILifetimeScope scope)
         {
             var mainWindow = new MainWindow();
-            mainWindow.DataContext = _diContainer.Resolve<MainViewModel>();
-            InitializeDefaultView();
+            using (var localScope = scope.BeginLifetimeScope())
+            {
+                mainWindow.DataContext = localScope.Resolve<MainViewModel>();
+                var navigationService = localScope.Resolve<INavigationService>();
+                navigationService.Navigate<HomeViewModel>();
+            }
             mainWindow.Show();
         }
-
-        private void InitializeDefaultView()
-        {
-            var mainViewModel = _diContainer.Resolve<MainViewModel>();
-            mainViewModel.CurrentViewModel = _diContainer.Resolve<HomeViewModel>();
-        }
-
     }
 }

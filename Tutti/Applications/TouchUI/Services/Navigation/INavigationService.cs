@@ -13,8 +13,6 @@ namespace TouchUI.Services.Navigation
 
         void Navigate<TViewModel>();
 
-        void Register(ViewModelBase viewModel);
-
-        public event Action<ViewModelBase> NavigationChanged;
+        public event Action<NavigationViewModelBase> NavigationChanged;
     }
 }

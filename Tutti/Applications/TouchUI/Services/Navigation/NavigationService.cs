@@ -12,41 +12,49 @@ namespace TouchUI.Services.Navigation
     {
         private readonly ILogger _logger = Log.Logger.ForContext<NavigationService>();
 
-        private Dictionary<Type, ViewModelBase> _viewModels = new Dictionary<Type, ViewModelBase>();
+        private Dictionary<Type, Func<NavigationViewModelBase>> _viewModels = new Dictionary<Type, Func<NavigationViewModelBase>>();
 
-        public event Action<ViewModelBase> NavigationChanged;
+        public NavigationService(Func<HomeViewModel> homeViewModelConstructor, Func<RegisterViewModel> registerViewModelConstructor)
+        {
+            _viewModels[typeof(HomeViewModel)] = homeViewModelConstructor;
+            _viewModels[typeof(RegisterViewModel)] = registerViewModelConstructor;
+        }
+
+        public event Action<NavigationViewModelBase> NavigationChanged;
 
         public void Navigate(Type viewModelType)
         {
-            ViewModelBase viewModel; 
-                
-            if(_viewModels.TryGetValue(viewModelType, out viewModel))
+            if (viewModelType == null)
             {
+                _logger.Error("Attempted to navigate to a null view model.");
+                return;
+            }
+
+            Func<NavigationViewModelBase> viewModelConstructor;
+
+            if (_viewModels.TryGetValue(viewModelType, out viewModelConstructor))
+            {
+                var viewModel = viewModelConstructor.Invoke();
                 NavigationChanged?.Invoke(viewModel);
             }
             else
             {
-                _logger.Error("Attempted to navigate to an unknown ViewModel.");
+                _logger.Error("Attempted to navigate to an unknown ViewModel {vmType}.", viewModelType.FullName);
             }
         }
 
         public void Navigate<TViewModel>()
         {
-            ViewModelBase viewModel;
+            Func<NavigationViewModelBase> viewModelConstructor;
 
-            if (_viewModels.TryGetValue(typeof(TViewModel), out viewModel))
+            if (_viewModels.TryGetValue(typeof(TViewModel), out viewModelConstructor))
             {
-                NavigationChanged?.Invoke(viewModel);
+                NavigationChanged?.Invoke(viewModelConstructor.Invoke());
             }
             else
             {
-                _logger.Error("Attempted to navigate to an unknown ViewModel.");
+                _logger.Error("Attempted to navigate to an unknown ViewModel {vmType}.", typeof(TViewModel).FullName);
             }
-        }
-
-        public void Register(ViewModelBase viewModel)
-        {
-            _viewModels[viewModel.GetType()] = viewModel;
         }
     }
 }
