@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using TouchUI.Dialogs.UserExit;
+using TouchUI.Commands;
 using TouchUI.Models.Enums;
 
 namespace TouchUI.ViewModels
@@ -20,7 +20,7 @@ namespace TouchUI.ViewModels
 
         private string _cardIdentifcatorToBeSimulated;
 
-        public DevelopersWindowViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService, IUserExitDialogController userExitDialogController)
+        public DevelopersWindowViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService)
         {
             _logger.Debug("Creating developers window view model.");
             _dataService = dataService;
@@ -33,7 +33,8 @@ namespace TouchUI.ViewModels
             SimulateCardIdentificationCommand = new RelayCommand(SimulateCardIdentification);
         }
 
-        private async void SimulateCardIdentification()
+        private 
+            void SimulateCardIdentification()
         {
             _idDeviceService.SimulateIdentificationEvent(CardIdentifcatorToBeSimulated);
         }
