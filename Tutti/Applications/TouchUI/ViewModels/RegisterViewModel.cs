@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using TouchUI.Services.Navigation;
 using TouchUI.Tools.Navigation;
 
@@ -10,20 +6,29 @@ namespace TouchUI.ViewModels
 {
     public class RegisterViewModel : NavigationViewModelBase
     {
+        private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget> { new NavigationTarget(typeof(HomeViewModel), "Home", true) };
+
         public RegisterViewModel(INavigationService navigationService) : base(navigationService) 
         { 
         
         }
 
+        public override ObservableCollection<NavigationTarget> NavigatableViewModels
+        {
+            get
+            {
+                return _navigatableViewModels;
+            }
+            set
+            {
+                _navigatableViewModels = value;
+                OnPropertyChanged();
+            }
+        }
+
         public override void Uninitialize()
         {
             
-        }
-
-        protected override void InitializeNavigatableViewModels()
-        {
-            NavigatableViewModels.Clear();
-            NavigatableViewModels.Add(new NavigationTarget(typeof(HomeViewModel), "Home", true));
         }
     }
 }

@@ -4,10 +4,9 @@ using Services.DataService;
 using Services.IdentificationDeviceService;
 using Services.IdentificationDeviceService.DataContracts;
 using System;
-using System.Collections.Generic;
-using System.Windows.Input;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Threading;
-using TouchUI.Commands;
 using TouchUI.Models.Enums;
 using TouchUI.Services.Navigation;
 using TouchUI.Tools.Navigation;
@@ -25,6 +24,11 @@ namespace TouchUI.ViewModels
         private DispatcherTimer _mainMessageTimer = new DispatcherTimer();
         private DispatcherTimer _clockDisplayTimer = new DispatcherTimer();
 
+        private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget> {
+            new NavigationTarget(typeof(RegisterViewModel), "Register", true),
+            new NavigationTarget(typeof(RegisterViewModel), "Register", false)};
+
+
         public HomeViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService, INavigationService navigationService)
             : base(navigationService)
         {
@@ -34,19 +38,56 @@ namespace TouchUI.ViewModels
             InitializeSubscribtions();
             InitializeClockDisplayTimer();
             InitializeMainMessageTimer();
-        }       
-
-        protected override void InitializeNavigatableViewModels()
-        {
-            NavigatableViewModels.Clear();
-            NavigatableViewModels.Add(new NavigationTarget(typeof(RegisterViewModel), "Register", true));
         }
 
         public override void Uninitialize()
         {
             UninitializeSubscribtions();
             UninitializeTimers();
-        }       
+        }
+
+        public DateTime CurrentDateTime
+        {
+            get
+            {
+                return _currentDateTime;
+            }
+            set
+            {
+                _currentDateTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string MainMessage
+        {
+            get
+            {
+                return _mainMessage;
+            }
+            set
+            {
+                _mainMessage = value;
+                OnPropertyChanged();
+                if (!string.IsNullOrEmpty(_mainMessage))
+                {
+                    StartMainMessageTimer();
+                }
+            }
+        }
+
+        public override ObservableCollection<NavigationTarget> NavigatableViewModels
+        {
+            get
+            {
+                return _navigatableViewModels;
+            }
+            set
+            {
+                _navigatableViewModels = value;
+                OnPropertyChanged();
+            }
+        }
 
         private void InitializeSubscribtions()
         {
@@ -80,6 +121,7 @@ namespace TouchUI.ViewModels
         private void OnClockDisplayTimerElapsed(object? sender, EventArgs e)
         {
             CurrentDateTime = DateTime.Now;
+            NavigatableViewModels.FirstOrDefault().IsEnabled = !NavigatableViewModels.FirstOrDefault().IsEnabled;
         }
 
         private void OnMainMessageTimerElapsed(object? sender, EventArgs e)
@@ -151,36 +193,6 @@ namespace TouchUI.ViewModels
         private void StartMainMessageTimer()
         {
             _mainMessageTimer.Start();
-        }
-
-        public DateTime CurrentDateTime
-        {
-            get
-            {
-                return _currentDateTime;
-            }
-            set
-            {
-                _currentDateTime = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string MainMessage
-        {
-            get
-            {
-                return _mainMessage;
-            }
-            set
-            {
-                _mainMessage = value;
-                OnPropertyChanged();
-                if (!string.IsNullOrEmpty(_mainMessage))
-                {
-                    StartMainMessageTimer();
-                }
-            }
         }
     }
 }
