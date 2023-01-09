@@ -26,9 +26,12 @@
             <mwpf:ListView.ItemTemplate>
                 <DataTemplate>
                     <Button Content="{Binding Name}"
+                            FontSize="{StaticResource DescriptionFontSize}"
                             IsEnabled="{Binding IsEnabled}"
                             Command="{Binding NavigationCommand, RelativeSource = {RelativeSource AncestorType=UserControl}}"
-                            CommandParameter="{Binding Type}">
+                            CommandParameter="{Binding Type}"
+                            Background="Transparent"
+                            BorderBrush="Transparent">
                     </Button>
                 </DataTemplate>
             </mwpf:ListView.ItemTemplate>

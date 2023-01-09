@@ -9,15 +9,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using TouchUI.Commands;
-using TouchUI.Models.Enums;
 using TouchUI.Services.Login;
 using TouchUI.Services.Navigation;
 using TouchUI.Tools.Navigation;
 
 namespace TouchUI.ViewModels
 {
-    public class ExitViewModel : NavigationViewModelBase
+    public class HistoryViewModel : NavigationViewModelBase
     {
         private readonly ILogger _logger = Log.Logger.ForContext<HomeViewModel>();
         private readonly IDataService _dataService;
@@ -27,10 +25,10 @@ namespace TouchUI.ViewModels
         private User _currentUser;
         private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget>{
             new NavigationTarget(typeof(HomeViewModel), "Home", true),
-            new NavigationTarget(typeof(HistoryViewModel), "History", true) };
-        private ICommand _confirmExitCommand;
+            new NavigationTarget(typeof(ExitViewModel), "Finish work", true) };
+        private ObservableCollection<TimeStamp> _timeStampsHistory = new ObservableCollection<TimeStamp>();
 
-        public ExitViewModel(IDataService dataService,
+        public HistoryViewModel(IDataService dataService,
             IIdentificationDeviceService idDeviceService,
             INavigationService navigationService,
             ILoginService loginService)
@@ -40,28 +38,34 @@ namespace TouchUI.ViewModels
             _navigationService = navigationService;
             _loginService = loginService;
             _currentUser = _loginService.GetCurrentUser();
-            InitializeCommands();
+            InitializeHistory();
         }
 
-        private void InitializeCommands()
+        private void InitializeHistory()
         {
-            _confirmExitCommand = new RelayCommand(ConfirmExit);
+            if (_currentUser == null)
+            {
+                _logger.Error("Current user was null when trzing to initialize timestamps history.");
+                return;
+            }
+            _timeStampsHistory.Clear();
+            var oldestTimeStampDate = DateTime.Now - TimeSpan.FromDays(30);
+            var newestTimeStampDate = DateTime.Now;
+            var timeStampHistory = _dataService.GetTimeStamps(_currentUser.Id, oldestTimeStampDate, newestTimeStampDate).OrderByDescending(x => x.DateTime);
+            TimeStampsHistory = new ObservableCollection<TimeStamp>(timeStampHistory);
         }
 
-        private void ConfirmExit()
+        public ObservableCollection<TimeStamp> TimeStampsHistory
         {
-            if (_currentUser != null)
+            get
             {
-                var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Exit, UserId = _currentUser.Id };
-                _dataService.AddTimeStamp(timeStamp);
-                
+                return _timeStampsHistory;
             }
-            else
+            set
             {
-                _logger.Error("Current user was null while arrempting to register user exit. This exit has not been saved in the database.");
+                _timeStampsHistory = value;
+                OnPropertyChanged();
             }
-            _loginService.Logout();
-            NavigationService.Navigate<HomeViewModel>();
         }
 
         public override ObservableCollection<NavigationTarget> NavigatableViewModels
@@ -73,19 +77,6 @@ namespace TouchUI.ViewModels
             set
             {
                 _navigatableViewModels = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ICommand ConfirmExitCommand
-        {
-            get
-            {
-                return _confirmExitCommand;
-            }
-            set
-            {
-                _confirmExitCommand = value;
                 OnPropertyChanged();
             }
         }

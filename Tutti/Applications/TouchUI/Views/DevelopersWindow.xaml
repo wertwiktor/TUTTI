@@ -8,6 +8,7 @@
         xmlns:vm="clr-namespace:TouchUI.ViewModels"
         xmlns:mwpf="http://schemas.modernwpf.com/2019"
         mwpf:WindowHelper.UseModernWindowStyle="True"
+        mwpf:ThemeManager.RequestedTheme="Light"
         mc:Ignorable="d"
         Title="DevelopersWindow"
         Height="250"

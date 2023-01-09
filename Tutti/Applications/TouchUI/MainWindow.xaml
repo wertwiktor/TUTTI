@@ -8,6 +8,7 @@
         xmlns:views="clr-namespace:TouchUI.Views"
         xmlns:mwpf="http://schemas.modernwpf.com/2019"
         mwpf:WindowHelper.UseModernWindowStyle="True"
+        mwpf:ThemeManager.RequestedTheme="Light"
         mc:Ignorable="d"
         Title="TUTTI - Touch UI" Height="450" Width="800">
     <Grid>
@@ -20,6 +21,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:ExitViewModel}">
                 <views:ExitView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:HistoryViewModel}">
+                <views:HistoryView />
             </DataTemplate>
         </Grid.Resources>
 

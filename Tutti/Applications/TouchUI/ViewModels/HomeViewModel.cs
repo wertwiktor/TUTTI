@@ -27,8 +27,7 @@ namespace TouchUI.ViewModels
         private DispatcherTimer _clockDisplayTimer = new DispatcherTimer();
 
         private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget> {
-            new NavigationTarget(typeof(RegisterViewModel), "Register", true),
-            new NavigationTarget(typeof(ExitViewModel), "Exit", true)};
+            new NavigationTarget(typeof(RegisterViewModel), "Register", true)};
 
 
         public HomeViewModel(IDataService dataService, 
