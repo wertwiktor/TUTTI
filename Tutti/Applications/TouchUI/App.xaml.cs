@@ -10,10 +10,8 @@ using System;
 using System.IO;
 using TouchUI.Views;
 using TouchUI.Services.Navigation;
-using System.Linq;
 using TouchUI.ViewModels;
-using System.Collections.Generic;
-using static System.Formats.Asn1.AsnWriter;
+using TouchUI.Services.Login;
 
 namespace TouchUI
 {
@@ -58,10 +56,13 @@ namespace TouchUI
             builder.RegisterType<IdentificationDeviceServiceBaltech>().As<IIdentificationDeviceService>().SingleInstance();
             //Frontend services
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
+            builder.RegisterType<LoginService>().As<ILoginService>().SingleInstance();
             //ViewModels
             builder.RegisterType<MainViewModel>().SingleInstance();
             builder.RegisterType<HomeViewModel>().InstancePerDependency();
             builder.RegisterType<RegisterViewModel>().InstancePerDependency();
+            builder.RegisterType<ExitViewModel>().InstancePerDependency();
+            builder.RegisterType<HistoryViewModel>().InstancePerDependency();
 
             var diContainer = builder.Build();
             InitializeDevelopersWindow(diContainer);

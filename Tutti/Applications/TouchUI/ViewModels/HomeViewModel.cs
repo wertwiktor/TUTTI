@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Threading;
 using TouchUI.Models.Enums;
+using TouchUI.Services.Login;
 using TouchUI.Services.Navigation;
 using TouchUI.Tools.Navigation;
 
@@ -18,6 +19,7 @@ namespace TouchUI.ViewModels
         private readonly ILogger _logger = Log.Logger.ForContext<HomeViewModel>();
         private readonly IDataService _dataService;
         private readonly IIdentificationDeviceService _idDeviceService;
+        private readonly ILoginService _loginService;
 
         private DateTime _currentDateTime = DateTime.Now;
         private string _mainMessage;
@@ -25,16 +27,20 @@ namespace TouchUI.ViewModels
         private DispatcherTimer _clockDisplayTimer = new DispatcherTimer();
 
         private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget> {
-            new NavigationTarget(typeof(RegisterViewModel), "Register", true),
-            new NavigationTarget(typeof(RegisterViewModel), "Register", false)};
+            new NavigationTarget(typeof(RegisterViewModel), "Register", true)};
 
 
-        public HomeViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService, INavigationService navigationService)
+        public HomeViewModel(IDataService dataService, 
+            IIdentificationDeviceService idDeviceService, 
+            INavigationService navigationService,
+            ILoginService loginService)
             : base(navigationService)
         {
             _logger.Debug("Creating main view model.");
             _dataService = dataService;
             _idDeviceService = idDeviceService;
+            _loginService = loginService;
+            _loginService.Logout();
             InitializeSubscribtions();
             InitializeClockDisplayTimer();
             InitializeMainMessageTimer();
@@ -121,7 +127,6 @@ namespace TouchUI.ViewModels
         private void OnClockDisplayTimerElapsed(object? sender, EventArgs e)
         {
             CurrentDateTime = DateTime.Now;
-            NavigatableViewModels.FirstOrDefault().IsEnabled = !NavigatableViewModels.FirstOrDefault().IsEnabled;
         }
 
         private void OnMainMessageTimerElapsed(object? sender, EventArgs e)
@@ -155,7 +160,7 @@ namespace TouchUI.ViewModels
             User user;
             if (!TryGetUserFromDatabaseByIdentifier(identifier, out user))
             {
-                _logger.Information("Attempted user identifiation for unknown user with identifier {identifier}. This use case is not implemented yet.", identifier);
+                _logger.Information("Attempted user identifiation for unknown user with identifier {identifier}.", identifier);
                 return;
             }
 
@@ -166,7 +171,8 @@ namespace TouchUI.ViewModels
             }
             else
             {
-                ProcessUserExit(user);
+                _loginService.Login(user);
+                NavigationService.Navigate<ExitViewModel>();
             }
         }
 
@@ -175,13 +181,6 @@ namespace TouchUI.ViewModels
             var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Entry, UserId = user.Id };
             _dataService.AddTimeStamp(timeStamp);
             MainMessage = $"Hello, {user.Name}";
-        }
-
-        private void ProcessUserExit(User user)
-        {
-            var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Exit, UserId = user.Id };
-            _dataService.AddTimeStamp(timeStamp);
-            MainMessage = $"Goodbye, {user.Name}";
         }
 
         private bool TryGetUserFromDatabaseByIdentifier(string identifier, out User user)

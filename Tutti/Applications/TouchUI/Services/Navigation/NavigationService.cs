@@ -14,10 +14,15 @@ namespace TouchUI.Services.Navigation
 
         private Dictionary<Type, Func<NavigationViewModelBase>> _viewModels = new Dictionary<Type, Func<NavigationViewModelBase>>();
 
-        public NavigationService(Func<HomeViewModel> homeViewModelConstructor, Func<RegisterViewModel> registerViewModelConstructor)
+        public NavigationService(Func<HomeViewModel> homeViewModelConstructor, 
+            Func<RegisterViewModel> registerViewModelConstructor, 
+            Func<ExitViewModel> exitViewModelConstructor,
+            Func<HistoryViewModel> historyViewModelConstructor)
         {
             _viewModels[typeof(HomeViewModel)] = homeViewModelConstructor;
             _viewModels[typeof(RegisterViewModel)] = registerViewModelConstructor;
+            _viewModels[typeof(ExitViewModel)] = exitViewModelConstructor;
+            _viewModels[typeof(HistoryViewModel)] = historyViewModelConstructor;
         }
 
         public event Action<NavigationViewModelBase> NavigationChanged;
@@ -39,7 +44,7 @@ namespace TouchUI.Services.Navigation
             }
             else
             {
-                _logger.Error("Attempted to navigate to an unknown ViewModel {vmType}.", viewModelType.FullName);
+                _logger.Error("Attempted to navigate to an unknown ViewModel {vmType}. Make sure that this ViewModel is registered in the dependency injection container and is known to NavigationService.", viewModelType.FullName);
             }
         }
 
@@ -53,7 +58,7 @@ namespace TouchUI.Services.Navigation
             }
             else
             {
-                _logger.Error("Attempted to navigate to an unknown ViewModel {vmType}.", typeof(TViewModel).FullName);
+                _logger.Error("Attempted to navigate to an unknown ViewModel {vmType}.  Make sure that this ViewModel is registered in the dependency injection container and is known to NavigationService.", typeof(TViewModel).FullName);
             }
         }
     }

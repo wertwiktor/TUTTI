@@ -9,13 +9,13 @@ namespace TouchUI.ViewModels
 {
     public abstract class NavigationViewModelBase : ViewModelBase
     {
-        protected readonly INavigationService _navigationService;
+        protected readonly INavigationService NavigationService;
         private ICommand _navigationCommand;
 
         public NavigationViewModelBase(INavigationService navigationService)
         {
-            _navigationService = navigationService;
-            _navigationCommand = new NavigationCommand(_navigationService);
+            NavigationService = navigationService;
+            _navigationCommand = new NavigationCommand(NavigationService);
         }
 
         public abstract ObservableCollection<NavigationTarget> NavigatableViewModels { get; set; }
