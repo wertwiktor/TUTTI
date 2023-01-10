@@ -29,6 +29,7 @@ namespace TouchUI.ViewModels
             new NavigationTarget(typeof(HomeViewModel), "Home", true),
             new NavigationTarget(typeof(HistoryViewModel), "History", true) };
         private ICommand _confirmExitCommand;
+        private ICommand _resumeWorkCommand;
 
         public ExitViewModel(IDataService dataService,
             IIdentificationDeviceService idDeviceService,
@@ -46,6 +47,7 @@ namespace TouchUI.ViewModels
         private void InitializeCommands()
         {
             _confirmExitCommand = new RelayCommand(ConfirmExit);
+            _resumeWorkCommand = new RelayCommand(ResumeWork);
         }
 
         private void ConfirmExit()
@@ -60,6 +62,12 @@ namespace TouchUI.ViewModels
             {
                 _logger.Error("Current user was null while arrempting to register user exit. This exit has not been saved in the database.");
             }
+            _loginService.Logout();
+            NavigationService.Navigate<HomeViewModel>();
+        }
+
+        private void ResumeWork()
+        {
             _loginService.Logout();
             NavigationService.Navigate<HomeViewModel>();
         }
@@ -86,6 +94,19 @@ namespace TouchUI.ViewModels
             set
             {
                 _confirmExitCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand ResumeWorkCommand
+        {
+            get
+            {
+                return _resumeWorkCommand;
+            }
+            set
+            {
+                _resumeWorkCommand = value;
                 OnPropertyChanged();
             }
         }

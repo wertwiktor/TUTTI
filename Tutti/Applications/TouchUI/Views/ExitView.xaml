@@ -15,7 +15,6 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -30,8 +29,8 @@
                                     NavigationCommand="{Binding NavigationCommand}" />
         <Button Grid.Column="1"
                 Grid.Row="1"
-                Grid.ColumnSpan="2"
                 Grid.RowSpan="2"
+                HorizontalAlignment="Center"
                 FontWeight="Bold"
                 Command="{Binding ConfirmExitCommand}"
                 Background="Transparent">
@@ -54,6 +53,31 @@
 
             </Button.Content>
         </Button>
+        <Button Grid.Column="2"
+                Grid.Row="1"
+                Grid.RowSpan="2"
+                HorizontalAlignment="Center"
+                FontWeight="Bold"
+                Command="{Binding ResumeWorkCommand}"
+                Background="Transparent">
+            <Button.Content>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Path Grid.Row="0"
+                          Data="{Binding Source={StaticResource Briefcase}, Path=Data}"
+                          Stretch="Uniform"
+                          Fill="Black"
+                          HorizontalAlignment="Center" />
+                    <Label Grid.Row="1"
+                           Content="Resume work"
+                           FontSize="{StaticResource DescriptionFontSize}"
+                           HorizontalAlignment="Center" />
+                </Grid>
 
+            </Button.Content>
+        </Button>
     </Grid>
 </UserControl>
