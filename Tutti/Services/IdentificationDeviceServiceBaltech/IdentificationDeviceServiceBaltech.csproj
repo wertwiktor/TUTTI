@@ -7,11 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="brp_lib.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Serilog" Version="2.12.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\IdentificationDeviceService\IdentificationDeviceService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="lib\" />
   </ItemGroup>
 
 </Project>
