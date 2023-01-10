@@ -13,8 +13,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -23,23 +21,39 @@
                                     Grid.Row="0"
                                     NavigatableViewModels="{Binding NavigatableViewModels}"
                                     NavigationCommand="{Binding NavigationCommand}" />
-        <DataGrid Grid.Column="2"
+        <DataGrid Grid.Column="1"
                   Grid.Row="0"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
                   ItemsSource="{Binding TimeStampsHistory}">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader" BasedOn="{mwpf:StaticResource ResourceKey=DefaultDataGridColumnHeaderStyle}">
+                    <Setter Property="FontWeight"
+                            Value="Bold" />
+                    <Setter Property="FontSize"
+                            Value="{StaticResource TableContentFontSize}"/>
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Date" Width="*">
+                <DataGridTemplateColumn Header="Date"
+                                        Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding DateTime}" HorizontalAlignment="Center"/>
+                            <Label Content="{Binding DateTime}"
+                                   FontSize="{StaticResource TableContentFontSize}"
+                                   HorizontalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Direction" Width="Auto">
+                <DataGridTemplateColumn Header="Direction"
+                                        Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding Direction}" HorizontalAlignment="Center"/>
+                            <Label Content="{Binding Direction}"
+                                   FontSize="{StaticResource TableContentFontSize}"
+                                   HorizontalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
