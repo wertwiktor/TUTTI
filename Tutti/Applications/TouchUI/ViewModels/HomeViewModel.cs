@@ -6,7 +6,9 @@ using Services.IdentificationDeviceService.DataContracts;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using System.Windows.Threading;
+using TouchUI.Commands;
 using TouchUI.Models.Enums;
 using TouchUI.Services.Login;
 using TouchUI.Services.Navigation;
@@ -19,50 +21,32 @@ namespace TouchUI.ViewModels
         private readonly ILogger _logger = Log.Logger.ForContext<HomeViewModel>();
         private readonly IDataService _dataService;
         private readonly IIdentificationDeviceService _idDeviceService;
-        private readonly ILoginService _loginService;
 
-        private DateTime _currentDateTime = DateTime.Now;
+        private ICommand _confirmExitCommand;
+        private ICommand _resumeWorkCommand;
         private string _mainMessage;
         private DispatcherTimer _mainMessageTimer = new DispatcherTimer();
-        private DispatcherTimer _clockDisplayTimer = new DispatcherTimer();
 
-        private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget> {
-            new NavigationTarget(typeof(RegisterViewModel), "Register", true)};
+        
 
-
-        public HomeViewModel(IDataService dataService, 
-            IIdentificationDeviceService idDeviceService, 
+        public HomeViewModel(IDataService dataService,
+            IIdentificationDeviceService idDeviceService,
             INavigationService navigationService,
             ILoginService loginService)
-            : base(navigationService)
+            : base(navigationService, loginService)
         {
             _logger.Debug("Creating main view model.");
             _dataService = dataService;
             _idDeviceService = idDeviceService;
-            _loginService = loginService;
-            _loginService.Logout();
             InitializeSubscribtions();
-            InitializeClockDisplayTimer();
             InitializeMainMessageTimer();
+            InitializeCommands();
         }
 
         public override void Uninitialize()
         {
             UninitializeSubscribtions();
-            UninitializeTimers();
-        }
-
-        public DateTime CurrentDateTime
-        {
-            get
-            {
-                return _currentDateTime;
-            }
-            set
-            {
-                _currentDateTime = value;
-                OnPropertyChanged();
-            }
+            base.Uninitialize();
         }
 
         public string MainMessage
@@ -82,17 +66,36 @@ namespace TouchUI.ViewModels
             }
         }
 
-        public override ObservableCollection<NavigationTarget> NavigatableViewModels
+        public ICommand ConfirmExitCommand
         {
             get
             {
-                return _navigatableViewModels;
+                return _confirmExitCommand;
             }
             set
             {
-                _navigatableViewModels = value;
+                _confirmExitCommand = value;
                 OnPropertyChanged();
             }
+        }
+
+        public ICommand ResumeWorkCommand
+        {
+            get
+            {
+                return _resumeWorkCommand;
+            }
+            set
+            {
+                _resumeWorkCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private void InitializeCommands()
+        {
+            _confirmExitCommand = new RelayCommand(ConfirmExit);
+            _resumeWorkCommand = new RelayCommand(ResumeWork);
         }
 
         private void InitializeSubscribtions()
@@ -105,28 +108,12 @@ namespace TouchUI.ViewModels
             _idDeviceService.IdentificationOccured -= OnIdServiceIdentificationOccured;
         }
 
-        private void InitializeClockDisplayTimer()
-        {
-            _clockDisplayTimer.Interval = TimeSpan.FromSeconds(1);
-            _clockDisplayTimer.Tick += OnClockDisplayTimerElapsed;
-            _clockDisplayTimer.Start();
-        }
+
 
         private void InitializeMainMessageTimer()
         {
             _mainMessageTimer.Interval = TimeSpan.FromSeconds(1);
             _mainMessageTimer.Tick += OnMainMessageTimerElapsed;
-        }
-
-        private void UninitializeTimers()
-        {
-            _mainMessageTimer.Stop();
-            _clockDisplayTimer.Stop();
-        }
-
-        private void OnClockDisplayTimerElapsed(object? sender, EventArgs e)
-        {
-            CurrentDateTime = DateTime.Now;
         }
 
         private void OnMainMessageTimerElapsed(object? sender, EventArgs e)
@@ -164,6 +151,12 @@ namespace TouchUI.ViewModels
                 return;
             }
 
+            if (CurrentUser != null)
+            {
+                _logger.Information("Received user identifiation when current logged in user was not null.");
+                return;
+            }
+
             var lastTimeStamp = _dataService.GetLastTimeStampByUserId(user.Id);
             if (lastTimeStamp == null || lastTimeStamp.Direction == (int)TimeStampDirection.Exit)
             {
@@ -171,8 +164,7 @@ namespace TouchUI.ViewModels
             }
             else
             {
-                _loginService.Login(user);
-                NavigationService.Navigate<ExitViewModel>();
+                LoginService.Login(user);
             }
         }
 
@@ -181,6 +173,26 @@ namespace TouchUI.ViewModels
             var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Entry, UserId = user.Id };
             _dataService.AddTimeStamp(timeStamp);
             MainMessage = $"Hello, {user.Name}";
+        }
+
+        private void ConfirmExit()
+        {
+            if (CurrentUser != null)
+            {
+                var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Exit, UserId = CurrentUser.Id };
+                _dataService.AddTimeStamp(timeStamp);
+
+            }
+            else
+            {
+                _logger.Error("Current user was null while arrempting to register user exit. This exit has not been saved in the database.");
+            }
+            LoginService.Logout();
+        }
+
+        private void ResumeWork()
+        {
+            LoginService.Logout();
         }
 
         private bool TryGetUserFromDatabaseByIdentifier(string identifier, out User user)
