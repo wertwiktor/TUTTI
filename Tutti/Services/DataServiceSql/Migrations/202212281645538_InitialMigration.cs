@@ -1,4 +1,4 @@
-﻿namespace Services.DataService.Migrations
+﻿namespace Services.DataServiceSql.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
