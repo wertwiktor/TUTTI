@@ -18,16 +18,18 @@ using System.Windows.Shapes;
 using TouchUI.Services.Navigation;
 using TouchUI.Commands;
 using TouchUI.Tools.Navigation;
+using DataService.Models;
 
 namespace TouchUI.UserControls
 {
     /// <summary>
     /// Interaction logic for NavigationBar.xaml
     /// </summary>
-    public partial class NavigationBar : UserControl, INotifyPropertyChanged
+    public partial class NavigationBar : UserControl
     {
         private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget>();
         private ICommand _navigationCommand;
+        private User _user;
         public NavigationBar()
         {
             InitializeComponent();
@@ -37,6 +39,8 @@ namespace TouchUI.UserControls
             "NavigatableViewModels", typeof(ObservableCollection<NavigationTarget>), typeof(NavigationBar));
         public static readonly DependencyProperty NavigationCommandProperty = DependencyProperty.Register(
             "NavigationCommand", typeof(ICommand), typeof(NavigationBar));
+        public static readonly DependencyProperty UserProperty = DependencyProperty.Register(
+            "User", typeof(User), typeof(NavigationBar));
 
         public ObservableCollection<NavigationTarget> NavigatableViewModels
         {
@@ -54,21 +58,24 @@ namespace TouchUI.UserControls
         {
             get
             {
-                return _navigationCommand;
+                return (ICommand)GetValue(NavigationCommandProperty);
             }
             set
             {
-                _navigationCommand = value;
-                OnPropertyChanged();
+                SetValue(NavigationCommandProperty, value);
             }
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        public User User
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            get
+            {
+                return (User)GetValue(UserProperty);
+            }
+            set
+            {
+                SetValue(UserProperty, value);
+            }
         }
     }
 }

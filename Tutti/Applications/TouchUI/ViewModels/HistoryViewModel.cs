@@ -5,6 +5,7 @@ using Services.IdentificationDeviceService;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,11 +21,6 @@ namespace TouchUI.ViewModels
         private readonly ILogger _logger = Log.Logger.ForContext<HomeViewModel>();
         private readonly IDataService _dataService;
         private readonly INavigationService _navigationService;
-
-        private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget>{
-            new NavigationTarget(typeof(HomeViewModel), "Home", true),
-            new NavigationTarget(typeof(RegisterViewModel), "Register", true),
-            new NavigationTarget(typeof(HistoryViewModel), "History", true)};
         private ObservableCollection<TimeStamp> _timeStampsHistory = new ObservableCollection<TimeStamp>();
 
         public HistoryViewModel(IDataService dataService,
@@ -61,19 +57,6 @@ namespace TouchUI.ViewModels
             set
             {
                 _timeStampsHistory = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public override ObservableCollection<NavigationTarget> NavigatableViewModels
-        {
-            get
-            {
-                return _navigatableViewModels;
-            }
-            set
-            {
-                _navigatableViewModels = value;
                 OnPropertyChanged();
             }
         }

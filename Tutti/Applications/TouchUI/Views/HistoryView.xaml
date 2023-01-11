@@ -15,23 +15,29 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <userControls:NavigationBar Grid.Column="0"
                                     Grid.Row="0"
+                                    Grid.RowSpan="2"
                                     NavigatableViewModels="{Binding NavigatableViewModels}"
-                                    NavigationCommand="{Binding NavigationCommand}" />
+                                    NavigationCommand="{Binding NavigationCommand}"
+                                    User="{Binding CurrentUser}" />
+        <userControls:Clock DateTime="{Binding CurrentDateTime}"
+                            Grid.ColumnSpan="2" />
         <DataGrid Grid.Column="1"
-                  Grid.Row="0"
+                  Grid.Row="1"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
                   ItemsSource="{Binding TimeStampsHistory}">
             <DataGrid.ColumnHeaderStyle>
-                <Style TargetType="DataGridColumnHeader" BasedOn="{mwpf:StaticResource ResourceKey=DefaultDataGridColumnHeaderStyle}">
+                <Style TargetType="DataGridColumnHeader"
+                       BasedOn="{mwpf:StaticResource ResourceKey=DefaultDataGridColumnHeaderStyle}">
                     <Setter Property="FontWeight"
                             Value="Bold" />
                     <Setter Property="FontSize"
-                            Value="{StaticResource TableContentFontSize}"/>
+                            Value="{StaticResource TableContentFontSize}" />
                     <Setter Property="HorizontalContentAlignment"
                             Value="Center" />
                 </Style>

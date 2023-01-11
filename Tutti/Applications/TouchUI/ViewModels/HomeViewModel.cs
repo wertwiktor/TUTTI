@@ -24,16 +24,10 @@ namespace TouchUI.ViewModels
 
         private ICommand _confirmExitCommand;
         private ICommand _resumeWorkCommand;
-        private DateTime _currentDateTime = DateTime.Now;
         private string _mainMessage;
         private DispatcherTimer _mainMessageTimer = new DispatcherTimer();
-        private DispatcherTimer _clockDisplayTimer = new DispatcherTimer();
 
-        private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget> {
-            new NavigationTarget(typeof(HomeViewModel), "Home", true),
-            new NavigationTarget(typeof(RegisterViewModel), "Register", true),
-            new NavigationTarget(typeof(HistoryViewModel), "History", true)};
-
+        
 
         public HomeViewModel(IDataService dataService,
             IIdentificationDeviceService idDeviceService,
@@ -45,7 +39,6 @@ namespace TouchUI.ViewModels
             _dataService = dataService;
             _idDeviceService = idDeviceService;
             InitializeSubscribtions();
-            InitializeClockDisplayTimer();
             InitializeMainMessageTimer();
             InitializeCommands();
         }
@@ -53,21 +46,7 @@ namespace TouchUI.ViewModels
         public override void Uninitialize()
         {
             UninitializeSubscribtions();
-            UninitializeTimers();
             base.Uninitialize();
-        }
-
-        public DateTime CurrentDateTime
-        {
-            get
-            {
-                return _currentDateTime;
-            }
-            set
-            {
-                _currentDateTime = value;
-                OnPropertyChanged();
-            }
         }
 
         public string MainMessage
@@ -113,19 +92,6 @@ namespace TouchUI.ViewModels
             }
         }
 
-        public override ObservableCollection<NavigationTarget> NavigatableViewModels
-        {
-            get
-            {
-                return _navigatableViewModels;
-            }
-            set
-            {
-                _navigatableViewModels = value;
-                OnPropertyChanged();
-            }
-        }
-
         private void InitializeCommands()
         {
             _confirmExitCommand = new RelayCommand(ConfirmExit);
@@ -142,28 +108,12 @@ namespace TouchUI.ViewModels
             _idDeviceService.IdentificationOccured -= OnIdServiceIdentificationOccured;
         }
 
-        private void InitializeClockDisplayTimer()
-        {
-            _clockDisplayTimer.Interval = TimeSpan.FromSeconds(1);
-            _clockDisplayTimer.Tick += OnClockDisplayTimerElapsed;
-            _clockDisplayTimer.Start();
-        }
+
 
         private void InitializeMainMessageTimer()
         {
             _mainMessageTimer.Interval = TimeSpan.FromSeconds(1);
             _mainMessageTimer.Tick += OnMainMessageTimerElapsed;
-        }
-
-        private void UninitializeTimers()
-        {
-            _mainMessageTimer.Stop();
-            _clockDisplayTimer.Stop();
-        }
-
-        private void OnClockDisplayTimerElapsed(object? sender, EventArgs e)
-        {
-            CurrentDateTime = DateTime.Now;
         }
 
         private void OnMainMessageTimerElapsed(object? sender, EventArgs e)

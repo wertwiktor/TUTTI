@@ -15,10 +15,19 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
         <userControls:NavigationBar Grid.Column="0"
+                                    Grid.RowSpan="2"
                                     NavigatableViewModels="{Binding NavigatableViewModels}"
-                                    NavigationCommand="{Binding NavigationCommand}" />
+                                    NavigationCommand="{Binding NavigationCommand}"
+                                    User="{Binding CurrentUser}" />
+        <userControls:Clock DateTime="{Binding CurrentDateTime}"
+                            Grid.ColumnSpan="4" />
         <Label Grid.Column="0"
+               Grid.Row="0"
                Grid.ColumnSpan="4"
                Content="Register new user"
                HorizontalAlignment="Center"

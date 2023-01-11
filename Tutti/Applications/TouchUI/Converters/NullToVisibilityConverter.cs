@@ -12,16 +12,31 @@ namespace TouchUI.Converters
     public class NullToVisibilityConverter : IValueConverter
     {
         public bool UseCollapsed { get; set; }
+        public bool Invert { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if(UseCollapsed)
             {
-                return value == null ? Visibility.Collapsed : Visibility.Visible;
+                if(Invert)
+                {
+                    return value == null ? Visibility.Visible : Visibility.Collapsed;
+                }
+                else
+                {
+                    return value == null ? Visibility.Collapsed : Visibility.Visible;
+                }           
             }
             else
             {
-                return value == null ? Visibility.Hidden : Visibility.Visible;
+                if (Invert)
+                {
+                    return value == null ? Visibility.Visible : Visibility.Hidden;
+                }
+                else
+                {
+                    return value == null ? Visibility.Hidden : Visibility.Visible;
+                }
             }
         }
 
