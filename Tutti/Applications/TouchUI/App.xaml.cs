@@ -61,7 +61,6 @@ namespace TouchUI
             builder.RegisterType<MainViewModel>().SingleInstance();
             builder.RegisterType<HomeViewModel>().InstancePerDependency();
             builder.RegisterType<RegisterViewModel>().InstancePerDependency();
-            builder.RegisterType<ExitViewModel>().InstancePerDependency();
             builder.RegisterType<HistoryViewModel>().InstancePerDependency();
 
             var diContainer = builder.Build();

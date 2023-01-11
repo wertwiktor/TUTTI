@@ -16,12 +16,10 @@ namespace TouchUI.Services.Navigation
 
         public NavigationService(Func<HomeViewModel> homeViewModelConstructor, 
             Func<RegisterViewModel> registerViewModelConstructor, 
-            Func<ExitViewModel> exitViewModelConstructor,
             Func<HistoryViewModel> historyViewModelConstructor)
         {
             _viewModels[typeof(HomeViewModel)] = homeViewModelConstructor;
             _viewModels[typeof(RegisterViewModel)] = registerViewModelConstructor;
-            _viewModels[typeof(ExitViewModel)] = exitViewModelConstructor;
             _viewModels[typeof(HistoryViewModel)] = historyViewModelConstructor;
         }
 

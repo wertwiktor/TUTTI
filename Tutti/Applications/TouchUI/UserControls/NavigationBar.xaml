@@ -28,6 +28,8 @@
                     <Button Content="{Binding Name}"
                             FontSize="{StaticResource DescriptionFontSize}"
                             IsEnabled="{Binding IsEnabled}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
                             Command="{Binding NavigationCommand, RelativeSource = {RelativeSource AncestorType=UserControl}}"
                             CommandParameter="{Binding Type}"
                             Background="Transparent"

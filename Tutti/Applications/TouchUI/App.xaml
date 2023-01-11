@@ -9,7 +9,7 @@
                 <ResourceDictionary Source="Resources/Icons.xaml" />
                 <ResourceDictionary Source="Resources/FontSizes.xaml" />
                 <ui:ThemeResources />
-                <ui:XamlControlsResources/>
+                <ui:XamlControlsResources />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
