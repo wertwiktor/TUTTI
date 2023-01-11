@@ -4,15 +4,11 @@ using Services.DataService;
 using Services.IdentificationDeviceService;
 using Services.IdentificationDeviceService.DataContracts;
 using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TouchUI.Commands;
-using TouchUI.Models.Enums;
 using TouchUI.Services.Login;
 using TouchUI.Services.Navigation;
-using TouchUI.Tools.Navigation;
 
 namespace TouchUI.ViewModels
 {
@@ -158,7 +154,7 @@ namespace TouchUI.ViewModels
             }
 
             var lastTimeStamp = _dataService.GetLastTimeStampByUserId(user.Id);
-            if (lastTimeStamp == null || lastTimeStamp.Direction == (int)TimeStampDirection.Exit)
+            if (lastTimeStamp == null || lastTimeStamp.Direction == TimeStampDirection.Exit)
             {
                 ProcessUserEntry(user);
             }
@@ -170,7 +166,7 @@ namespace TouchUI.ViewModels
 
         private void ProcessUserEntry(User user)
         {
-            var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Entry, UserId = user.Id };
+            var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = TimeStampDirection.Entry, UserId = user.Id };
             _dataService.AddTimeStamp(timeStamp);
             MainMessage = $"Hello, {user.Name}";
         }
@@ -179,7 +175,7 @@ namespace TouchUI.ViewModels
         {
             if (CurrentUser != null)
             {
-                var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = (int)TimeStampDirection.Exit, UserId = CurrentUser.Id };
+                var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = TimeStampDirection.Exit, UserId = CurrentUser.Id };
                 _dataService.AddTimeStamp(timeStamp);
 
             }

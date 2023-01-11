@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TouchUI.Commands;
-using TouchUI.Models.Enums;
 
 namespace TouchUI.ViewModels
 {
