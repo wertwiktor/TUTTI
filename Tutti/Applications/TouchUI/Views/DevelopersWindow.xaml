@@ -6,9 +6,13 @@
         xmlns:local="clr-namespace:TouchUI.Views"
         xmlns:touchUI="clr-namespace:TouchUI"
         xmlns:vm="clr-namespace:TouchUI.ViewModels"
+        xmlns:mwpf="http://schemas.modernwpf.com/2019"
+        mwpf:WindowHelper.UseModernWindowStyle="True"
+        mwpf:ThemeManager.RequestedTheme="Light"
         mc:Ignorable="d"
-        DataContext="{touchUI:DISource Type=vm:DevelopersWindowViewModel}"
-        Title="DevelopersWindow" Height="250" Width="500">
+        Title="DevelopersWindow"
+        Height="250"
+        Width="500">
     <Grid>
         <StackPanel Grid.Column="0"
                     VerticalAlignment="Center"

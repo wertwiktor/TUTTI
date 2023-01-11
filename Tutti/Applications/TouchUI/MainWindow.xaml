@@ -1,0 +1,29 @@
+﻿<Window x:Class="TouchUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TouchUI"
+        xmlns:viewmodels="clr-namespace:TouchUI.ViewModels"
+        xmlns:views="clr-namespace:TouchUI.Views"
+        xmlns:mwpf="http://schemas.modernwpf.com/2019"
+        mwpf:WindowHelper.UseModernWindowStyle="True"
+        mwpf:ThemeManager.RequestedTheme="Light"
+        mc:Ignorable="d"
+        Title="TUTTI - Touch UI" Height="450" Width="800">
+    <Grid>
+        <Grid.Resources>
+            <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+                <views:HomeView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:RegisterViewModel}">
+                <views:RegisterView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:HistoryViewModel}">
+                <views:HistoryView />
+            </DataTemplate>
+        </Grid.Resources>
+
+        <ContentControl Content="{Binding CurrentViewModel}" />
+    </Grid>
+</Window>

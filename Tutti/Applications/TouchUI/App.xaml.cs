@@ -9,8 +9,9 @@ using Serilog;
 using System;
 using System.IO;
 using TouchUI.Views;
-using TouchUI.Dialogs;
-using TouchUI.Dialogs.UserExit;
+using TouchUI.Services.Navigation;
+using TouchUI.ViewModels;
+using TouchUI.Services.Login;
 
 namespace TouchUI
 {
@@ -20,21 +21,14 @@ namespace TouchUI
     public partial class App : Application
     {
         private ILogger _logger;
+         
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             InitializeLogger();
-
-            var builder = new ContainerBuilder();
-            builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
-            builder.RegisterType<DataServiceSql>().As<IDataService>().SingleInstance();
-            builder.RegisterType<IdentificationDeviceServiceBaltech>().As<IIdentificationDeviceService>().SingleInstance();
-            builder.RegisterType<UserExitDialogController>().As<IUserExitDialogController>().SingleInstance();
-
-            IContainer container = builder.Build();
-            DISource.Resolver = container.Resolve;
-            InitializeDevelopersWindow();
+            InitializeDependencyInjectionContainer();
+            RegisterViewModelsInNavigationService();
         }
 
         private void InitializeLogger()
@@ -53,10 +47,52 @@ namespace TouchUI
             return path;
         }
 
-        private void InitializeDevelopersWindow()
+        private void InitializeDependencyInjectionContainer()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
+            //Backend services
+            builder.RegisterType<DataServiceSql>().As<IDataService>().SingleInstance();
+            builder.RegisterType<IdentificationDeviceServiceBaltech>().As<IIdentificationDeviceService>().SingleInstance();
+            //Frontend services
+            builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
+            builder.RegisterType<LoginService>().As<ILoginService>().SingleInstance();
+            //ViewModels
+            builder.RegisterType<MainViewModel>().SingleInstance();
+            builder.RegisterType<HomeViewModel>().InstancePerDependency();
+            builder.RegisterType<RegisterViewModel>().InstancePerDependency();
+            builder.RegisterType<HistoryViewModel>().InstancePerDependency();
+
+            var diContainer = builder.Build();
+            InitializeDevelopersWindow(diContainer);
+            InitializeMainWindow(diContainer);
+        }
+
+        private void RegisterViewModelsInNavigationService()
+        {
+            return;
+        }
+
+        private void InitializeDevelopersWindow(ILifetimeScope scope)
         {
             var devWindow = new DevelopersWindow();
+            using( var localScope = scope.BeginLifetimeScope())
+            {
+                devWindow.DataContext = localScope.Resolve<DevelopersWindowViewModel>();
+            }
             devWindow.Show();
+        }
+
+        private void InitializeMainWindow(ILifetimeScope scope)
+        {
+            var mainWindow = new MainWindow();
+            using (var localScope = scope.BeginLifetimeScope())
+            {
+                mainWindow.DataContext = localScope.Resolve<MainViewModel>();
+                var navigationService = localScope.Resolve<INavigationService>();
+                navigationService.Navigate<HomeViewModel>();
+            }
+            mainWindow.Show();
         }
     }
 }
