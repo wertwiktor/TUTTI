@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TouchUI.Models.Enums
+namespace DataService.Models
 {
-    public enum IdentificationMode
+    public enum UserLevel
     {
-        None,
-        Entry,
-        Exit,
-        Info
+        User,
+        Admin
     }
 }

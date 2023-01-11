@@ -9,7 +9,7 @@ namespace DataService.Models
     {
         public long Id { get; set; }
         public DateTime DateTime { get; set; }
-        public int Direction { get; set; }
+        public TimeStampDirection Direction { get; set; }
         public long UserId { get; set; }
         public User User { get; set; }
     }

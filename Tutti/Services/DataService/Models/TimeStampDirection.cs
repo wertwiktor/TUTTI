@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TouchUI.Models.Enums
+namespace DataService.Models
 {
     public enum TimeStampDirection
     {
