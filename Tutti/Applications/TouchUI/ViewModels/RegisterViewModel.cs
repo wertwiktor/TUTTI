@@ -7,6 +7,7 @@ using Services.IdentificationDeviceService.DataContracts;
 using System;
 using System.Collections.ObjectModel;
 using System.Net.Mail;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -19,6 +20,8 @@ namespace TouchUI.ViewModels
 {
     public class RegisterViewModel : NavigationViewModelBase
     {
+        private const string UseCardReader = "Use card reader.";
+
         private readonly ILogger _logger = Log.Logger.ForContext<RegisterViewModel>();
         private readonly IDataService _dataService;
         private readonly IIdentificationDeviceService _identificationDeviceService;
@@ -33,7 +36,7 @@ namespace TouchUI.ViewModels
         private bool _isNationalityValid = true;
         private string _phoneNumber;
         private bool _isPhoneNumberValid = true;
-        private string _cardIdentifier;
+        private string _cardIdentifier = UseCardReader;
         private bool _isCardIdentifierValid = true;
         private DateTime _dateOfBirth = DateTime.Now.Date;
         private bool _isDateOfBirthValid = true;
@@ -155,7 +158,7 @@ namespace TouchUI.ViewModels
 
         private bool IsCardIdentifierInputValid()
         {
-            if(string.IsNullOrWhiteSpace(CardIdentifier) || _dataService.GetUserByIdentifier(CardIdentifier) != null)
+            if(string.IsNullOrWhiteSpace(CardIdentifier) || CardIdentifier == UseCardReader || _dataService.GetUserByIdentifier(CardIdentifier) != null)
             {
                 return false;
             }
