@@ -21,13 +21,15 @@ namespace TouchUI
     public partial class App : Application
     {
         private ILogger _logger;
-         
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             InitializeLogger();
-            InitializeDependencyInjectionContainer();
+            var container = InitializeDependencyInjectionContainer();
+            InitializeDevelopersWindow(container);
+            InitializeMainWindow(container);
             RegisterViewModelsInNavigationService();
         }
 
@@ -35,7 +37,7 @@ namespace TouchUI
         {
             Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File(CreateLoggingFilePath(),
                                                                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
-                                                                shared: true, 
+                                                                shared: true,
                                                                 rollingInterval: RollingInterval.Day).CreateLogger();
             _logger = Log.Logger.ForContext<App>();
             _logger.Information("Starting the application.");
@@ -47,7 +49,7 @@ namespace TouchUI
             return path;
         }
 
-        private void InitializeDependencyInjectionContainer()
+        private IContainer InitializeDependencyInjectionContainer()
         {
             var builder = new ContainerBuilder();
             builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
@@ -63,9 +65,7 @@ namespace TouchUI
             builder.RegisterType<RegisterViewModel>().InstancePerDependency();
             builder.RegisterType<HistoryViewModel>().InstancePerDependency();
 
-            var diContainer = builder.Build();
-            InitializeDevelopersWindow(diContainer);
-            InitializeMainWindow(diContainer);
+            return builder.Build();
         }
 
         private void RegisterViewModelsInNavigationService()
@@ -75,12 +75,14 @@ namespace TouchUI
 
         private void InitializeDevelopersWindow(ILifetimeScope scope)
         {
+#if DEBUG
             var devWindow = new DevelopersWindow();
-            using( var localScope = scope.BeginLifetimeScope())
+            using (var localScope = scope.BeginLifetimeScope())
             {
                 devWindow.DataContext = localScope.Resolve<DevelopersWindowViewModel>();
             }
             devWindow.Show();
+#endif
         }
 
         private void InitializeMainWindow(ILifetimeScope scope)

@@ -7,10 +7,13 @@
         xmlns:viewmodels="clr-namespace:TouchUI.ViewModels"
         xmlns:views="clr-namespace:TouchUI.Views"
         xmlns:mwpf="http://schemas.modernwpf.com/2019"
+        xmlns:userControls="clr-namespace:TouchUI.UserControls"
         mwpf:WindowHelper.UseModernWindowStyle="True"
         mwpf:ThemeManager.RequestedTheme="Light"
         mc:Ignorable="d"
-        Title="TUTTI - Touch UI" Height="450" Width="800">
+        Title="TUTTI - Touch UI"
+        Height="450"
+        Width="800">
     <Grid>
         <Grid.Resources>
             <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
@@ -23,7 +26,22 @@
                 <views:HistoryView />
             </DataTemplate>
         </Grid.Resources>
-
-        <ContentControl Content="{Binding CurrentViewModel}" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <userControls:NavigationBar Grid.RowSpan="2"
+                                    NavigatableViewModels="{Binding CurrentViewModel.NavigatableViewModels}"
+                                    NavigationCommand="{Binding CurrentViewModel.NavigationCommand}"
+                                    User="{Binding CurrentViewModel.CurrentUser}" />
+        <userControls:Clock Grid.Column="1"
+                            DateTime="{Binding CurrentViewModel.CurrentDateTime}" />
+        <ContentControl Grid.Column="1"
+                        Grid.Row="1"
+                        Content="{Binding CurrentViewModel}" />
     </Grid>
 </Window>

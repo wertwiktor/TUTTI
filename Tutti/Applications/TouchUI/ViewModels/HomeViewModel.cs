@@ -41,6 +41,7 @@ namespace TouchUI.ViewModels
 
         public override void Uninitialize()
         {
+            _mainMessageTimer.Stop();
             UninitializeSubscribtions();
             base.Uninitialize();
         }
