@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Net.Mail;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Windows.Threading;
 using TouchUI.Commands;
 using TouchUI.Services.Login;
 using TouchUI.Services.Navigation;
@@ -22,20 +23,22 @@ namespace TouchUI.ViewModels
         private readonly IDataService _dataService;
         private readonly IIdentificationDeviceService _identificationDeviceService;
 
-        private string _name = string.Empty;
+        private string _name;
         private bool _isNameValid = true;
-        private string _surname = string.Empty;
+        private string _surname;
         private bool _isSurnameValid = true;
-        private string _email = string.Empty;
+        private string _email;
         private bool _isEmailValid = true;
-        private string _nationality = string.Empty;
+        private string _nationality;
         private bool _isNationalityValid = true;
-        private string _phoneNumber = string.Empty;
+        private string _phoneNumber;
         private bool _isPhoneNumberValid = true;
-        private string _cardIdentifier = string.Empty;
+        private string _cardIdentifier;
         private bool _isCardIdentifierValid = true;
         private DateTime _dateOfBirth = DateTime.Now.Date;
         private bool _isDateOfBirthValid = true;
+        private string _message;
+        private DispatcherTimer _messageTimer = new DispatcherTimer();
         private ICommand _registerUserCommand;
 
         public RegisterViewModel(INavigationService navigationService, ILoginService loginService, IDataService dataService, IIdentificationDeviceService identificationDeviceService) : base(navigationService, loginService)
@@ -44,10 +47,12 @@ namespace TouchUI.ViewModels
             _identificationDeviceService = identificationDeviceService;
             InitializeCommands();
             InitializeSubscribtions();
+            InitializeMessageTimer();
         }
 
         public override void Uninitialize()
         {
+            _messageTimer.Stop();
             UninitializeSubscribtions();
             base.Uninitialize();
         }
@@ -55,6 +60,18 @@ namespace TouchUI.ViewModels
         private void InitializeCommands()
         {
             _registerUserCommand = new RelayCommand(RegisterUser);
+        }
+
+        private void InitializeMessageTimer()
+        {
+            _messageTimer.Interval = TimeSpan.FromSeconds(2);
+            _messageTimer.Tick += OnMessageTimerElapsed;
+        }
+
+        private void OnMessageTimerElapsed(object? sender, EventArgs e)
+        {
+            _messageTimer.Stop();
+            Message = string.Empty;
         }
 
         private void InitializeSubscribtions()
@@ -101,6 +118,12 @@ namespace TouchUI.ViewModels
                     Level = UserLevel.User
                 };
                 _dataService.AddUser(newUser);
+                Message = $"Added user {Name} {Surname} to the database.";
+                ResetUserInputs();
+            }
+            else
+            {
+                Message = "Please correct marked fields.";
             }
         }
 
@@ -145,6 +168,17 @@ namespace TouchUI.ViewModels
         private bool IsDateOfBirthInputValid()
         {
             return DateOfBirth.Date < DateTime.Now.Date;
+        }
+
+        private void ResetUserInputs()
+        {
+            Name = Surname = Email = PhoneNumber = Nationality = CardIdentifier = string.Empty;
+            DateOfBirth = DateTime.Now.Date;
+        }
+
+        private void StartMessageTimer()
+        {
+            _messageTimer.Start();
         }
 
         public string Name
@@ -320,6 +354,24 @@ namespace TouchUI.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public string Message
+        {
+            get
+            {
+                return _message;
+            }
+            set
+            {
+                _message = value;
+                OnPropertyChanged();
+                if (!string.IsNullOrEmpty(_message))
+                {
+                    StartMessageTimer();
+                }
+            }
+        }
+        
 
         public ICommand RegisterUserCommand
         {
