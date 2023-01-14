@@ -13,7 +13,15 @@
                     SelectedDate="{Binding SelectedDate}"
                     FontSize="{Binding FontSize}"
                     VerticalAlignment="Stretch"
-                    HorizontalAlignment="Stretch" />
+                    HorizontalAlignment="Stretch">
+            <DatePicker.Resources>
+                <Style TargetType="DatePickerTextBox"
+                       BasedOn="{mwpf:StaticResource ResourceKey=DefaultDatePickerTextBoxStyle}">
+                    <Setter Property="IsReadOnly"
+                            Value="True" />
+                </Style>
+            </DatePicker.Resources>
+        </DatePicker>
         <Button x:Name="DatePickerButton"
                 Click="OnDatePickerButtonClick"
                 VerticalAlignment="Stretch"
