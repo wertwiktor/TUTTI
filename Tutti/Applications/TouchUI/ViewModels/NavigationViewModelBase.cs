@@ -24,7 +24,7 @@ namespace TouchUI.ViewModels
         private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget> {
             new NavigationTarget(typeof(HomeViewModel), "Home", true),
             new NavigationTarget(typeof(RegisterViewModel), "Register", true),
-            new NavigationTarget(typeof(HistoryViewModel), "History", true)};
+            new NavigationTarget(typeof(HistoryViewModel), "History", false)};
 
 
         public NavigationViewModelBase(INavigationService navigationService, ILoginService loginService)
@@ -114,12 +114,6 @@ namespace TouchUI.ViewModels
         protected virtual void UpdateNavigationBar()
         {
             bool userLoggedIn = _currentUser != null;
-
-            var registerNavigationTarget = NavigatableViewModels.FirstOrDefault(x => x.Type == typeof(RegisterViewModel));
-            if(registerNavigationTarget!= null) 
-            {
-                registerNavigationTarget.IsEnabled = userLoggedIn;
-            }
 
             var historyNavigationTarget = NavigatableViewModels.FirstOrDefault(x => x.Type == typeof(HistoryViewModel));
             if (historyNavigationTarget != null)
