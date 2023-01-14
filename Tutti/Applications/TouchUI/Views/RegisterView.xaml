@@ -3,29 +3,186 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:userControls="clr-namespace:TouchUI.UserControls"
+             xmlns:converters="clr-namespace:TouchUI.Converters"
              xmlns:mwpf="http://schemas.modernwpf.com/2019"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" Invert="True"/>
+        <Style x:Key="GridLabelStyle"
+               TargetType="Label"
+               BasedOn="{mwpf:StaticResource ResourceKey=DefaultLabelStyle}">
+            <Setter Property="FontSize"
+                    Value="{StaticResource TableContentFontSize}" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Left" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+        </Style>
+        <Style x:Key="GridTextBoxStyle"
+               TargetType="TextBox"
+               BasedOn="{mwpf:StaticResource ResourceKey=DefaultTextBoxStyle}">
+            <Setter Property="Margin"
+                    Value="0,5,0,5" />
+            <Setter Property="FontSize"
+                    Value="{StaticResource TableContentFontSize}" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+        </Style>
+        <Style x:Key="ErrorIconStyle"
+               TargetType="Path">
+            <Setter Property="Margin"
+                    Value="0,10,25,10" />
+            <Setter Property="Fill"
+                    Value="Red" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Right" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+            <Setter Property="Stretch"
+                    Value="Uniform" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="0"
-               Grid.Row="0"
-               Grid.ColumnSpan="4"
-               Content="Register new user"
+        <Label Grid.Row="0"
+               Grid.Column="1"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
-               FontSize="30"
-               FontWeight="Bold" />
+               FontWeight="DemiBold"
+               Content="Register new user"
+               FontSize="{StaticResource DescriptionFontSize}" />
+        <Grid Grid.Row="1"
+              Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0"
+                   Grid.Column="0"
+                   Style="{StaticResource GridLabelStyle}"
+                   Content="Name" />
+            <TextBox x:Name="NameTextBox"
+                     Grid.Row="0"
+                     Grid.Column="1"
+                     Text="{Binding Name}"
+                     
+                     Style="{StaticResource GridTextBoxStyle}" />
+            <Path Grid.Row="0"
+                  Grid.Column="1"
+                  Data="{Binding Source={StaticResource CircleExclamation}, Path=Data}"
+                  Visibility="{Binding IsNameValid, Converter= {StaticResource InvertedBoolToVisibilityConverter}}"
+                  Style="{StaticResource ErrorIconStyle}" />
+            <Label Grid.Row="1"
+                   Grid.Column="0"
+                   Style="{StaticResource GridLabelStyle}"
+                   Content="Surname" />
+            <TextBox Grid.Row="1"
+                     Grid.Column="1"
+                     Text="{Binding Surname}"
+                     Style="{StaticResource GridTextBoxStyle}" />
+            <Path Grid.Row="1"
+                  Grid.Column="1"
+                  Data="{Binding Source={StaticResource CircleExclamation}, Path=Data}"
+                  Visibility="{Binding IsSurnameValid, Converter= {StaticResource InvertedBoolToVisibilityConverter}}"
+                  Style="{StaticResource ErrorIconStyle}" />
+            <Label Grid.Row="2"
+                   Grid.Column="0"
+                   Style="{StaticResource GridLabelStyle}"
+                   Content="Date of birth" />
+            <DatePicker Grid.Row="2"
+                        Grid.Column="1"
+                        SelectedDate="{Binding DateOfBirth}"
+                        Margin="0,5,0,5"
+                        FontSize="{StaticResource TableContentFontSize}"
+                        Focusable="False"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch">
+            </DatePicker>
+            <Path Grid.Row="2"
+                  Grid.Column="1"
+                  Data="{Binding Source={StaticResource CircleExclamation}, Path=Data}"
+                  Visibility="{Binding IsDateOfBirthValid, Converter= {StaticResource InvertedBoolToVisibilityConverter}}"
+                  Style="{StaticResource ErrorIconStyle}" />
+            <Label Grid.Row="3"
+                   Grid.Column="0"
+                   Style="{StaticResource GridLabelStyle}"
+                   Content="Nationality" />
+            <TextBox Grid.Row="3"
+                     Grid.Column="1"
+                     Text="{Binding Nationality}"
+                     Style="{StaticResource GridTextBoxStyle}" />
+            <Path Grid.Row="3"
+                  Grid.Column="1"
+                  Data="{Binding Source={StaticResource CircleExclamation}, Path=Data}"
+                  Visibility="{Binding IsNationalityValid, Converter= {StaticResource InvertedBoolToVisibilityConverter}}"
+                  Style="{StaticResource ErrorIconStyle}" />
+            <Label Grid.Row="4"
+                   Grid.Column="0"
+                   Style="{StaticResource GridLabelStyle}"
+                   Content="Email" />
+            <TextBox Grid.Row="4"
+                     Grid.Column="1"
+                     Text="{Binding Email}"
+                     Style="{StaticResource GridTextBoxStyle}" />
+            <Path Grid.Row="4"
+                  Grid.Column="1"
+                  Data="{Binding Source={StaticResource CircleExclamation}, Path=Data}"
+                  Visibility="{Binding IsEmailValid, Converter= {StaticResource InvertedBoolToVisibilityConverter}}"
+                  Style="{StaticResource ErrorIconStyle}" />
+            <Label Grid.Row="5"
+                   Grid.Column="0"
+                   Style="{StaticResource GridLabelStyle}"
+                   Content="Phone number" />
+            <TextBox Grid.Row="5"
+                     Grid.Column="1"
+                     Text="{Binding PhoneNumber}"
+                     Style="{StaticResource GridTextBoxStyle}" />
+            <Path Grid.Row="5"
+                  Grid.Column="1"
+                  Data="{Binding Source={StaticResource CircleExclamation}, Path=Data}"
+                  Visibility="{Binding IsPhoneNumberValid, Converter= {StaticResource InvertedBoolToVisibilityConverter}}"
+                  Style="{StaticResource ErrorIconStyle}" />
+            <Label Grid.Row="6"
+                   Grid.Column="0"
+                   Style="{StaticResource GridLabelStyle}"
+                   Content="Card identifier" />
+            <TextBox Grid.Row="6"
+                     Grid.Column="1"
+                     Text="{Binding CardIdentifier}"
+                     Style="{StaticResource GridTextBoxStyle}"
+                     IsEnabled="False" />
+            <Path Grid.Row="6"
+                  Grid.Column="1"
+                  Data="{Binding Source={StaticResource CircleExclamation}, Path=Data}"
+                  Visibility="{Binding IsCardIdentifierValid, Converter= {StaticResource InvertedBoolToVisibilityConverter}}"
+                  Style="{StaticResource ErrorIconStyle}" />
+        </Grid>
+        <Button Grid.Row="2"
+                Grid.Column="1"
+                Content="Register user"
+                Command="{Binding RegisterUserCommand}"
+                FontSize="{StaticResource TableContentFontSize}"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center" />
     </Grid>
 </UserControl>
