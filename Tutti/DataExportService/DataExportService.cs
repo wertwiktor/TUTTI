@@ -4,9 +4,9 @@ using Services.DataService;
 using System;
 using System.Collections.Generic;
 
-namespace DataExportService
+namespace Services.DataExportService
 {
-    public class DataExportService
+    public class DataExportService : IDataExportService
     {
         private readonly ILogger _logger = Log.Logger.ForContext<DataExportService>();
         private readonly IDataService _dataService;
@@ -16,7 +16,7 @@ namespace DataExportService
 
         }
 
-        public void ExportWorkingTimeByUser(long userId)
+        public void ExportCSVDataByUser(long userId)
         {
             User user = _dataService.GetUserByIdentifier("1234");
             var minDateTime = new DateTime(2023, 01, 01);
@@ -29,12 +29,9 @@ namespace DataExportService
             foreach (var entry in entries)
             {
                 //find coresponding exit to selected entry
-                TimeStamp exit = exits.FindAll(x => x.DateTime > entry.DateTime).OrderBy(a => a.DateTime).First();
-                
+                //TimeStamp exit = exits.FindAll(x => x.DateTime > entry.DateTime).OrderBy(a => a.DateTime).First();
+
             }
-
         }
-
-
     }
 }
