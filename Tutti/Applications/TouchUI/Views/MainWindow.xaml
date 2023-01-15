@@ -8,6 +8,7 @@
         xmlns:views="clr-namespace:TouchUI.Views"
         xmlns:mwpf="http://schemas.modernwpf.com/2019"
         xmlns:userControls="clr-namespace:TouchUI.UserControls"
+        xmlns:converters="clr-namespace:TouchUI.Converters"
         mwpf:WindowHelper.UseModernWindowStyle="True"
         mwpf:ThemeManager.RequestedTheme="Light"
         mc:Ignorable="d"
@@ -16,6 +17,7 @@
         Width="800">
     <Grid>
         <Grid.Resources>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
                 <views:HomeView />
             </DataTemplate>
@@ -27,7 +29,7 @@
             </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -43,5 +45,10 @@
         <ContentControl Grid.Column="1"
                         Grid.Row="1"
                         Content="{Binding CurrentViewModel}" />
+        <userControls:BusyIndicator Grid.ColumnSpan="2"
+                                    Grid.RowSpan="2"
+                                    IsBusy="{Binding CurrentViewModel.IsBusy}"
+                                    BusyMessage="{Binding CurrentViewModel.BusyMessage}" />
+
     </Grid>
 </Window>
