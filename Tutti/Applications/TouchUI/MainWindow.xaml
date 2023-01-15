@@ -39,7 +39,7 @@
                                     NavigationCommand="{Binding CurrentViewModel.NavigationCommand}"
                                     User="{Binding CurrentViewModel.CurrentUser}" />
         <userControls:Clock Grid.Column="1"
-                            DateTime="{Binding CurrentViewModel.CurrentDateTime}" />
+                            DateTime="{Binding ClockDateTime}" />
         <ContentControl Grid.Column="1"
                         Grid.Row="1"
                         Content="{Binding CurrentViewModel}" />
