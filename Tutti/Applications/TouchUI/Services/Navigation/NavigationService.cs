@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Framework.ExtensionMethods;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace TouchUI.Services.Navigation
         {
             if (viewModelType == null)
             {
-                _logger.Error("Attempted to navigate to a null view model.");
+                _logger.Error("Attempted to navigate to a null view model.".Here());
                 return;
             }
 
@@ -42,7 +43,7 @@ namespace TouchUI.Services.Navigation
             }
             else
             {
-                _logger.Error("Attempted to navigate to an unknown ViewModel {vmType}. Make sure that this ViewModel is registered in the dependency injection container and is known to NavigationService.", viewModelType.FullName);
+                _logger.Error("Attempted to navigate to an unknown ViewModel {vmType}. Make sure that this ViewModel is registered in the dependency injection container and is known to NavigationService.".Here(), viewModelType.FullName);
             }
         }
 
@@ -56,7 +57,7 @@ namespace TouchUI.Services.Navigation
             }
             else
             {
-                _logger.Error("Attempted to navigate to an unknown ViewModel {vmType}.  Make sure that this ViewModel is registered in the dependency injection container and is known to NavigationService.", typeof(TViewModel).FullName);
+                _logger.Error("Attempted to navigate to an unknown ViewModel {vmType}.  Make sure that this ViewModel is registered in the dependency injection container and is known to NavigationService.".Here(), typeof(TViewModel).FullName);
             }
         }
     }

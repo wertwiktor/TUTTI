@@ -12,6 +12,7 @@ using TouchUI.Views;
 using TouchUI.Services.Navigation;
 using TouchUI.ViewModels;
 using TouchUI.Services.Login;
+using Framework.ExtensionMethods;
 
 namespace TouchUI
 {
@@ -40,7 +41,7 @@ namespace TouchUI
                                                                 shared: true,
                                                                 rollingInterval: RollingInterval.Day).CreateLogger();
             _logger = Log.Logger.ForContext<App>();
-            _logger.Information("Starting the application.");
+            _logger.Information("Starting the application.".Here());
         }
 
         private string CreateLoggingFilePath()
