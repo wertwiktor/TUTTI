@@ -18,8 +18,6 @@ namespace TouchUI.ViewModels
         protected readonly ILoginService LoginService;
         private ICommand _navigationCommand;
         private User _currentUser;
-        private DateTime _currentDateTime = DateTime.Now;
-        private DispatcherTimer _clockDisplayTimer = new DispatcherTimer();
 
         private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget> {
             new NavigationTarget(typeof(HomeViewModel), "Home", true),
@@ -34,30 +32,14 @@ namespace TouchUI.ViewModels
             _navigationCommand = new NavigationCommand(NavigationService);
             CurrentUser = LoginService.GetCurrentUser();
             LoginService.UserChanged += OnLoginServiceUserChanged;
-            InitializeClockDisplayTimer();
         }
 
         private void OnLoginServiceUserChanged(User user)
         {
             CurrentUser = user;
-        }
+        }        
 
-        private void InitializeClockDisplayTimer()
-        {
-            _clockDisplayTimer.Interval = TimeSpan.FromSeconds(1);
-            _clockDisplayTimer.Tick += OnClockDisplayTimerElapsed;
-            _clockDisplayTimer.Start();
-        }
-
-        private void UninitializeClockDisplayTimer()
-        {
-            _clockDisplayTimer.Stop();
-        }
-
-        private void OnClockDisplayTimerElapsed(object? sender, EventArgs e)
-        {
-            CurrentDateTime = DateTime.Now;
-        }
+        
 
         public ObservableCollection<NavigationTarget> NavigatableViewModels
         {
@@ -96,20 +78,7 @@ namespace TouchUI.ViewModels
                 OnPropertyChanged();
                 UpdateNavigationBar();
             }
-        }
-
-        public DateTime CurrentDateTime
-        {
-            get
-            {
-                return _currentDateTime;
-            }
-            set
-            {
-                _currentDateTime = value;
-                OnPropertyChanged();
-            }
-        }
+        }       
 
         protected virtual void UpdateNavigationBar()
         {
@@ -125,7 +94,6 @@ namespace TouchUI.ViewModels
         public virtual void Uninitialize()
         {
             LoginService.UserChanged -= OnLoginServiceUserChanged;
-            UninitializeClockDisplayTimer();
         }
     }
 }

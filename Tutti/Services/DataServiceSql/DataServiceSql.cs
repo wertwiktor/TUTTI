@@ -1,4 +1,5 @@
 ﻿using DataService.Models;
+using Framework.ExtensionMethods;
 using Serilog;
 using Services.DataService;
 using Services.DataServiceSql.DataModels;
@@ -13,9 +14,9 @@ namespace Services.DataServiceSql
         public DataServiceSql()
         {
             //First EF query is slow, so a dummy query is performed at startup
-            _logger.Information("Running EF startup query.");
+            _logger.Information("Running EF startup query.".Here());
             RunStartupQuery();
-            _logger.Information("EF startup query finished.");
+            _logger.Information("EF startup query finished.".Here());
         }
         private TuttiDbContext GetDbContext()
         {
@@ -30,7 +31,7 @@ namespace Services.DataServiceSql
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Error while creating Database context.");
+                _logger.Error(e, "Error while creating Database context.".Here());
             }
 
             return result;

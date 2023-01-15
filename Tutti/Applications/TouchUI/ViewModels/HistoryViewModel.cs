@@ -1,4 +1,5 @@
 ﻿using DataService.Models;
+using Framework.ExtensionMethods;
 using Serilog;
 using Services.DataService;
 using Services.IdentificationDeviceService;
@@ -38,7 +39,7 @@ namespace TouchUI.ViewModels
         {
             if (CurrentUser == null)
             {
-                _logger.Error("Current user was null when trying to initialize timestamps history.");
+                _logger.Error("Current user was null when trying to initialize timestamps history.".Here());
                 return;
             }
             _timeStampsHistory.Clear();

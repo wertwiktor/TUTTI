@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Framework.ExtensionMethods;
+using Serilog;
 using Services.DataService;
 using Services.IdentificationDeviceService;
 using System;
@@ -21,7 +22,7 @@ namespace TouchUI.ViewModels
 
         public DevelopersWindowViewModel(IDataService dataService, IIdentificationDeviceService idDeviceService)
         {
-            _logger.Debug("Creating developers window view model.");
+            _logger.Debug("Creating developers window view model.".Here());
             _dataService = dataService;
             _idDeviceService = idDeviceService;
             InitializeCommands();

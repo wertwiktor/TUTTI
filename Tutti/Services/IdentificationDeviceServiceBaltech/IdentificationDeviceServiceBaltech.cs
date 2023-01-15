@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Framework.ExtensionMethods;
+using Serilog;
 using Services.IdentificationDeviceService;
 using Services.IdentificationDeviceService.DataContracts;
 using System.ComponentModel;
@@ -45,7 +46,7 @@ namespace Services.IdentificationDeviceServiceBaltech
                 simulatedId = identifier;
             }
 
-            _logger.Debug("Simulating identifier: {identifier}", simulatedId);
+            _logger.Debug("Simulating identifier: {identifier}".Here(), simulatedId);
 
             IdentificationOccured?.Invoke(this, new IdentificationOccuredEventArgs(simulatedId));
         }

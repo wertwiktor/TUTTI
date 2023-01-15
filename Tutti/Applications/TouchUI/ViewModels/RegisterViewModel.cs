@@ -1,4 +1,5 @@
 ﻿using DataService.Models;
+using Framework.ExtensionMethods;
 using Microsoft.Xaml.Behaviors.Input;
 using Serilog;
 using Services.DataService;
@@ -92,13 +93,13 @@ namespace TouchUI.ViewModels
 
             if (eventArgs == null)
             {
-                _logger.Error("Received IdentificationOccured event with null event arguments.");
+                _logger.Error("Received IdentificationOccured event with null event arguments.".Here());
                 return;
             }
 
             if (string.IsNullOrEmpty(eventArgs.Identifier))
             {
-                _logger.Error("Received IdentificationOccured event with identifier string null or empty.");
+                _logger.Error("Received IdentificationOccured event with identifier string null or empty.".Here());
                 return;
             }
 

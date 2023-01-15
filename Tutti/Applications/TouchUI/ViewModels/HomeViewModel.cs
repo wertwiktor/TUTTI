@@ -1,4 +1,5 @@
 ﻿using DataService.Models;
+using Framework.ExtensionMethods;
 using Serilog;
 using Services.DataService;
 using Services.IdentificationDeviceService;
@@ -31,7 +32,7 @@ namespace TouchUI.ViewModels
             ILoginService loginService)
             : base(navigationService, loginService)
         {
-            _logger.Debug("Creating main view model.");
+            _logger.Debug("Creating main view model.".Here());
             _dataService = dataService;
             _idDeviceService = idDeviceService;
             InitializeSubscribtions();
@@ -124,17 +125,17 @@ namespace TouchUI.ViewModels
 
             if (eventArgs == null)
             {
-                _logger.Error("Received IdentificationOccured event with null event arguments.");
+                _logger.Error("Received IdentificationOccured event with null event arguments.".Here());
                 return;
             }
 
             if (string.IsNullOrEmpty(eventArgs.Identifier))
             {
-                _logger.Error("Received IdentificationOccured event with identifier string null or empty.");
+                _logger.Error("Received IdentificationOccured event with identifier string null or empty.".Here());
                 return;
             }
 
-            _logger.Information("Received IdentificationOccured event with identifier {identifier}.");
+            _logger.Information("Received IdentificationOccured event with identifier {identifier}.".Here(), eventArgs.Identifier);
 
             ProcessUserIdentification(eventArgs.Identifier);
         }
@@ -144,13 +145,13 @@ namespace TouchUI.ViewModels
             User user;
             if (!TryGetUserFromDatabaseByIdentifier(identifier, out user))
             {
-                _logger.Information("Attempted user identifiation for unknown user with identifier {identifier}.", identifier);
+                _logger.Information("Attempted user identifiation for unknown user with identifier {identifier}.".Here(), identifier);
                 return;
             }
 
             if (CurrentUser != null)
             {
-                _logger.Information("Received user identifiation when current logged in user was not null.");
+                _logger.Information("Received user identifiation of {receivedName} {receivedSurname} when the user {logedName} {loggedSurname} was already logged in.".Here(), user.Name, user.Surname, CurrentUser.Name, CurrentUser.Surname);
                 return;
             }
 
@@ -182,7 +183,7 @@ namespace TouchUI.ViewModels
             }
             else
             {
-                _logger.Error("Current user was null while arrempting to register user exit. This exit has not been saved in the database.");
+                _logger.Error("Current user was null while arrempting to register user exit. This exit has not been saved in the database.".Here());
             }
             LoginService.Logout();
         }
