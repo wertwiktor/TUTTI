@@ -18,6 +18,8 @@ namespace TouchUI.ViewModels
         protected readonly ILoginService LoginService;
         private ICommand _navigationCommand;
         private User _currentUser;
+        private bool _isBusy;
+        private string _busyMessage;
 
         private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget> {
             new NavigationTarget(typeof(HomeViewModel), "Home", true),
@@ -79,6 +81,32 @@ namespace TouchUI.ViewModels
                 UpdateNavigationBar();
             }
         }       
+
+        public bool IsBusy
+        {
+            get
+            {
+                return _isBusy;
+            }
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public string BusyMessage
+        {
+            get
+            {
+                return _busyMessage;
+            }
+            set
+            {
+                _busyMessage = value;
+                OnPropertyChanged();
+            }
+        }
 
         protected virtual void UpdateNavigationBar()
         {

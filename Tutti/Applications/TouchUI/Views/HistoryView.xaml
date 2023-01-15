@@ -17,8 +17,10 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <DataGrid AutoGenerateColumns="False"
+                  Margin="0,0,0,50"
                   IsReadOnly="True"
-                  ItemsSource="{Binding TimeStampsHistory}">
+                  ItemsSource="{Binding TimeStampsHistory}"
+                  SelectionMode="Single">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader"
                        BasedOn="{mwpf:StaticResource ResourceKey=DefaultDataGridColumnHeaderStyle}">
@@ -28,6 +30,10 @@
                             Value="{StaticResource TableContentFontSize}" />
                     <Setter Property="HorizontalContentAlignment"
                             Value="Center" />
+                    <Setter Property="ScrollViewer.IsEnabled"
+                            Value="True" />
+                    <Setter Property="ScrollViewer.PanningMode"
+                            Value="VerticalOnly" />
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
