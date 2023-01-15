@@ -26,26 +26,11 @@ namespace TouchUI.UserControls
             InitializeComponent();
         }
 
-        public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register(
-            "Background", typeof(Brush), typeof(BusyIndicator));
-
         public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(
             "IsBusy", typeof(bool), typeof(BusyIndicator));
 
         public static readonly DependencyProperty BusyMessageProperty = DependencyProperty.Register(
             "BusyMessage", typeof(string), typeof(BusyIndicator));
-
-        public new Brush Background
-        {
-            get
-            {
-                return (Brush)GetValue(BackgroundProperty);
-            }
-            set
-            {
-                SetValue(BackgroundProperty, value);
-            }
-        }
 
         public bool IsBusy
         {

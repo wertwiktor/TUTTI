@@ -5,13 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TouchUI.UserControls"
              xmlns:mwpf="http://schemas.modernwpf.com/2019"
+             xmlns:converters="clr-namespace:TouchUI.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
-    <Grid>
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
+          Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}">
         <Border IsHitTestVisible="True"
-                Background="LightGray"
-                Opacity="0.8">
+                Background="Black"
+                Opacity="0.7">
         </Border>
         <mwpf:SimpleStackPanel Grid.ColumnSpan="2"
                                Grid.RowSpan="2"
@@ -20,7 +25,7 @@
             <mwpf:ProgressRing Height="100"
                                Width="100"
                                IsActive="True" />
-            <Label Content="{Binding CurrentViewModel.BusyMessage}"
+            <Label Content="{Binding BusyMessage}"
                    d:Content="BusyMessage"
                    FontSize="{StaticResource DescriptionFontSize}" />
         </mwpf:SimpleStackPanel>
