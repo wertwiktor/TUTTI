@@ -24,7 +24,7 @@ namespace TouchUI.ViewModels
         private string _mainMessage;
         private DispatcherTimer _mainMessageTimer = new DispatcherTimer();
 
-        
+
 
         public HomeViewModel(IDataService dataService,
             IIdentificationDeviceService idDeviceService,
@@ -106,8 +106,6 @@ namespace TouchUI.ViewModels
             _idDeviceService.IdentificationOccured -= OnIdServiceIdentificationOccured;
         }
 
-
-
         private void InitializeMainMessageTimer()
         {
             _mainMessageTimer.Interval = TimeSpan.FromSeconds(1);
@@ -156,7 +154,7 @@ namespace TouchUI.ViewModels
             }
 
             var lastTimeStamp = _dataService.GetLastTimeStampByUserId(user.Id);
-            if (lastTimeStamp == null || lastTimeStamp.Direction == TimeStampDirection.Exit)
+            if (lastTimeStamp == null || !lastTimeStamp.Orphan)
             {
                 ProcessUserEntry(user);
             }
@@ -168,7 +166,7 @@ namespace TouchUI.ViewModels
 
         private void ProcessUserEntry(User user)
         {
-            var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = TimeStampDirection.Entry, UserId = user.Id };
+            var timeStamp = new TimeStamp() { EntryDate = DateTime.Now, ExitDate = DateTime.Now, UserId = user.Id };
             _dataService.AddTimeStamp(timeStamp);
             MainMessage = $"Hello, {user.Name}";
         }
@@ -177,9 +175,10 @@ namespace TouchUI.ViewModels
         {
             if (CurrentUser != null)
             {
-                var timeStamp = new TimeStamp() { DateTime = DateTime.Now, Direction = TimeStampDirection.Exit, UserId = CurrentUser.Id };
-                _dataService.AddTimeStamp(timeStamp);
-
+                var timeStamp = _dataService.GetLastTimeStampByUserId(CurrentUser.Id);
+                timeStamp.ExitDate = DateTime.Now;
+                timeStamp.Orphan = false;
+                _dataService.EditTimeStamp(timeStamp);
             }
             else
             {

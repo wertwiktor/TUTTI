@@ -17,6 +17,19 @@ namespace Services.DataServiceSql
                 context.SaveChanges();
             }
         }
+        public void EditTimeStamp(TimeStamp timeStamp)
+        {
+            if (timeStamp == null)
+            {
+                throw new ArgumentNullException("timeStamp");
+            }
+
+            using (var context = GetDbContext())
+            {
+                context.Entry(timeStamp).State = System.Data.Entity.EntityState.Modified;
+                context.SaveChanges();
+            }
+        }
 
         public void DeleteTimeStamp(long id)
         {
@@ -34,10 +47,10 @@ namespace Services.DataServiceSql
             var timeStamps = new List<TimeStamp>();
             using (var context = GetDbContext())
             {
-                timeStamps.AddRange(context.TimeStamps.Where(timeStamp => 
-                                                            timeStamp.UserId == userId 
-                                                            && timeStamp.DateTime >= minDateTime 
-                                                            && timeStamp.DateTime <= maxDateTime));
+                timeStamps.AddRange(context.TimeStamps.Where(timeStamp =>
+                                                            timeStamp.UserId == userId
+                                                            && timeStamp.EntryDate >= minDateTime
+                                                            && timeStamp.EntryDate <= maxDateTime));
             }
             return timeStamps;
         }
@@ -46,7 +59,7 @@ namespace Services.DataServiceSql
         {
             using (var context = GetDbContext())
             {
-                return context.TimeStamps.Where(p => p.User.Id == userId).OrderByDescending(p => p.DateTime).FirstOrDefault();
+                return context.TimeStamps.Where(p => p.User.Id == userId).OrderByDescending(p => p.EntryDate).FirstOrDefault();
             }
         }
     }
