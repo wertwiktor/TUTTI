@@ -57,11 +57,11 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Orphan"
+                <DataGridTemplateColumn Header="Edit"
                                         Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding Orphan}"
+                            <Label Content="{Binding Edit}"
                                    FontSize="{StaticResource TableContentFontSize}"
                                    HorizontalAlignment="Center" />
                         </DataTemplate>

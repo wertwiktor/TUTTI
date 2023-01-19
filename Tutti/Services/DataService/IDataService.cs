@@ -8,8 +8,8 @@ namespace Services.DataService
         void DeleteUser(long id);
         User GetUser(long id);
         User GetUserByIdentifier(string identifier);
+        List<User> GetAllLoggedInUsers();
         List<User> GetAllUsers();
-
         void AddTimeStamp(TimeStamp timeStamp);
         void EditTimeStamp(TimeStamp timeStamp);
         void DeleteTimeStamp(long id);
