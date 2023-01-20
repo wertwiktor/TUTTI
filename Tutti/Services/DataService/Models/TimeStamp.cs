@@ -8,8 +8,8 @@ namespace DataService.Models
     public class TimeStamp
     {
         public long Id { get; set; }
-        public DateTime DateTime { get; set; }
-        public TimeStampDirection Direction { get; set; }
+        public DateTime? EntryDate { get; set; }
+        public DateTime? ExitDate { get; set; }
         public long UserId { get; set; }
         public User User { get; set; }
     }

@@ -45,7 +45,7 @@ namespace TouchUI.ViewModels
             _timeStampsHistory.Clear();
             var oldestTimeStampDate = DateTime.Now - TimeSpan.FromDays(30);
             var newestTimeStampDate = DateTime.Now;
-            var timeStampHistory = _dataService.GetTimeStamps(CurrentUser.Id, oldestTimeStampDate, newestTimeStampDate).OrderByDescending(x => x.DateTime);
+            var timeStampHistory = _dataService.GetTimeStamps(CurrentUser.Id, oldestTimeStampDate, newestTimeStampDate).OrderByDescending(x => x.EntryDate);
             TimeStampsHistory = new ObservableCollection<TimeStamp>(timeStampHistory);
         }
 
