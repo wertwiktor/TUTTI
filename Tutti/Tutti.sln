@@ -22,7 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentificationDeviceService
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentificationDeviceServiceBaltech", "Services\IdentificationDeviceServiceBaltech\IdentificationDeviceServiceBaltech.csproj", "{EF6F8D4F-8AD9-48D7-A618-2B1F5E54ADC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework", "Framework\Framework.csproj", "{8AC27C4D-8777-422C-9419-6F34A50D448B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework", "Framework\Framework.csproj", "{8AC27C4D-8777-422C-9419-6F34A50D448B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataExportService", "DataExportService\DataExportService.csproj", "{AFBDAE82-BA4B-407F-BE8E-A6DD75DF6BA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +56,10 @@ Global
 		{8AC27C4D-8777-422C-9419-6F34A50D448B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AC27C4D-8777-422C-9419-6F34A50D448B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AC27C4D-8777-422C-9419-6F34A50D448B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFBDAE82-BA4B-407F-BE8E-A6DD75DF6BA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFBDAE82-BA4B-407F-BE8E-A6DD75DF6BA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFBDAE82-BA4B-407F-BE8E-A6DD75DF6BA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFBDAE82-BA4B-407F-BE8E-A6DD75DF6BA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{BBEAE1E4-2880-44A3-8459-4959154EB7B5} = {16D0D77B-5524-401D-93E1-F44E6A651A48}
 		{6ACE4029-1F10-4BF6-9317-4E7D451C7D4B} = {16D0D77B-5524-401D-93E1-F44E6A651A48}
 		{EF6F8D4F-8AD9-48D7-A618-2B1F5E54ADC0} = {16D0D77B-5524-401D-93E1-F44E6A651A48}
+		{AFBDAE82-BA4B-407F-BE8E-A6DD75DF6BA6} = {16D0D77B-5524-401D-93E1-F44E6A651A48}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C4B17006-1FFA-480D-A506-645C5E8EFEF1}
