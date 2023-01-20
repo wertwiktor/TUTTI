@@ -18,9 +18,9 @@ namespace Services.DataServiceSql
             }
         }
 
-        public void DeleteUser(long id) 
+        public void DeleteUser(long id)
         {
-            var user = new User() {Id = id };
+            var user = new User() { Id = id };
             using (var context = GetDbContext())
             {
                 context.Users.Attach(user);
@@ -29,11 +29,11 @@ namespace Services.DataServiceSql
             }
         }
 
-        public User GetUser(long id) 
-        { 
-            using(var context = GetDbContext()) 
+        public User GetUser(long id)
+        {
+            using (var context = GetDbContext())
             {
-                return context.Users.FirstOrDefault(user => user.Id == id);            
+                return context.Users.FirstOrDefault(user => user.Id == id);
             }
         }
 
@@ -43,6 +43,20 @@ namespace Services.DataServiceSql
             {
                 return context.Users.FirstOrDefault(user => user.Identifier == identifier);
             }
+        }
+
+        public List<User> GetAllLoggedInUsers()
+        {
+            var users = new List<User>();
+            var oldestDate = DateTime.Now - TimeSpan.FromDays(1);
+
+            using (var context = GetDbContext())
+            {
+                users.AddRange(context.Users.Where(user => user.TimeStamps.Any(x => x.EntryDate != null
+                                                                                 && x.EntryDate >= oldestDate
+                                                                                 && x.ExitDate == null)));
+            }
+            return users;
         }
 
         public List<User> GetAllUsers()

@@ -37,21 +37,31 @@
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Date"
+                <DataGridTemplateColumn Header="EntryDate"
                                         Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding DateTime}"
+                            <Label Content="{Binding EntryDate}"
                                    FontSize="{StaticResource TableContentFontSize}"
                                    HorizontalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Direction"
+                <DataGridTemplateColumn Header="ExitDate"
+                                        Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding ExitDate}"
+                                   FontSize="{StaticResource TableContentFontSize}"
+                                   HorizontalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Edit"
                                         Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding Direction}"
+                            <Label Content="{Binding Edit}"
                                    FontSize="{StaticResource TableContentFontSize}"
                                    HorizontalAlignment="Center" />
                         </DataTemplate>
