@@ -50,11 +50,7 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Path Grid.Row="0"
-                          Data="{Binding Source={StaticResource DoorClosed}, Path=Data}"
-                          Stretch="Uniform"
-                          Fill="Black"
-                          HorizontalAlignment="Center" />
+                    <mwpf:PathIcon Data="{Binding Source={StaticResource DoorClosed}}" />
                     <Label Grid.Row="1"
                            Content="Finish work"
                            FontSize="{StaticResource DescriptionFontSize}"
@@ -76,11 +72,7 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Path Grid.Row="0"
-                          Data="{Binding Source={StaticResource Briefcase}, Path=Data}"
-                          Stretch="Uniform"
-                          Fill="Black"
-                          HorizontalAlignment="Center" />
+                    <mwpf:PathIcon Data="{Binding Source={StaticResource Briefcase}}" />
                     <Label Grid.Row="1"
                            Content="Resume work"
                            FontSize="{StaticResource DescriptionFontSize}"

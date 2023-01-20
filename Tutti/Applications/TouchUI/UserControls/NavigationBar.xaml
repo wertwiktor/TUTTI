@@ -78,12 +78,9 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-
-            <Path Grid.Row="0"
-                  Data="{Binding Source={StaticResource User}, Path=Data}"
-                  Stretch="Uniform"
-                  Fill="Black"
-                  HorizontalAlignment="Center" />
+            
+            <mwpf:PathIcon Grid.Row="0"
+                           Data="{Binding Source={StaticResource User}}" />
             <StackPanel Grid.Row="1"
                         Visibility="{Binding User, Converter={StaticResource NullToVisibilityConverter}}"
                         Orientation="Vertical">
