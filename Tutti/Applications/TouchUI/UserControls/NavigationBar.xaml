@@ -10,7 +10,7 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              Padding="5,5,5,5"
-             Background="WhiteSmoke">
+             Background="{mwpf:StaticColor SystemControlBackgroundListLowBrush}">
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"
@@ -18,101 +18,73 @@
             <converters:NullToVisibilityConverter x:Key="InvertedNullToVisibilityConverter"
                                                   UseCollapsed="False"
                                                   Invert="True" />
+            <Style x:Key="NavigationButtonStyle"
+                   TargetType="{x:Type Button}"
+                   BasedOn="{mwpf:StaticResource DefaultButtonStyle}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid Background="{TemplateBinding Background}">
+                                <ContentPresenter Content="{TemplateBinding Content}"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Background"
+                        Value="Transparent" />
+                <Setter Property="BorderBrush"
+                        Value="Transparent" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource DescriptionFontSize}" />
+                <Setter Property="HorizontalAlignment"
+                        Value="Stretch" />
+                <Setter Property="HorizontalContentAlignment"
+                        Value="Left" />
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled"
+                             Value="False">
+                        <Setter Property="Background"
+                                Value="Transparent" />
+                        <Setter Property="Foreground"
+                                Value="DarkGray" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="NavigationItemContainerStyle"
+                   TargetType="{x:Type ListBoxItem}"
+                   BasedOn="{StaticResource DefaultListBoxItemStyle}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <ContentPresenter />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Margin"
+                        Value="0, 10, 0, 10" />
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
+    
     <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="100" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-
-            <Path Grid.Row="0"
-                  Data="{Binding Source={StaticResource User}, Path=Data}"
-                  Stretch="Uniform"
-                  Fill="Black"
-                  HorizontalAlignment="Center" />
-            <StackPanel Grid.Row="1"
-                        Visibility="{Binding User, Converter={StaticResource NullToVisibilityConverter}}"
-                        Orientation="Vertical">
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Center">
-                    <Label Content="{Binding User.Name}" />
-                    <Label Content=" " />
-                    <Label Content="{Binding User.Surname}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Center">
-                    <Label Content="(" />
-                    <Label Content="{Binding User.Identifier}" />
-                    <Label Content=")" />
-                </StackPanel>
-
-            </StackPanel>
-            <Label Grid.Row="1"
-                   Visibility="{Binding User, Converter={StaticResource InvertedNullToVisibilityConverter}}"
-                   HorizontalAlignment="Center"
-                   Content="Not logged in" />
-        </Grid>
+        <mwpf:PersonPicture Initials="{Binding User.Initials}"/>
         <mwpf:ListView Grid.Row="1"
                        ItemsSource="{Binding NavigatableViewModels}"
-                       IsSelectionEnabled="False">
-            <mwpf:ListView.ItemContainerStyle>
-                <!-- This custom stype disables highlighting of selected items in ListView -->
-                <Style TargetType="ListBoxItem"
-                       BasedOn="{mwpf:StaticResource ResourceKey=DefaultListBoxItemStyle}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <ContentPresenter />
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="Margin"
-                            Value="0, 10, 0, 10" />
-                </Style>
-            </mwpf:ListView.ItemContainerStyle>
+                       IsSelectionEnabled="False"
+                       ItemContainerStyle="{StaticResource NavigationItemContainerStyle}">
             <mwpf:ListView.ItemTemplate>
                 <DataTemplate>
                     <Button Content="{Binding Name}"
-                            FontSize="{StaticResource DescriptionFontSize}"
                             IsEnabled="{Binding IsEnabled}"
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Left"
                             Command="{Binding NavigationCommand, RelativeSource = {RelativeSource AncestorType=UserControl}}"
                             CommandParameter="{Binding Type}"
-                            Background="Transparent"
-                            BorderBrush="Transparent">
-                        <Button.Style>
-                            <Style TargetType="Button"
-                                   BasedOn="{mwpf:StaticResource ResourceKey=DefaultButtonStyle}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Grid Background="{TemplateBinding Background}">
-                                                <ContentPresenter x:Name="MyContentPresenter"
-                                                                  Content="{TemplateBinding Content}"
-                                                                  HorizontalAlignment="Left"
-                                                                  VerticalAlignment="Center" />
-                                            </Grid>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Style.Triggers>
-                                    <Trigger Property="IsEnabled"
-                                             Value="False">
-                                        <Setter Property="Background"
-                                                Value="Transparent" />
-                                        <Setter Property="Foreground"
-                                                Value="DarkGray" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
+                            Style="{StaticResource NavigationButtonStyle}">
                     </Button>
                 </DataTemplate>
             </mwpf:ListView.ItemTemplate>
