@@ -137,7 +137,7 @@ namespace TouchUI.ViewModels
 
         private void InitializeMainMessageTimer()
         {
-            _mainMessageTimer.Interval = TimeSpan.FromSeconds(1);
+            _mainMessageTimer.Interval = TimeSpan.FromSeconds(3);
             _mainMessageTimer.Tick += OnMainMessageTimerElapsed;
         }
 
@@ -197,7 +197,7 @@ namespace TouchUI.ViewModels
         {
             var timeStamp = new TimeStamp() { EntryDate = DateTime.Now, UserId = user.Id };
             _dataService.AddTimeStamp(timeStamp);
-            MainMessage = $"Hello, {user.Name}";
+            MainMessage = $"Hello {user.Name}!";
             RefreshActiveUsers();
         }
 
@@ -230,6 +230,7 @@ namespace TouchUI.ViewModels
 
         private void StartMainMessageTimer()
         {
+            InitializeMainMessageTimer();
             _mainMessageTimer.Start();
         }
     }
