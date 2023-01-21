@@ -5,6 +5,9 @@ using Services.DataService;
 using Services.IdentificationDeviceService;
 using Services.IdentificationDeviceService.DataContracts;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TouchUI.Commands;
@@ -23,8 +26,7 @@ namespace TouchUI.ViewModels
         private ICommand _resumeWorkCommand;
         private string _mainMessage;
         private DispatcherTimer _mainMessageTimer = new DispatcherTimer();
-
-
+        private ObservableCollection<User> _activeUsers;
 
         public HomeViewModel(IDataService dataService,
             IIdentificationDeviceService idDeviceService,
@@ -38,6 +40,7 @@ namespace TouchUI.ViewModels
             InitializeSubscribtions();
             InitializeMainMessageTimer();
             InitializeCommands();
+            RefreshActiveUsers();
         }
 
         public override void Uninitialize()
@@ -61,6 +64,19 @@ namespace TouchUI.ViewModels
                 {
                     StartMainMessageTimer();
                 }
+            }
+        }
+
+        public ObservableCollection<User> ActiveUsers
+        {
+            get
+            {
+                return _activeUsers;
+            }
+            set
+            {
+                _activeUsers = value;
+                OnPropertyChanged();
             }
         }
 
@@ -90,6 +106,18 @@ namespace TouchUI.ViewModels
             }
         }
 
+        private void RefreshActiveUsers()
+        {
+            var activeUsers = _dataService.GetAllLoggedInUsers();
+            foreach (var user in activeUsers)
+            {
+                var recentEntry = _dataService.GetLastTimeStampByUserId(user.Id);
+                user.TimeStamps = new List<TimeStamp>();
+                user.TimeStamps.Add(recentEntry);
+            }
+            activeUsers.OrderBy(x => x.TimeStamps.FirstOrDefault()?.EntryDate.Value);
+            ActiveUsers = new ObservableCollection<User>(activeUsers);            
+        }
         private void InitializeCommands()
         {
             _confirmExitCommand = new RelayCommand(ConfirmExit);
@@ -169,6 +197,7 @@ namespace TouchUI.ViewModels
             var timeStamp = new TimeStamp() { EntryDate = DateTime.Now, UserId = user.Id };
             _dataService.AddTimeStamp(timeStamp);
             MainMessage = $"Hello, {user.Name}";
+            RefreshActiveUsers();
         }
 
         private void ConfirmExit()
@@ -184,12 +213,11 @@ namespace TouchUI.ViewModels
                 _logger.Error("Current user was null while arrempting to register user exit. This exit has not been saved in the database.".Here());
             }
             LoginService.Logout();
+            RefreshActiveUsers();
         }
 
         private void ResumeWork()
         {
-            var dupa = _dataService.GetAllLoggedInUsers();
-
             LoginService.Logout();
         }
 

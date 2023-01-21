@@ -31,5 +31,8 @@ namespace DataService.Models
 
         [NotMapped]
         public string FullName { get => string.Join(string.Empty, Name, Surname); }
+
+        //[NotMapped]
+        //public string RecentEntry { get => TimeStamps.LastOrDefault().ToString(); }
     }
 }
