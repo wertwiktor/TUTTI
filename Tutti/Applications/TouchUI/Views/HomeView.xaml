@@ -38,13 +38,14 @@
                    d:Content="Welcome Message"
                    FontSize="30" />
         </StackPanel>
-        <!--
-        <Image Width="300">
+        <Image
+               Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0">
             <Image.Source>
-                <BitmapImage DecodePixelWidth="300" UriSource="/Resources/Images/jlogo_short_blau_claim.jpg" />
+                <BitmapImage UriSource="/Resources/Images/logo_short_blau_claim.jpg" />
             </Image.Source>
         </Image>
-        -->
         <Button Grid.Column="0"
                 Grid.Row="1"
                 Visibility="{Binding CurrentUser, Converter={StaticResource NullToVisibilityConverter}}"

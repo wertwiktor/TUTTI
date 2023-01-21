@@ -115,7 +115,8 @@ namespace TouchUI.ViewModels
                 user.TimeStamps = new List<TimeStamp>();
                 user.TimeStamps.Add(recentEntry);
             }
-            activeUsers.OrderBy(x => x.TimeStamps.FirstOrDefault()?.EntryDate.Value);
+
+            activeUsers = activeUsers.OrderByDescending(x => x.TimeStamps.FirstOrDefault()?.EntryDate).ToList();
             ActiveUsers = new ObservableCollection<User>(activeUsers);            
         }
         private void InitializeCommands()
