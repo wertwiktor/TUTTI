@@ -1,4 +1,5 @@
 ﻿using DataService.Models;
+using Services.DataService;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,6 +22,8 @@ namespace TouchUI.Tools.FileExport
         public List<User> SelectedUsers { get; set; }
 
         public IExportFormatStrategy ExportFormatStrategy { get; set; }
+
+        public IDataService DataService { get; set; }
 
         public void Export()
         {

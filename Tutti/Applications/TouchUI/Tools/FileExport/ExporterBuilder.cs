@@ -1,4 +1,5 @@
 ﻿using DataService.Models;
+using Services.DataService;
 using System;
 using System.Collections.Generic;
 using TouchUI.Tools.FileExport.Strategies;
@@ -9,10 +10,11 @@ namespace TouchUI.Tools.FileExport
     {
         private Exporter _exporter = new Exporter();
 
-        public ExporterBuilder(List<User> users, ExportFormat exportFormat)
+        public ExporterBuilder(List<User> users, ExportFormat exportFormat, IDataService dataService)
         {
             SetUsers(users);
             SetFormat(exportFormat);
+            _exporter.DataService = dataService;
         }
 
         public ExporterBuilder SetTimeRange(DateTime dateTimeMinimum, DateTime dateTimeMaximum)
