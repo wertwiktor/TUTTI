@@ -8,6 +8,7 @@
              xmlns:mwpf="http://schemas.modernwpf.com/2019"
              xmlns:userControls="clr-namespace:TouchUI.UserControls"
              xmlns:converters="clr-namespace:TouchUI.Converters"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
@@ -37,6 +38,14 @@
                    d:Content="Welcome Message"
                    FontSize="30" />
         </StackPanel>
+        <Image
+               Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0">
+            <Image.Source>
+                <BitmapImage UriSource="/Resources/Images/logo_short_blau_claim.jpg" />
+            </Image.Source>
+        </Image>
         <Button Grid.Column="0"
                 Grid.Row="1"
                 Visibility="{Binding CurrentUser, Converter={StaticResource NullToVisibilityConverter}}"
@@ -81,5 +90,33 @@
 
             </Button.Content>
         </Button>
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      Grid.Column="0"
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Center">
+            <ItemsControl ItemsSource="{Binding ActiveUsers}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="10"  Width="80">
+                            <StackPanel>
+                                <mwpf:PersonPicture Initials="{Binding Initials}" Width="75" Height="75"/>
+                                <!-- 
+                            <TextBlock Margin="0" Text="{Binding Name}" FontSize="17" FontFamily="Franklin Gothic Medium" HorizontalAlignment="Center"/>
+                            -->
+                                <TextBlock Margin="0" Text="{Binding Surname}" FontSize="17" FontFamily="Franklin Gothic Medium" HorizontalAlignment="Center" TextTrimming="WordEllipsis" />
+                                <TextBlock Margin="0 5" Text="{Binding TimeStamps[0].EntryDate, StringFormat='{}{0:HH:mm:ss}'}" FontSize="15" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>
