@@ -124,15 +124,5 @@ namespace TouchUI.UserControls
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
-        private void ComboBoxHourSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void ComboBoxMinuteSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }

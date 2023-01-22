@@ -13,11 +13,11 @@
         <mwpf:SimpleStackPanel Orientation="Horizontal">
             <ComboBox ItemsSource="{Binding Hours}" 
                       SelectedItem="{Binding SelectedHour}"
-                      SelectionChanged="ComboBoxHourSelectionChanged"/>
+                      FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
             <Label Content=":" VerticalAlignment="Center"/>
             <ComboBox ItemsSource="{Binding Minutes}"
                       SelectedItem="{Binding SelectedMinute}"
-                      SelectionChanged="ComboBoxMinuteSelectionChanged"/>
+                      FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=UserControl}}" />
         </mwpf:SimpleStackPanel>
     </Grid>
 </UserControl>

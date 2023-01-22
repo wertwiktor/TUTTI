@@ -81,42 +81,48 @@
               VerticalAlignment="Center"
               HorizontalAlignment="Center">
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="80" />
+                <RowDefinition Height="80" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Label Content="Entry: "
+            <Label VerticalAlignment="Center"
+                   Content="Entry: "
                    FontSize="{StaticResource DescriptionFontSize}" />
             <mwpf:SimpleStackPanel Grid.Column="1"
                                    Orientation="Horizontal"
                                    Spacing="10">
-                <userControls:ExtendedDatePicker SelectedDate="{Binding EditedTimeStamp.EntryDate, Mode=TwoWay}"/>
-                <userControls:TimePicker Time="{Binding EditedTimeStamp.EntryDate, Mode=TwoWay}"/>
+                <userControls:ExtendedDatePicker SelectedDate="{Binding EditedTimeStamp.EntryDate, Mode=TwoWay}"
+                                                 FontSize="{StaticResource DescriptionFontSize}" />
+                <userControls:TimePicker Time="{Binding EditedTimeStamp.EntryDate, Mode=TwoWay}"
+                                         FontSize="{StaticResource DescriptionFontSize}" />
             </mwpf:SimpleStackPanel>
             <Label Grid.Row="1"
+                   VerticalAlignment="Center"
                    Content="Exit: "
                    FontSize="{StaticResource DescriptionFontSize}" />
             <mwpf:SimpleStackPanel Grid.Column="1"
                                    Grid.Row="1"
                                    Orientation="Horizontal"
                                    Spacing="10">
-                <userControls:ExtendedDatePicker SelectedDate="{Binding EditedTimeStamp.ExitDate, Mode=TwoWay}" />
-                <userControls:TimePicker Time="{Binding EditedTimeStamp.ExitDate, Mode=TwoWay}" />
+                <userControls:ExtendedDatePicker SelectedDate="{Binding EditedTimeStamp.ExitDate, Mode=TwoWay}"
+                                                 FontSize="{StaticResource DescriptionFontSize}" />
+                <userControls:TimePicker Time="{Binding EditedTimeStamp.ExitDate, Mode=TwoWay}"
+                                         FontSize="{StaticResource DescriptionFontSize}" />
             </mwpf:SimpleStackPanel>
             <mwpf:SimpleStackPanel Grid.Row="2"
                                    Grid.ColumnSpan="2"
                                    Orientation="Horizontal"
                                    HorizontalAlignment="Center"
                                    Margin="0,50,0,0"
-                                   Spacing= "100">
+                                   Spacing="100">
                 <Button Content="Save"
-                        Command="{Binding SaveEditingCommand}"/>
-                <Button Content="Cancel" 
-                        Command="{Binding CancelEditingCommand}"/>
+                        Command="{Binding SaveEditingCommand}" />
+                <Button Content="Cancel"
+                        Command="{Binding CancelEditingCommand}" />
             </mwpf:SimpleStackPanel>
         </Grid>
     </Grid>
