@@ -201,7 +201,7 @@ namespace TouchUI.ViewModels
             RefreshActiveUsers();
         }
 
-        private void ConfirmExit()
+        private void ConfirmExit(object parameter)
         {
             if (CurrentUser != null)
             {
@@ -217,7 +217,7 @@ namespace TouchUI.ViewModels
             RefreshActiveUsers();
         }
 
-        private void ResumeWork()
+        private void ResumeWork(object parameter)
         {
             LoginService.Logout();
         }

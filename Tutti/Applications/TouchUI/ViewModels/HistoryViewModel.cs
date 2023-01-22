@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TouchUI.Commands;
 using TouchUI.Services.Login;
 using TouchUI.Services.Navigation;
 using TouchUI.Tools.Navigation;
@@ -23,6 +24,11 @@ namespace TouchUI.ViewModels
         private readonly IDataService _dataService;
         private readonly INavigationService _navigationService;
         private ObservableCollection<TimeStamp> _timeStampsHistory = new ObservableCollection<TimeStamp>();
+        private ICommand _startEditingCommand;
+        private ICommand _saveEditingCommand;
+        private ICommand _cancelEditingCommand;
+        private bool _isEditingActive;
+        private TimeStamp _editedTimeStamp;
 
         public HistoryViewModel(IDataService dataService,
             IIdentificationDeviceService idDeviceService,
@@ -32,7 +38,15 @@ namespace TouchUI.ViewModels
         {
             _dataService = dataService;
             _navigationService = navigationService;
+            InitializeCommands();
             InitializeHistory();
+        }
+
+        private void InitializeCommands()
+        {
+            _startEditingCommand = new RelayCommand(StartEditing);
+            _saveEditingCommand = new RelayCommand(SaveEditing);
+            _cancelEditingCommand = new RelayCommand(CancelEditing);
         }
 
         private void InitializeHistory()
@@ -49,6 +63,22 @@ namespace TouchUI.ViewModels
             TimeStampsHistory = new ObservableCollection<TimeStamp>(timeStampHistory);
         }
 
+        private void StartEditing(object parameter)
+        {
+            IsEditingActive = true;
+            EditedTimeStamp = parameter as TimeStamp;
+        }
+
+        private void SaveEditing(object parameter)
+        {
+            IsEditingActive = false;
+        }
+
+        private void CancelEditing(object paramerer)
+        {
+            IsEditingActive = false;
+        }
+
         public ObservableCollection<TimeStamp> TimeStampsHistory
         {
             get
@@ -58,6 +88,50 @@ namespace TouchUI.ViewModels
             set
             {
                 _timeStampsHistory = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand StartEditingCommand
+        {
+            get { return _startEditingCommand; }
+            set { _startEditingCommand = value; OnPropertyChanged(); }
+        }
+
+        public ICommand SaveEditingCommand
+        {
+            get { return _saveEditingCommand; }
+            set { _saveEditingCommand = value; OnPropertyChanged(); }
+        }
+
+        public ICommand CancelEditingCommand
+        {
+            get { return _cancelEditingCommand; }
+            set { _cancelEditingCommand = value; OnPropertyChanged(); }
+        }
+
+        public bool IsEditingActive
+        {
+            get
+            {
+                return _isEditingActive;
+            }
+            set
+            {
+                _isEditingActive = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public TimeStamp EditedTimeStamp
+        {
+            get
+            {
+                return _editedTimeStamp;
+            }
+            set
+            {
+                _editedTimeStamp = value;
                 OnPropertyChanged();
             }
         }

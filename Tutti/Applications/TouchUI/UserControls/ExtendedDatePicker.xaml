@@ -8,12 +8,12 @@
              xmlns:mwpf="http://schemas.modernwpf.com/2019">
     <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
           Height="{Binding Height}"
-          Width="{Binding Width}">
+          Width="{Binding Width}"
+          VerticalAlignment="Stretch"
+          HorizontalAlignment="Stretch">
         <DatePicker x:Name="DatePicker"
                     SelectedDate="{Binding SelectedDate}"
-                    FontSize="{Binding FontSize}"
-                    VerticalAlignment="Stretch"
-                    HorizontalAlignment="Stretch">
+                    FontSize="{Binding FontSize}">
             <DatePicker.Resources>
                 <Style TargetType="DatePickerTextBox"
                        BasedOn="{mwpf:StaticResource ResourceKey=DefaultDatePickerTextBoxStyle}">

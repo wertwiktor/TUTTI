@@ -7,6 +7,7 @@
         xmlns:touchUI="clr-namespace:TouchUI"
         xmlns:vm="clr-namespace:TouchUI.ViewModels"
         xmlns:mwpf="http://schemas.modernwpf.com/2019"
+        xmlns:usercontrols="clr-namespace:TouchUI.UserControls"
         mwpf:WindowHelper.UseModernWindowStyle="True"
         mwpf:ThemeManager.RequestedTheme="Light"
         mc:Ignorable="d"

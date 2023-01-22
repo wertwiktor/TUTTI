@@ -10,14 +10,14 @@ namespace TouchUI.Commands
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
-        private Action _methodToExecute;
+        private Action<object> _methodToExecute;
         private Func<bool> _canExecuteEvaluator;
-        public RelayCommand(Action methodToExecute, Func<bool> canExecuteEvaluator)
+        public RelayCommand(Action<object> methodToExecute, Func<bool> canExecuteEvaluator)
         {
             _methodToExecute = methodToExecute;
             _canExecuteEvaluator = canExecuteEvaluator;
         }
-        public RelayCommand(Action methodToExecute)
+        public RelayCommand(Action<object> methodToExecute)
             : this(methodToExecute, null)
         {
         }
@@ -35,7 +35,7 @@ namespace TouchUI.Commands
         }
         public override void Execute(object parameter)
         {
-            _methodToExecute.Invoke();
+            _methodToExecute.Invoke(parameter);
         }
     }
 }

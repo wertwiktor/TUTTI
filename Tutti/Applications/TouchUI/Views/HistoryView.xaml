@@ -6,21 +6,23 @@
              xmlns:local="clr-namespace:TouchUI.Views"
              xmlns:userControls="clr-namespace:TouchUI.UserControls"
              xmlns:mwpf="http://schemas.modernwpf.com/2019"
+             xmlns:converters="clr-namespace:TouchUI.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:BoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"
+                                              Invert="True" />
+
+    </UserControl.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-        </Grid.RowDefinitions>
         <DataGrid AutoGenerateColumns="False"
                   Margin="0,0,0,50"
                   IsReadOnly="True"
                   ItemsSource="{Binding TimeStampsHistory}"
-                  SelectionMode="Single">
+                  SelectionMode="Single"
+                  Visibility="{Binding IsEditingActive, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader"
                        BasedOn="{mwpf:StaticResource ResourceKey=DefaultDataGridColumnHeaderStyle}">
@@ -39,7 +41,8 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type DataGridCell}">
                                 <Grid Background="{TemplateBinding Background}">
-                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center" />
                                 </Grid>
                             </ControlTemplate>
                         </Setter.Value>
@@ -61,7 +64,10 @@
                                         Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Background="Transparent" MaxHeight="50">
+                            <Button Background="Transparent"
+                                    MaxHeight="50"
+                                    Command="{Binding DataContext.StartEditingCommand, RelativeSource= {RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding}">
                                 <Button.Content>
                                     <mwpf:PathIcon Data="{Binding Source={StaticResource EditPencil}}" />
                                 </Button.Content>
@@ -71,5 +77,47 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Grid Visibility="{Binding IsEditingActive, Converter={StaticResource BoolToVisibilityConverter}}"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Content="Entry: "
+                   FontSize="{StaticResource DescriptionFontSize}" />
+            <mwpf:SimpleStackPanel Grid.Column="1"
+                                   Orientation="Horizontal"
+                                   Spacing="10">
+                <userControls:ExtendedDatePicker SelectedDate="{Binding EditedTimeStamp.EntryDate, Mode=TwoWay}"/>
+                <userControls:TimePicker Time="{Binding EditedTimeStamp.EntryDate, Mode=TwoWay}"/>
+            </mwpf:SimpleStackPanel>
+            <Label Grid.Row="1"
+                   Content="Exit: "
+                   FontSize="{StaticResource DescriptionFontSize}" />
+            <mwpf:SimpleStackPanel Grid.Column="1"
+                                   Grid.Row="1"
+                                   Orientation="Horizontal"
+                                   Spacing="10">
+                <userControls:ExtendedDatePicker SelectedDate="{Binding EditedTimeStamp.ExitDate, Mode=TwoWay}" />
+                <userControls:TimePicker Time="{Binding EditedTimeStamp.ExitDate, Mode=TwoWay}" />
+            </mwpf:SimpleStackPanel>
+            <mwpf:SimpleStackPanel Grid.Row="2"
+                                   Grid.ColumnSpan="2"
+                                   Orientation="Horizontal"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,50,0,0"
+                                   Spacing= "100">
+                <Button Content="Save"
+                        Command="{Binding SaveEditingCommand}"/>
+                <Button Content="Cancel" 
+                        Command="{Binding CancelEditingCommand}"/>
+            </mwpf:SimpleStackPanel>
+        </Grid>
     </Grid>
 </UserControl>

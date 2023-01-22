@@ -33,8 +33,7 @@ namespace TouchUI.ViewModels
             SimulateCardIdentificationCommand = new RelayCommand(SimulateCardIdentification);
         }
 
-        private 
-            void SimulateCardIdentification()
+        private void SimulateCardIdentification(object parameter)
         {
             _idDeviceService.SimulateIdentificationEvent(CardIdentifcatorToBeSimulated);
         }

@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="TouchUI.UserControls.TimePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mwpf="http://schemas.modernwpf.com/2019"
+             xmlns:local="clr-namespace:TouchUI.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center">
+        <mwpf:SimpleStackPanel Orientation="Horizontal">
+            <ComboBox ItemsSource="{Binding Hours}" 
+                      SelectedItem="{Binding SelectedHour}"
+                      SelectionChanged="ComboBoxHourSelectionChanged"/>
+            <Label Content=":" VerticalAlignment="Center"/>
+            <ComboBox ItemsSource="{Binding Minutes}"
+                      SelectedItem="{Binding SelectedMinute}"
+                      SelectionChanged="ComboBoxMinuteSelectionChanged"/>
+        </mwpf:SimpleStackPanel>
+    </Grid>
+</UserControl>

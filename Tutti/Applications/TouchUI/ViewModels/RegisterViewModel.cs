@@ -106,7 +106,7 @@ namespace TouchUI.ViewModels
             CardIdentifier = eventArgs.Identifier;
         }
 
-        private void RegisterUser()
+        private void RegisterUser(object parameter)
         {
             if (ValidateUserData())
             {
