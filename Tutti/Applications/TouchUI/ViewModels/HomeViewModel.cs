@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TouchUI.Commands;
@@ -27,6 +28,9 @@ namespace TouchUI.ViewModels
         private string _mainMessage;
         private DispatcherTimer _mainMessageTimer = new DispatcherTimer();
         private ObservableCollection<User> _activeUsers;
+
+        [DllImport("user32.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern void mouse_event(Int32 dwFlags, Int32 dx, Int32 dy, Int32 dwData, UIntPtr dwExtraInfo);
 
         public HomeViewModel(IDataService dataService,
             IIdentificationDeviceService idDeviceService,
@@ -106,6 +110,13 @@ namespace TouchUI.ViewModels
             }
         }
 
+        private void WakeScreen()
+        {
+            const int MOUSEEVENTF_MOVE = 0x0001;
+            mouse_event(MOUSEEVENTF_MOVE, 0, 1, 0, UIntPtr.Zero);
+            mouse_event(MOUSEEVENTF_MOVE, 0, -1, 0, UIntPtr.Zero);
+        }
+
         private void RefreshActiveUsers()
         {
             var activeUsers = _dataService.GetAllLoggedInUsers();
@@ -163,6 +174,8 @@ namespace TouchUI.ViewModels
             }
 
             _logger.Information("Received IdentificationOccured event with identifier {identifier}.".Here(), eventArgs.Identifier);
+            
+            WakeScreen();//TODO: temporarly invoked here, but should use some more sophisticated implementation methods
 
             ProcessUserIdentification(eventArgs.Identifier);
         }
