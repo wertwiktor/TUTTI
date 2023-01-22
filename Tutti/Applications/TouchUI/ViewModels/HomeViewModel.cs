@@ -230,7 +230,7 @@ namespace TouchUI.ViewModels
 
         private void StartMainMessageTimer()
         {
-            InitializeMainMessageTimer();
+            _mainMessageTimer.Stop();
             _mainMessageTimer.Start();
         }
     }
