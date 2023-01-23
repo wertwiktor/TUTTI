@@ -95,9 +95,9 @@
             <mwpf:SimpleStackPanel Grid.Column="1"
                                    Orientation="Horizontal"
                                    Spacing="10">
-                <userControls:ExtendedDatePicker SelectedDate="{Binding EditedTimeStamp.EntryDate, Mode=TwoWay}"
+                <userControls:ExtendedDatePicker SelectedDate="{Binding EditedDateEntry, Mode=TwoWay}"
                                                  FontSize="{StaticResource DescriptionFontSize}" />
-                <userControls:TimePicker Time="{Binding EditedTimeStamp.EntryDate, Mode=TwoWay}"
+                <userControls:TimePicker Time="{Binding EditedTimeEntry, Mode=TwoWay}"
                                          FontSize="{StaticResource DescriptionFontSize}" />
             </mwpf:SimpleStackPanel>
             <Label Grid.Row="1"
@@ -108,22 +108,26 @@
                                    Grid.Row="1"
                                    Orientation="Horizontal"
                                    Spacing="10">
-                <userControls:ExtendedDatePicker SelectedDate="{Binding EditedTimeStamp.ExitDate, Mode=TwoWay}"
+                <userControls:ExtendedDatePicker SelectedDate="{Binding EditedDateExit, Mode=TwoWay}"
                                                  FontSize="{StaticResource DescriptionFontSize}" />
-                <userControls:TimePicker Time="{Binding EditedTimeStamp.ExitDate, Mode=TwoWay}"
+                <userControls:TimePicker Time="{Binding EditedTimeExit, Mode=TwoWay}"
                                          FontSize="{StaticResource DescriptionFontSize}" />
             </mwpf:SimpleStackPanel>
-            <mwpf:SimpleStackPanel Grid.Row="2"
-                                   Grid.ColumnSpan="2"
-                                   Orientation="Horizontal"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,50,0,0"
-                                   Spacing="100">
-                <Button Content="Save"
-                        Command="{Binding SaveEditingCommand}" />
-                <Button Content="Cancel"
-                        Command="{Binding CancelEditingCommand}" />
-            </mwpf:SimpleStackPanel>
+            <Button Grid.Row="2"
+                    Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    Width="130"
+                    Content="Save"
+                    Command="{Binding SaveEditingCommand}"
+                    Style="{mwpf:StaticResource AccentButtonStyle}"
+                    FontSize="{StaticResource DescriptionFontSize}" />
+            <Button Grid.Row="2"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Width="130"
+                    Content="Cancel"
+                    Command="{Binding CancelEditingCommand}"
+                    FontSize="{StaticResource DescriptionFontSize}" />
         </Grid>
     </Grid>
 </UserControl>

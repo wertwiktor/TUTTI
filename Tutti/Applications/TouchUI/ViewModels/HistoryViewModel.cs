@@ -29,6 +29,10 @@ namespace TouchUI.ViewModels
         private ICommand _cancelEditingCommand;
         private bool _isEditingActive;
         private TimeStamp _editedTimeStamp;
+        private DateTime _editedDateEntry;
+        private DateTime _editedDateExit;
+        private TimeSpan _editedTimeEntry;
+        private TimeSpan _editedTimeExit;
 
         public HistoryViewModel(IDataService dataService,
             IIdentificationDeviceService idDeviceService,
@@ -64,13 +68,42 @@ namespace TouchUI.ViewModels
         }
 
         private void StartEditing(object parameter)
-        {
+        {       
+            _editedTimeStamp = parameter as TimeStamp;
+            if(_editedTimeStamp == null)
+            {
+                return;
+            }
+
+            if (_editedTimeStamp.EntryDate.HasValue)
+            {
+                EditedDateEntry = _editedTimeStamp.EntryDate.Value.Date;
+                EditedTimeEntry = _editedTimeStamp.EntryDate.Value.TimeOfDay;
+            }
+            else
+            {
+                EditedDateEntry = DateTime.Now.Date;
+                EditedTimeEntry = new TimeSpan(0,0,0);
+            }
+
+            if (_editedTimeStamp.ExitDate.HasValue)
+            {
+                EditedDateExit = _editedTimeStamp.ExitDate.Value.Date;
+                EditedTimeExit = _editedTimeStamp.ExitDate.Value.TimeOfDay;
+            }
+            else
+            {
+                EditedDateExit = DateTime.Now.Date;
+                EditedTimeExit = new TimeSpan(0, 0, 0);
+            }
+
             IsEditingActive = true;
-            EditedTimeStamp = parameter as TimeStamp;
         }
 
         private void SaveEditing(object parameter)
         {
+            _editedTimeStamp.EntryDate = EditedDateEntry + EditedTimeEntry;
+            _editedTimeStamp.ExitDate = EditedDateExit + EditedTimeExit;
             IsEditingActive = false;
         }
 
@@ -123,15 +156,54 @@ namespace TouchUI.ViewModels
             }
         }
 
-        public TimeStamp EditedTimeStamp
+        public DateTime EditedDateEntry
         {
             get
             {
-                return _editedTimeStamp;
+                return _editedDateEntry;
             }
             set
             {
-                _editedTimeStamp = value;
+                _editedDateEntry = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime EditedDateExit
+        {
+            get
+            {
+                return _editedDateExit;
+            }
+            set
+            {
+                _editedDateExit = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public TimeSpan EditedTimeEntry
+        {
+            get
+            {
+                return _editedTimeEntry;
+            }
+            set
+            {
+                _editedTimeEntry = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public TimeSpan EditedTimeExit
+        {
+            get
+            {
+                return _editedTimeExit;
+            }
+            set
+            {
+                _editedTimeExit = value;
                 OnPropertyChanged();
             }
         }

@@ -22,10 +22,9 @@ namespace TouchUI.UserControls
     /// </summary>
     public partial class TimePicker : UserControl, INotifyPropertyChanged
     {
-
-        private int _selectedMinute;
         private int _selectedHour;
-        public object TimeUpdateLock = new object();
+        private int _selectedMinute;
+
         public TimePicker()
         {
             InitializeComponent();
@@ -43,18 +42,13 @@ namespace TouchUI.UserControls
             Minutes = Enumerable.Range(0, 60).ToList();
         }
 
-        private void UpdateTime()
-        {
-            Time = Time.Date + new TimeSpan(SelectedHour, SelectedMinute, 0);
-        }
-
         public static readonly DependencyProperty TimeProperty = DependencyProperty.Register(
-            "Time", typeof(DateTime), typeof(TimePicker), new FrameworkPropertyMetadata(DateTime.MinValue, new PropertyChangedCallback(OnTimePropertyChanged)));
+            "Time", typeof(TimeSpan), typeof(TimePicker), new PropertyMetadata(OnTimeChangedCallBack));
 
-        private static void OnTimePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void OnTimeChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var thisControl = sender as TimePicker;
-            thisControl.InitializeSelectedHourAndMinute(thisControl.Time.Hour, thisControl.Time.Minute);
+            var timePicker = sender as TimePicker;
+            timePicker.InitializeSelectedHourAndMinute(timePicker.Time.Hours, timePicker.Time.Minutes);
         }
 
         public void InitializeSelectedHourAndMinute(int selectedHour, int selectedMinute)
@@ -65,11 +59,11 @@ namespace TouchUI.UserControls
             OnPropertyChanged(nameof(SelectedMinute));
         }
 
-        public DateTime Time
+        public TimeSpan Time
         {
             get
             {
-                return (DateTime)GetValue(TimeProperty);
+                return (TimeSpan)GetValue(TimeProperty);
             }
             set
             {
@@ -77,46 +71,30 @@ namespace TouchUI.UserControls
             }
         }
 
+        public List<int> Hours { get; private set; }
+        public List<int> Minutes { get; private set; }
+
         public int SelectedHour
         {
-            get
-            {
-                return _selectedHour;
-            }
+            get { return _selectedHour; }
             set
             {
-                if (value == _selectedHour)
-                {
-                    return;
-                }
                 _selectedHour = value;
                 OnPropertyChanged();
-                UpdateTime();
+                Time = new TimeSpan(_selectedHour, _selectedMinute, 0);
             }
         }
 
         public int SelectedMinute
         {
-            get
-            {
-                return _selectedMinute;
-            }
+            get { return _selectedMinute; }
             set
             {
-                if (value == _selectedMinute)
-                {
-                    return;
-                }
                 _selectedMinute = value;
                 OnPropertyChanged();
-                UpdateTime();
+                Time = new TimeSpan(_selectedHour, _selectedMinute, 0);
             }
         }
-
-
-
-        public List<int> Hours { get; private set; }
-        public List<int> Minutes { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

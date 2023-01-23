@@ -1,21 +1,6 @@
-﻿using DataService.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace TouchUI.UserControls
 {
@@ -36,21 +21,7 @@ namespace TouchUI.UserControls
         }
 
         public static readonly DependencyProperty SelectedDateProperty = DependencyProperty.Register(
-            "SelectedDate", typeof(DateTime), typeof(ExtendedDatePicker), new FrameworkPropertyMetadata(DateTime.MinValue, new PropertyChangedCallback(OnSelectedDatePropertyChanged)));
-
-        private static void OnSelectedDatePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            var thisControl = sender as ExtendedDatePicker;
-            if(thisControl.Time == null)
-            {
-                thisControl.Time = thisControl.SelectedDate.TimeOfDay;
-            }
-            else if(thisControl.SelectedDate.TimeOfDay != thisControl.Time)
-            {
-                thisControl.SelectedDate = thisControl.SelectedDate + thisControl.Time.Value;
-            }
-        }
-
+            "SelectedDate", typeof(DateTime), typeof(ExtendedDatePicker));
         public DateTime SelectedDate
         {
             get
