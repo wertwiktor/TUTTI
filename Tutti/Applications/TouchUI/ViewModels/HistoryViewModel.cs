@@ -33,6 +33,8 @@ namespace TouchUI.ViewModels
         private DateTime _editedDateExit;
         private TimeSpanComponent _editedTimeEntry;
         private TimeSpanComponent _editedTimeExit;
+        private bool _editingErrorOccured;
+        private string _editingErrorMessage;
 
         public HistoryViewModel(IDataService dataService,
             IIdentificationDeviceService idDeviceService,
@@ -102,15 +104,48 @@ namespace TouchUI.ViewModels
 
         private void SaveEditing(object parameter)
         {
-            _editedTimeStamp.EntryDate = EditedDateEntry + EditedTimeEntry.GetTimeSpan();
-            _editedTimeStamp.ExitDate = EditedDateExit + EditedTimeExit.GetTimeSpan();
-            _dataService.UpdateTimeStamp(_editedTimeStamp);
-            IsEditingActive = false;
+            if(IsEditValid())
+            {
+                _editedTimeStamp.EntryDate = EditedDateEntry + EditedTimeEntry.GetTimeSpan();
+                _editedTimeStamp.ExitDate = EditedDateExit + EditedTimeExit.GetTimeSpan();
+                _dataService.UpdateTimeStamp(_editedTimeStamp);
+                IsEditingActive = false;
+            }
         }
 
         private void CancelEditing(object paramerer)
         {
             IsEditingActive = false;
+        }
+
+        private bool IsEditValid()
+        {
+            var editedEntry = EditedDateEntry + EditedTimeEntry.GetTimeSpan();
+            var editedExit = EditedDateExit + EditedTimeExit.GetTimeSpan();
+
+            if (editedEntry > DateTime.Now || editedExit > DateTime.Now)
+            {
+                EditingErrorOccured = true;
+                EditingErrorMessage = "Can't edit timestmaps to future dates.";
+                return false;
+            }
+
+            if (editedExit < editedEntry)
+            {
+                EditingErrorOccured = true;
+                EditingErrorMessage = "Exit date has to be later than entry date.";
+                return false;
+            }
+
+            var maxAllowedDifference = new TimeSpan(24, 0, 0);
+            if(editedExit - editedEntry > maxAllowedDifference) 
+            {
+                EditingErrorOccured = true;
+                EditingErrorMessage = "Specified work time is too long.";
+                return false;
+            }
+
+            return true;
         }
 
         public ObservableCollection<TimeStamp> TimeStampsHistory
@@ -205,6 +240,26 @@ namespace TouchUI.ViewModels
             set
             {
                 _editedTimeExit = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool EditingErrorOccured
+        {
+            get => _editingErrorOccured;
+            set
+            {
+                _editingErrorOccured = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string EditingErrorMessage
+        {
+            get => _editingErrorMessage;
+            set
+            {
+                _editingErrorMessage = value;
                 OnPropertyChanged();
             }
         }
