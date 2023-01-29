@@ -48,7 +48,8 @@ namespace Services.DataServiceSql
         public List<User> GetAllLoggedInUsers()
         {
             var users = new List<User>();
-            var oldestDate = DateTime.Now - TimeSpan.FromHours(16);
+            var loginTimeoutHours = 16;
+            var oldestDate = DateTime.Now - TimeSpan.FromHours(loginTimeoutHours);
 
             using (var context = GetDbContext())
             {
