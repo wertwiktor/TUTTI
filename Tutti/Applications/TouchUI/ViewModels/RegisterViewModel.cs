@@ -15,7 +15,6 @@ using System.Windows.Threading;
 using TouchUI.Commands;
 using TouchUI.Services.Login;
 using TouchUI.Services.Navigation;
-using TouchUI.Tools.Navigation;
 
 namespace TouchUI.ViewModels
 {

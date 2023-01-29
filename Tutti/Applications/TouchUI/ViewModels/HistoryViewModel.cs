@@ -14,7 +14,6 @@ using System.Windows.Input;
 using TouchUI.Commands;
 using TouchUI.Services.Login;
 using TouchUI.Services.Navigation;
-using TouchUI.Tools.Navigation;
 
 namespace TouchUI.ViewModels
 {

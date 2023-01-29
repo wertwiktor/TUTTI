@@ -9,13 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\**" />
-    <EmbeddedResource Remove="Models\**" />
-    <None Remove="Models\**" />
-    <Page Remove="Models\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Resources\Images\logo_short_blau_claim.jpg" />
     <None Remove="Resources\Images\tutti_logo4.png" />
     <None Remove="Resources\Images\tutti_logo5.png" />
