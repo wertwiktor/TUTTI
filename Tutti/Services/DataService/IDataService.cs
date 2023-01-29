@@ -11,7 +11,7 @@ namespace Services.DataService
         List<User> GetAllLoggedInUsers();
         List<User> GetAllUsers();
         void AddTimeStamp(TimeStamp timeStamp);
-        void EditTimeStamp(TimeStamp timeStamp);
+        void UpdateTimeStamp(TimeStamp timeStamp);
         void DeleteTimeStamp(long id);
         List<TimeStamp> GetTimeStamps(long userId, DateTime minDateTime, DateTime maxDateTime);
         TimeStamp GetLastTimeStampByUserId(long userId);

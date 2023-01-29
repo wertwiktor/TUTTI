@@ -207,7 +207,7 @@ namespace TouchUI.ViewModels
             {
                 var timeStamp = _dataService.GetLastTimeStampByUserId(CurrentUser.Id);
                 timeStamp.ExitDate = DateTime.Now;
-                _dataService.EditTimeStamp(timeStamp);
+                _dataService.UpdateTimeStamp(timeStamp);
             }
             else
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Framework.MVVM;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -42,34 +43,12 @@ namespace TouchUI.UserControls
             Minutes = Enumerable.Range(0, 60).ToList();
         }
 
-        public static readonly DependencyProperty TimeProperty = DependencyProperty.Register(
-            "Time", typeof(TimeSpan), typeof(TimePicker), new PropertyMetadata(OnTimeChangedCallBack));
+        public static readonly DependencyProperty SelectedHourProperty = DependencyProperty.Register(
+            "SelectedHour", typeof(int), typeof(TimePicker));
 
-        private static void OnTimeChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            var timePicker = sender as TimePicker;
-            timePicker.InitializeSelectedHourAndMinute(timePicker.Time.Hours, timePicker.Time.Minutes);
-        }
+        public static readonly DependencyProperty SelectedMinuteProperty = DependencyProperty.Register(
+            "SelectedMinute", typeof(int), typeof(TimePicker));
 
-        public void InitializeSelectedHourAndMinute(int selectedHour, int selectedMinute)
-        {
-            _selectedHour = selectedHour;
-            OnPropertyChanged(nameof(SelectedHour));
-            _selectedMinute = selectedMinute;
-            OnPropertyChanged(nameof(SelectedMinute));
-        }
-
-        public TimeSpan Time
-        {
-            get
-            {
-                return (TimeSpan)GetValue(TimeProperty);
-            }
-            set
-            {
-                SetValue(TimeProperty, value);
-            }
-        }
 
         public List<int> Hours { get; private set; }
         public List<int> Minutes { get; private set; }
@@ -81,7 +60,6 @@ namespace TouchUI.UserControls
             {
                 _selectedHour = value;
                 OnPropertyChanged();
-                Time = new TimeSpan(_selectedHour, _selectedMinute, 0);
             }
         }
 
@@ -92,7 +70,6 @@ namespace TouchUI.UserControls
             {
                 _selectedMinute = value;
                 OnPropertyChanged();
-                Time = new TimeSpan(_selectedHour, _selectedMinute, 0);
             }
         }
 

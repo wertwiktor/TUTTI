@@ -17,7 +17,7 @@ namespace Services.DataServiceSql
                 context.SaveChanges();
             }
         }
-        public void EditTimeStamp(TimeStamp timeStamp)
+        public void UpdateTimeStamp(TimeStamp timeStamp)
         {
             if (timeStamp == null)
             {

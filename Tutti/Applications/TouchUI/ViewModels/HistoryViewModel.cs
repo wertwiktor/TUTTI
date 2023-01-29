@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TouchUI.Commands;
+using TouchUI.Models;
 using TouchUI.Services.Login;
 using TouchUI.Services.Navigation;
 
@@ -30,8 +31,8 @@ namespace TouchUI.ViewModels
         private TimeStamp _editedTimeStamp;
         private DateTime _editedDateEntry;
         private DateTime _editedDateExit;
-        private TimeSpan _editedTimeEntry;
-        private TimeSpan _editedTimeExit;
+        private TimeSpanComponent _editedTimeEntry;
+        private TimeSpanComponent _editedTimeExit;
 
         public HistoryViewModel(IDataService dataService,
             IIdentificationDeviceService idDeviceService,
@@ -77,23 +78,23 @@ namespace TouchUI.ViewModels
             if (_editedTimeStamp.EntryDate.HasValue)
             {
                 EditedDateEntry = _editedTimeStamp.EntryDate.Value.Date;
-                EditedTimeEntry = _editedTimeStamp.EntryDate.Value.TimeOfDay;
+                EditedTimeEntry = new TimeSpanComponent(_editedTimeStamp.EntryDate.Value.TimeOfDay);
             }
             else
             {
-                EditedDateEntry = DateTime.Now.Date;
-                EditedTimeEntry = new TimeSpan(0,0,0);
+                EditedDateEntry = DateTime.MinValue;
+                EditedTimeEntry = new TimeSpanComponent();
             }
 
             if (_editedTimeStamp.ExitDate.HasValue)
             {
                 EditedDateExit = _editedTimeStamp.ExitDate.Value.Date;
-                EditedTimeExit = _editedTimeStamp.ExitDate.Value.TimeOfDay;
+                EditedTimeExit = new TimeSpanComponent(_editedTimeStamp.ExitDate.Value.TimeOfDay);
             }
             else
             {
-                EditedDateExit = DateTime.Now.Date;
-                EditedTimeExit = new TimeSpan(0, 0, 0);
+                EditedDateExit = DateTime.MinValue;
+                EditedTimeExit = new TimeSpanComponent();
             }
 
             IsEditingActive = true;
@@ -101,8 +102,9 @@ namespace TouchUI.ViewModels
 
         private void SaveEditing(object parameter)
         {
-            _editedTimeStamp.EntryDate = EditedDateEntry + EditedTimeEntry;
-            _editedTimeStamp.ExitDate = EditedDateExit + EditedTimeExit;
+            _editedTimeStamp.EntryDate = EditedDateEntry + EditedTimeEntry.GetTimeSpan();
+            _editedTimeStamp.ExitDate = EditedDateExit + EditedTimeExit.GetTimeSpan();
+            _dataService.UpdateTimeStamp(_editedTimeStamp);
             IsEditingActive = false;
         }
 
@@ -181,7 +183,7 @@ namespace TouchUI.ViewModels
             }
         }
 
-        public TimeSpan EditedTimeEntry
+        public TimeSpanComponent EditedTimeEntry
         {
             get
             {
@@ -194,7 +196,7 @@ namespace TouchUI.ViewModels
             }
         }
 
-        public TimeSpan EditedTimeExit
+        public TimeSpanComponent EditedTimeExit
         {
             get
             {

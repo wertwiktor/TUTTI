@@ -13,6 +13,7 @@
           HorizontalAlignment="Stretch">
         <DatePicker x:Name="DatePicker"
                     SelectedDate="{Binding SelectedDate}"
+                    DisplayDate="{Binding DisplayDate}"
                     FontSize="{Binding FontSize}">
             <DatePicker.Resources>
                 <Style TargetType="DatePickerTextBox"

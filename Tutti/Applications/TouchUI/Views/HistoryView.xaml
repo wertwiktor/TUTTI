@@ -97,7 +97,8 @@
                                    Spacing="10">
                 <userControls:ExtendedDatePicker SelectedDate="{Binding EditedDateEntry, Mode=TwoWay}"
                                                  FontSize="{StaticResource DescriptionFontSize}" />
-                <userControls:TimePicker Time="{Binding EditedTimeEntry, Mode=TwoWay}"
+                <userControls:TimePicker SelectedHour="{Binding EditedTimeEntry.Hours, Mode=TwoWay}"
+                                         SelectedMinute="{Binding EditedTimeEntry.Minutes, Mode=TwoWay}"
                                          FontSize="{StaticResource DescriptionFontSize}" />
             </mwpf:SimpleStackPanel>
             <Label Grid.Row="1"
@@ -110,7 +111,8 @@
                                    Spacing="10">
                 <userControls:ExtendedDatePicker SelectedDate="{Binding EditedDateExit, Mode=TwoWay}"
                                                  FontSize="{StaticResource DescriptionFontSize}" />
-                <userControls:TimePicker Time="{Binding EditedTimeExit, Mode=TwoWay}"
+                <userControls:TimePicker SelectedHour="{Binding EditedTimeExit.Hours, Mode=TwoWay}"
+                                         SelectedMinute="{Binding EditedTimeExit.Minutes, Mode=TwoWay}"
                                          FontSize="{StaticResource DescriptionFontSize}" />
             </mwpf:SimpleStackPanel>
             <Button Grid.Row="2"
