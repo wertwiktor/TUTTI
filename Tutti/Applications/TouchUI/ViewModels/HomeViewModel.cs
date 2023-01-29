@@ -22,6 +22,8 @@ namespace TouchUI.ViewModels
         private readonly IDataService _dataService;
         private readonly IIdentificationDeviceService _idDeviceService;
 
+        private const int MaximumAllowedWorkHours = 16;
+
         private ICommand _confirmExitCommand;
         private ICommand _resumeWorkCommand;
         private string _mainMessage;
@@ -117,7 +119,7 @@ namespace TouchUI.ViewModels
             }
 
             activeUsers = activeUsers.OrderByDescending(x => x.TimeStamps.FirstOrDefault()?.EntryDate).ToList();
-            ActiveUsers = new ObservableCollection<User>(activeUsers);            
+            ActiveUsers = new ObservableCollection<User>(activeUsers);
         }
         private void InitializeCommands()
         {
@@ -183,7 +185,9 @@ namespace TouchUI.ViewModels
             }
 
             var lastTimeStamp = _dataService.GetLastTimeStampByUserId(user.Id);
-            if (lastTimeStamp == null || lastTimeStamp.ExitDate != null)
+            if (lastTimeStamp == null
+                || lastTimeStamp.ExitDate.HasValue
+                || (lastTimeStamp.EntryDate.HasValue && lastTimeStamp.EntryDate.Value < DateTime.Now - new TimeSpan(MaximumAllowedWorkHours, 0, 0)))
             {
                 ProcessUserEntry(user);
             }
