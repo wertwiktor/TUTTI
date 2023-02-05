@@ -1,12 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <ApplicationIcon>Resources\Images\tutti_logo1.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<ApplicationIcon>Resources\Images\tutti_logo1.ico</ApplicationIcon>
+		<PublishSingleFile>true</PublishSingleFile>
+		<PublishReadyToRun>false</PublishReadyToRun>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+		<IncludeSymbolsForSelfExtract>true</IncludeSymbolsForSelfExtract>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>none</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>none</DebugType>
+		<DebugSymbols>False</DebugSymbols>
+	</PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\Images\logo_short_blau_claim.jpg" />
@@ -14,36 +28,36 @@
     <None Remove="Resources\Images\tutti_logo5.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="Resources\Images\tutti_logo1.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Resources\Images\tutti_logo1.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.5.0" />
-    <PackageReference Include="CsvHelper" Version="30.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="ModernWpfUI" Version="0.9.6" />
-    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
-    <PackageReference Include="Serilog" Version="2.12.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.5.0" />
+		<PackageReference Include="CsvHelper" Version="30.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+		<PackageReference Include="ModernWpfUI" Version="0.9.6" />
+		<PackageReference Include="Prism.Wpf" Version="8.1.97" />
+		<PackageReference Include="Serilog" Version="2.12.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.csproj" />
-    <ProjectReference Include="..\..\Services\DataServiceSql\DataServiceSql.csproj" />
-    <ProjectReference Include="..\..\Services\IdentificationDeviceServiceBaltech\IdentificationDeviceServiceBaltech.csproj" />
-    <ProjectReference Include="..\..\Services\IdentificationDeviceService\IdentificationDeviceService.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Framework\Framework.csproj" />
+		<ProjectReference Include="..\..\Services\DataServiceSql\DataServiceSql.csproj" />
+		<ProjectReference Include="..\..\Services\IdentificationDeviceServiceBaltech\IdentificationDeviceServiceBaltech.csproj" />
+		<ProjectReference Include="..\..\Services\IdentificationDeviceService\IdentificationDeviceService.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Resources\Images\logo_short_blau_claim.jpg" />
-    <Resource Include="Resources\Images\tutti_logo5.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\Images\logo_short_blau_claim.jpg" />
+		<Resource Include="Resources\Images\tutti_logo5.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Resource>
+	</ItemGroup>
 	
 </Project>

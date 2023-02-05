@@ -1,28 +1,33 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="brp_lib.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>none</DebugType>
+		<DebugSymbols>False</DebugSymbols>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Serilog" Version="2.12.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="brp_lib.dll">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Framework.csproj" />
-    <ProjectReference Include="..\IdentificationDeviceService\IdentificationDeviceService.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Serilog" Version="2.12.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="lib\" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Framework\Framework.csproj" />
+		<ProjectReference Include="..\IdentificationDeviceService\IdentificationDeviceService.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="lib\" />
+	</ItemGroup>
 
 </Project>
