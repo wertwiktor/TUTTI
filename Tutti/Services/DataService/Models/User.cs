@@ -30,9 +30,6 @@ namespace DataService.Models
         public string Initials { get => string.Concat(Name.FirstOrDefault(), Surname.FirstOrDefault()); }
 
         [NotMapped]
-        public string FullName { get => string.Join(string.Empty, Name, Surname); }
-
-        //[NotMapped]
-        //public string RecentEntry { get => TimeStamps.LastOrDefault().ToString(); }
+        public string FullName { get => string.Join(" ", Name, Surname); }
     }
 }

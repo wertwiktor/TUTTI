@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace TouchUI.Tools.FileExport.Strategies
+namespace TouchUI.Tools.FileExport.Strategies.PDF
 {
     public class ExportPdfStrategy : ExportStrategyBase, IExportFormatStrategy
     {

@@ -4,26 +4,29 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using TouchUI.Tools.FileExport.Strategies;
+using TouchUI.Tools.FileExport.Strategies.CSV;
+using TouchUI.Tools.WorktimeCalculations;
 
 namespace TouchUI.Tools.FileExport
 {
     public class Exporter
     {
-        public Exporter()
+        private readonly IDataService _dataService;
+        private readonly WorktimeHelper _worktimeHelper = new WorktimeHelper();
+
+        public Exporter(IDataService dataService)
         {
+            _dataService = dataService;
             SetDefaultValues();
         }
 
         public string ExportDirectory { get; set; }
         public string FileName { get; set; }
-        public DateTime DateTimeMinimum { get; set; }
-        public DateTime DateTimeMaximum { get; set; }
-
-        public List<User> SelectedUsers { get; set; }
+        public DateOnly DateMinimum { get; set; }
+        public DateOnly DateMaximum { get; set; }
+        public User User { get; set; }
 
         public IExportFormatStrategy ExportFormatStrategy { get; set; }
-
-        public IDataService DataService { get; set; }
 
         public void Export()
         {
@@ -36,22 +39,23 @@ namespace TouchUI.Tools.FileExport
             var exportContent = new ExportContent()
             {
                 CreationDate = DateTime.Now,
-                ReportingDatesMinimum = DateTimeMinimum,
-                ReportingDatesMaximum = DateTimeMaximum,
+                ReportingDatesMinimum = DateMinimum,
+                ReportingDatesMaximum = DateMaximum,
+                User = User
             };
-            //TODO:
-            // Implement query to the database
-            // based on DateMinimum, DateMaximum and SelectedUsers
-            // Populate List of Users (With their list of timestamps) in exportContent.
+            var timeStamps = _dataService.GetTimeStamps(User.Id, DateMinimum.ToDateTime(new TimeOnly()), DateMaximum.ToDateTime(new TimeOnly()));        
+            _worktimeHelper.CalculateWorktimesInTimeStamps(timeStamps);
+            exportContent.User.TimeStamps = timeStamps;
+
             return exportContent;
         }
 
         private void SetDefaultValues()
         {
-            SelectedUsers = new List<User>();
+            User = new User();
             ExportFormatStrategy = new ExportCsvStrategy();
-            DateTimeMinimum = DateTime.MinValue;
-            DateTimeMaximum = DateTime.MaxValue;
+            DateMinimum = DateOnly.MinValue;
+            DateMaximum = DateOnly.MaxValue;
             ExportDirectory = CreateDefaultExportPath();
             FileName = CreateDefaultFileName();
         }

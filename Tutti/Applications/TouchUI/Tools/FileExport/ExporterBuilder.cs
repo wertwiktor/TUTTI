@@ -3,24 +3,28 @@ using Services.DataService;
 using System;
 using System.Collections.Generic;
 using TouchUI.Tools.FileExport.Strategies;
+using TouchUI.Tools.FileExport.Strategies.CSV;
+using TouchUI.Tools.FileExport.Strategies.PDF;
 
 namespace TouchUI.Tools.FileExport
 {
     public class ExporterBuilder
     {
-        private Exporter _exporter = new Exporter();
+        private readonly IDataService _dataService;
+        private Exporter _exporter;
 
-        public ExporterBuilder(List<User> users, ExportFormat exportFormat, IDataService dataService)
+        public ExporterBuilder(long userId, ExportFormat exportFormat, IDataService dataService)
         {
-            SetUsers(users);
+            _dataService = dataService;
+            _exporter = new Exporter(dataService);
+            SetUser(userId);
             SetFormat(exportFormat);
-            _exporter.DataService = dataService;
         }
 
-        public ExporterBuilder SetTimeRange(DateTime dateTimeMinimum, DateTime dateTimeMaximum)
+        public ExporterBuilder SetTimeRange(DateOnly dateMinimum, DateOnly dateMaximum)
         {
-            _exporter.DateTimeMinimum = dateTimeMinimum;
-            _exporter.DateTimeMaximum = dateTimeMaximum;
+            _exporter.DateMinimum = dateMinimum;
+            _exporter.DateMaximum = dateMaximum;
             return this;
         }
 
@@ -55,14 +59,15 @@ namespace TouchUI.Tools.FileExport
             }
         }
 
-        private void SetUsers(List<User> users)
+        private void SetUser(long userId)
         {
-            if (users == null)
+            var user = _dataService.GetUser(userId); 
+            if (user == null)
             {
                 return;
             }
 
-            _exporter.SelectedUsers = users;
+            _exporter.User = user;
         }
     }
 }
