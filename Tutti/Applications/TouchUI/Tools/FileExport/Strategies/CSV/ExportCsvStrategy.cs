@@ -1,20 +1,21 @@
 ﻿using CsvHelper;
+using CsvHelper.TypeConversion;
 using DataService.Models;
 using Microsoft.Xaml.Behaviors.Input;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 
-
-namespace TouchUI.Tools.FileExport.Strategies
+namespace TouchUI.Tools.FileExport.Strategies.CSV
 {
     public class ExportCsvStrategy : ExportStrategyBase, IExportFormatStrategy
     {
         public void Export(string directory, string fileName, ExportContent exportContent)
         {
             SetExportTarget(directory, fileName);
-            DummyTestExport();
+            ExportCsv(exportContent);
         }
 
         private void SetExportTarget(string directory, string fileName)
@@ -24,17 +25,25 @@ namespace TouchUI.Tools.FileExport.Strategies
             FilePath = Path.Combine(directory, FileName);
         }
 
-        private void DummyTestExport()
+        private void ExportCsv(ExportContent exportContent)
         {
-            var dummyInts = new List<int>()
+            if (exportContent == null)
             {
-                1, 2, 50, 100
-            };
-            
+                return;
+            }
             using (var writer = new StreamWriter(FilePath))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
-                csv.WriteRecords(dummyInts);
+                csv.Context.RegisterClassMap<TimeStampMap>();
+           
+                csv.WriteField($"Export for user {exportContent.User.FullName}");
+                csv.NextRecord();
+                csv.WriteField($"Includes all records within: {exportContent.ReportingDatesMinimum} - {exportContent.ReportingDatesMaximum}");
+                csv.NextRecord();
+                csv.WriteField($"Created on: {exportContent.CreationDate}");
+                csv.NextRecord();
+                csv.NextRecord();
+                csv.WriteRecords(exportContent.User.TimeStamps);
             }
         }
     }
