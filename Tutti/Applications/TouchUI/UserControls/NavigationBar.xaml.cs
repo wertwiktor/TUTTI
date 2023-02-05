@@ -17,8 +17,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TouchUI.Services.Navigation;
 using TouchUI.Commands;
-using TouchUI.Tools.Navigation;
 using DataService.Models;
+using TouchUI.Models;
 
 namespace TouchUI.UserControls
 {

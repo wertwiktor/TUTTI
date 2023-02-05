@@ -1,16 +1,63 @@
-﻿using System;
+﻿using Framework.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace DataService.Models
 {
-    public class TimeStamp
+    public class TimeStamp : ModelBase
     {
-        public long Id { get; set; }
-        public DateTime? EntryDate { get; set; }
-        public DateTime? ExitDate { get; set; }
-        public long UserId { get; set; }
-        public User User { get; set; }
+        private long _id;
+        private DateTime? _entryDate;
+        private DateTime? _exitDate;
+        private long _userId;
+        private User _user;
+
+        public long Id
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTime? EntryDate
+        {
+            get => _entryDate;
+            set
+            {
+                _entryDate = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTime? ExitDate
+        {
+            get => _exitDate;
+            set
+            {
+                _exitDate = value;
+                OnPropertyChanged();
+            }
+        }
+        public long UserId
+        {
+            get => _userId;
+            set
+            {
+                _userId = value;
+                OnPropertyChanged();
+            }
+        }
+        public User User
+        {
+            get => _user;
+            set
+            {
+                _user = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

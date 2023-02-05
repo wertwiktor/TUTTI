@@ -1,19 +1,13 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using Framework.MVVM;
+using System;
 
-namespace TouchUI.Tools.Navigation
+namespace TouchUI.Models
 {
-    public class NavigationTarget : INotifyPropertyChanged
+    public class NavigationTarget : ModelBase
     {
         private Type _type;
         private string _name;
         private bool _isEnabled;
-
-        public NavigationTarget()
-        {
-
-        }
 
         public NavigationTarget(Type type, string name, bool isEnabled)
         {
@@ -38,13 +32,6 @@ namespace TouchUI.Tools.Navigation
         {
             get { return _isEnabled; }
             set { _isEnabled = value; OnPropertyChanged(); }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

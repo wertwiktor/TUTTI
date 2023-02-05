@@ -1,29 +1,17 @@
-﻿using DataService.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace TouchUI.UserControls
 {
     /// <summary>
     /// Interaction logic for ExtendedDatePicker.xaml
     /// </summary>
-    public partial class ExtendedDatePicker : UserControl
+    public partial class ExtendedDatePicker : UserControl, INotifyPropertyChanged
     {
-        
+        private DateTime _displayDate;
         public ExtendedDatePicker()
         {
             InitializeComponent();
@@ -31,12 +19,16 @@ namespace TouchUI.UserControls
 
         public void OnDatePickerButtonClick(object sender, RoutedEventArgs e)
         {
+            if (SelectedDate == DateTime.MinValue) 
+            {
+                DisplayDate = DateTime.Now;            
+            }
+
             DatePicker.IsDropDownOpen = true;
         }
 
         public static readonly DependencyProperty SelectedDateProperty = DependencyProperty.Register(
             "SelectedDate", typeof(DateTime), typeof(ExtendedDatePicker));
-
         public DateTime SelectedDate
         {
             get
@@ -47,6 +39,23 @@ namespace TouchUI.UserControls
             {
                 SetValue(SelectedDateProperty, value);
             }
+        }
+
+        public DateTime DisplayDate
+        {
+            get => _displayDate;
+            set
+            {
+                _displayDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }
