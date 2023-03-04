@@ -65,12 +65,12 @@
                 <DataGridTextColumn Header="Entry"
                                     Width="*"
                                     FontSize="{StaticResource TableContentFontSize}"
-                                    Binding="{Binding EntryDate, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}">
+                                    Binding="{Binding ResultantEntryDate, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}">
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Exit"
                                     Width="*"
                                     FontSize="{StaticResource TableContentFontSize}"
-                                    Binding="{Binding ExitDate, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}">
+                                    Binding="{Binding ResultantExitDate, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}">
                 </DataGridTextColumn>
                 <DataGridTemplateColumn Header="Edit"
                                         Width="*">
