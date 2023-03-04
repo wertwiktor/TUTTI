@@ -12,6 +12,8 @@ namespace DataService.Models
         private long _id;
         private DateTime? _entryDate;
         private DateTime? _exitDate;
+        private DateTime? _editedEntryDate;
+        private DateTime? _editedExitDate;
         private long _userId;
         private User _user;
         private TimeSpan _worktime;
@@ -25,6 +27,7 @@ namespace DataService.Models
                 OnPropertyChanged();
             }
         }
+
         public DateTime? EntryDate
         {
             get => _entryDate;
@@ -32,8 +35,10 @@ namespace DataService.Models
             {
                 _entryDate = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(ResultantEntryDate));
             }
         }
+
         public DateTime? ExitDate
         {
             get => _exitDate;
@@ -41,8 +46,32 @@ namespace DataService.Models
             {
                 _exitDate = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(ResultantExitDate));
             }
         }
+
+        public DateTime? EditedEntryDate
+        {
+            get => _editedEntryDate;
+            set
+            {
+                _editedEntryDate = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ResultantEntryDate));
+            }
+        }
+
+        public DateTime? EditedExitDate
+        {
+            get => _editedExitDate;
+            set
+            {
+                _editedExitDate = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ResultantExitDate));
+            }
+        }
+
         public long UserId
         {
             get => _userId;
@@ -70,6 +99,44 @@ namespace DataService.Models
             {
                 _worktime = value;
                 OnPropertyChanged();
+            }
+        }
+
+        [NotMapped]
+        public DateTime? ResultantEntryDate
+        {
+            get
+            {
+                if (EntryDate == null && EditedEntryDate == null)
+                {
+                    return null;
+                }
+
+                if (EntryDate != null && EditedEntryDate == null)
+                {
+                    return EntryDate;
+                }
+
+                return EditedEntryDate;
+            }
+        }
+
+        [NotMapped]
+        public DateTime? ResultantExitDate
+        {
+            get
+            {
+                if (ExitDate == null && EditedExitDate == null)
+                {
+                    return null;
+                }
+
+                if (ExitDate != null && EditedExitDate == null)
+                {
+                    return ExitDate;
+                }
+
+                return EditedExitDate;
             }
         }
     }

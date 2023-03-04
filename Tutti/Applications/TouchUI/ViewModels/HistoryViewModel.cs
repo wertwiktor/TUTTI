@@ -77,10 +77,10 @@ namespace TouchUI.ViewModels
                 return;
             }
 
-            if (_editedTimeStamp.EntryDate.HasValue)
+            if (_editedTimeStamp.ResultantEntryDate.HasValue)
             {
-                EditedDateEntry = _editedTimeStamp.EntryDate.Value.Date;
-                EditedTimeEntry = new TimeSpanComponent(_editedTimeStamp.EntryDate.Value.TimeOfDay);
+                EditedDateEntry = _editedTimeStamp.ResultantEntryDate.Value.Date;
+                EditedTimeEntry = new TimeSpanComponent(_editedTimeStamp.ResultantEntryDate.Value.TimeOfDay);
             }
             else
             {
@@ -88,10 +88,10 @@ namespace TouchUI.ViewModels
                 EditedTimeEntry = new TimeSpanComponent();
             }
 
-            if (_editedTimeStamp.ExitDate.HasValue)
+            if (_editedTimeStamp.ResultantExitDate.HasValue)
             {
-                EditedDateExit = _editedTimeStamp.ExitDate.Value.Date;
-                EditedTimeExit = new TimeSpanComponent(_editedTimeStamp.ExitDate.Value.TimeOfDay);
+                EditedDateExit = _editedTimeStamp.ResultantExitDate.Value.Date;
+                EditedTimeExit = new TimeSpanComponent(_editedTimeStamp.ResultantExitDate.Value.TimeOfDay);
             }
             else
             {
@@ -106,8 +106,8 @@ namespace TouchUI.ViewModels
         {
             if(IsEditValid())
             {
-                _editedTimeStamp.EntryDate = EditedDateEntry + EditedTimeEntry.GetTimeSpan();
-                _editedTimeStamp.ExitDate = EditedDateExit + EditedTimeExit.GetTimeSpan();
+                _editedTimeStamp.EditedEntryDate = EditedDateEntry + EditedTimeEntry.GetTimeSpan();
+                _editedTimeStamp.EditedExitDate = EditedDateExit + EditedTimeExit.GetTimeSpan();
                 _dataService.UpdateTimeStamp(_editedTimeStamp);
                 IsEditingActive = false;
             }
