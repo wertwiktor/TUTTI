@@ -5,21 +5,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TouchUI.UserControls"
              mc:Ignorable="d"
-             xmlns:mwpf="http://schemas.modernwpf.com/2019">
+             xmlns:mwpf="http://schemas.modernwpf.com/2019"
+             VerticalContentAlignment="Stretch"
+             HorizontalContentAlignment="Stretch">
     <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
           Height="{Binding Height}"
           Width="{Binding Width}"
           VerticalAlignment="Stretch"
           HorizontalAlignment="Stretch">
+
         <DatePicker x:Name="DatePicker"
                     SelectedDate="{Binding SelectedDate}"
                     DisplayDate="{Binding DisplayDate}"
-                    FontSize="{Binding FontSize}">
+                    FontSize="{Binding FontSize}"
+                    Width ="{Binding ElementName=DatePickerButton, Path=ActualWidth}">
             <DatePicker.Resources>
                 <Style TargetType="DatePickerTextBox"
                        BasedOn="{mwpf:StaticResource ResourceKey=DefaultDatePickerTextBoxStyle}">
                     <Setter Property="IsReadOnly"
                             Value="True" />
+                    <Setter Property="Margin"
+                            Value="0,0,0,0" />
                 </Style>
             </DatePicker.Resources>
         </DatePicker>
@@ -32,6 +38,8 @@
             <Button.Style>
                 <Style TargetType="Button"
                        BasedOn="{mwpf:StaticResource ResourceKey=DefaultButtonStyle}">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Stretch" />
                     <Style.Triggers>
                         <Trigger Property="IsPressed"
                                  Value="False">
