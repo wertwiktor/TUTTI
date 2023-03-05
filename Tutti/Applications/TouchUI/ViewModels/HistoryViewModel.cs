@@ -37,7 +37,6 @@ namespace TouchUI.ViewModels
         private string _editingErrorMessage;
 
         public HistoryViewModel(IDataService dataService,
-            IIdentificationDeviceService idDeviceService,
             INavigationService navigationService,
             ILoginService loginService)
             : base(navigationService, loginService)

@@ -17,11 +17,13 @@ namespace TouchUI.Services.Navigation
 
         public NavigationService(Func<HomeViewModel> homeViewModelConstructor, 
             Func<RegisterViewModel> registerViewModelConstructor, 
-            Func<HistoryViewModel> historyViewModelConstructor)
+            Func<HistoryViewModel> historyViewModelConstructor,
+            Func<ExportViewModel> exportViewModelConstructor)
         {
             _viewModels[typeof(HomeViewModel)] = homeViewModelConstructor;
             _viewModels[typeof(RegisterViewModel)] = registerViewModelConstructor;
             _viewModels[typeof(HistoryViewModel)] = historyViewModelConstructor;
+            _viewModels[typeof(ExportViewModel)] = exportViewModelConstructor;
         }
 
         public event Action<NavigationViewModelBase> NavigationChanged;
@@ -34,7 +36,7 @@ namespace TouchUI.Services.Navigation
                 return;
             }
 
-            Func<NavigationViewModelBase> viewModelConstructor;
+            Func<NavigationViewModelBase> viewModelConstructor; 
 
             if (_viewModels.TryGetValue(viewModelType, out viewModelConstructor))
             {

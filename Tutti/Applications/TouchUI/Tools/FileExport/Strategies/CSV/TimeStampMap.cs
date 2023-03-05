@@ -13,9 +13,13 @@ namespace TouchUI.Tools.FileExport.Strategies.CSV
         public TimeStampMap() 
         {
             var dateTimeFormat = "dd.MM.yyyy HH:mm:ss";
+            Map(m => m.ResultantEntryDate).TypeConverterOption.Format(dateTimeFormat);
+            Map(m => m.ResultantExitDate).TypeConverterOption.Format(dateTimeFormat);
+            Map(m => m.Worktime);
             Map(m => m.EntryDate).TypeConverterOption.Format(dateTimeFormat);
             Map(m => m.ExitDate).TypeConverterOption.Format(dateTimeFormat);
-            Map(m => m.Worktime);
+            Map(m => m.EditedEntryDate).TypeConverterOption.Format(dateTimeFormat);
+            Map(m => m.EditedExitDate).TypeConverterOption.Format(dateTimeFormat);
         }
     }
 }

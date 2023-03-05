@@ -24,14 +24,14 @@ namespace TouchUI.Tools.WorktimeCalculations
                 DateTime exit;
                 TimeSpan breakDuration;
 
-                if (!timeStamp.EntryDate.HasValue || !timeStamp.ExitDate.HasValue || timeStamp.EntryDate.Value >= timeStamp.ExitDate.Value)
+                if (!timeStamp.ResultantEntryDate.HasValue || !timeStamp.ResultantExitDate.HasValue || timeStamp.ResultantEntryDate.Value >= timeStamp.ResultantExitDate.Value)
                 {
                     timeStamp.Worktime = workTime;
                     continue;
                 }
 
-                entry = timeStamp.EntryDate.Value;
-                exit = timeStamp.ExitDate.Value;
+                entry = timeStamp.ResultantEntryDate.Value;
+                exit = timeStamp.ResultantExitDate.Value;
 
                 var workDuration = exit - entry;
                 if(workDuration < _shortBreakTrigger)

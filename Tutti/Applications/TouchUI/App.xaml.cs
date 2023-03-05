@@ -31,7 +31,6 @@ namespace TouchUI
             var container = InitializeDependencyInjectionContainer();
             InitializeDevelopersWindow(container);
             InitializeMainWindow(container);
-            RegisterViewModelsInNavigationService();
         }
 
         private void InitializeLogger()
@@ -65,13 +64,9 @@ namespace TouchUI
             builder.RegisterType<HomeViewModel>().InstancePerDependency();
             builder.RegisterType<RegisterViewModel>().InstancePerDependency();
             builder.RegisterType<HistoryViewModel>().InstancePerDependency();
+            builder.RegisterType<ExportViewModel>().InstancePerDependency();
 
             return builder.Build();
-        }
-
-        private void RegisterViewModelsInNavigationService()
-        {
-            return;
         }
 
         private void InitializeDevelopersWindow(ILifetimeScope scope)
