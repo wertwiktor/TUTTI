@@ -26,11 +26,16 @@ namespace TouchUI
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
             InitializeLogger();
+            AppDomain.CurrentDomain.UnhandledException += OnCurrentDomainUnhandledExceptionOccured;
             var container = InitializeDependencyInjectionContainer();
             InitializeDevelopersWindow(container);
             InitializeMainWindow(container);
+        }
+
+        private void OnCurrentDomainUnhandledExceptionOccured(object sender, UnhandledExceptionEventArgs e)
+        {
+            _logger.Error("Unhandled exception occured in the application. {exception}", e.ExceptionObject);
         }
 
         private void InitializeLogger()

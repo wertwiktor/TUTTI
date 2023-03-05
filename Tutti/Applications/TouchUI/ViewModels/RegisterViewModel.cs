@@ -51,6 +51,9 @@ namespace TouchUI.ViewModels
             InitializeCommands();
             InitializeSubscribtions();
             InitializeMessageTimer();
+
+            IDataService dummy = null;
+            dummy.GetAllLoggedInUsers();
         }
 
         public override void Uninitialize()
