@@ -15,7 +15,8 @@ namespace TouchUI.Tools.FileExport.Strategies.CSV
             var dateTimeFormat = "dd.MM.yyyy HH:mm:ss";
             Map(m => m.ResultantEntryDate).TypeConverterOption.Format(dateTimeFormat);
             Map(m => m.ResultantExitDate).TypeConverterOption.Format(dateTimeFormat);
-            Map(m => m.Worktime);
+            Map(m => m.WorkTime);
+            Map(m => m.BreakTime);
             Map(m => m.EntryDate).TypeConverterOption.Format(dateTimeFormat);
             Map(m => m.ExitDate).TypeConverterOption.Format(dateTimeFormat);
             Map(m => m.EditedEntryDate).TypeConverterOption.Format(dateTimeFormat);

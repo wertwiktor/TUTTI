@@ -24,7 +24,7 @@ namespace TouchUI.Tools.FileExport
         public string FileName { get; set; }
         public DateOnly DateMinimum { get; set; }
         public DateOnly DateMaximum { get; set; }
-        public User User { get; set; }
+        public List<User> Users { get; set; }
 
         public IExportFormatStrategy ExportFormatStrategy { get; set; }
 
@@ -41,18 +41,22 @@ namespace TouchUI.Tools.FileExport
                 CreationDate = DateTime.Now,
                 ReportingDatesMinimum = DateMinimum,
                 ReportingDatesMaximum = DateMaximum,
-                User = User
+                Users = Users
             };
-            var timeStamps = _dataService.GetTimeStamps(User.Id, DateMinimum.ToDateTime(new TimeOnly()), DateMaximum.ToDateTime(new TimeOnly()));        
-            _worktimeHelper.CalculateWorktimesInTimeStamps(timeStamps);
-            exportContent.User.TimeStamps = timeStamps;
+
+            foreach(var user in exportContent.Users)
+            {
+                var timeStamps = _dataService.GetTimeStamps(user.Id, DateMinimum.ToDateTime(new TimeOnly()), DateMaximum.ToDateTime(new TimeOnly()));
+                _worktimeHelper.CalculateWorktimesInTimeStamps(timeStamps);
+                user.TimeStamps = timeStamps;
+            } 
 
             return exportContent;
         }
 
         private void SetDefaultValues()
         {
-            User = new User();
+            Users = new List<User>();
             ExportFormatStrategy = new ExportCsvStrategy();
             DateMinimum = DateOnly.MinValue;
             DateMaximum = DateOnly.MaxValue;

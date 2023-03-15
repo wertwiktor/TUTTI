@@ -13,11 +13,11 @@ namespace TouchUI.Tools.FileExport
         private readonly IDataService _dataService;
         private Exporter _exporter;
 
-        public ExporterBuilder(long userId, ExportFormat exportFormat, IDataService dataService)
+        public ExporterBuilder(List<long> userIds, ExportFormat exportFormat, IDataService dataService)
         {
             _dataService = dataService;
             _exporter = new Exporter(dataService);
-            SetUser(userId);
+            SetUsers(userIds);
             SetFormat(exportFormat);
         }
 
@@ -59,15 +59,19 @@ namespace TouchUI.Tools.FileExport
             }
         }
 
-        private void SetUser(long userId)
+        private void SetUsers(List<long> userIds)
         {
-            var user = _dataService.GetUser(userId); 
-            if (user == null)
+            var users = new List<User>();
+            foreach(var userId in userIds)
             {
-                return;
+                var user = _dataService.GetUser(userId);
+                if(user != null)
+                {
+                    users.Add(user);
+                }
             }
 
-            _exporter.User = user;
+            _exporter.Users = users;
         }
     }
 }

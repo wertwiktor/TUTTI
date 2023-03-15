@@ -24,7 +24,7 @@ namespace TouchUI.ViewModels
             _loginService = loginService;
             _dataService = dataService;
 
-            var exporter = new ExporterBuilder(loginService.GetCurrentUser().Id, ExportFormat.Csv, _dataService).Build();
+            var exporter = new ExporterBuilder(new List<long>() { loginService.GetCurrentUser().Id, 8 }, ExportFormat.Csv, _dataService).Build();
             exporter.Export();
         }
     }
