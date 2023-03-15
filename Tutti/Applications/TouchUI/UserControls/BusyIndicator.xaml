@@ -15,7 +15,7 @@
     <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
           Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}">
         <Border IsHitTestVisible="True"
-                Background="Black"
+                Background="Gray"
                 Opacity="0.7">
         </Border>
         <mwpf:SimpleStackPanel Grid.ColumnSpan="2"

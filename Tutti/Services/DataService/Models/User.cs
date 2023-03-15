@@ -31,5 +31,8 @@ namespace DataService.Models
 
         [NotMapped]
         public string FullName { get => string.Join(" ", Name, Surname); }
+
+        [NotMapped]
+        public bool IsAdmin { get => Level == UserLevel.Admin; }
     }
 }
