@@ -16,7 +16,8 @@ namespace DataService.Models
         private DateTime? _editedExitDate;
         private long _userId;
         private User _user;
-        private TimeSpan _worktime;
+        private TimeSpan _workTime;
+        private TimeSpan _breakTime;
 
         public long Id
         {
@@ -92,12 +93,23 @@ namespace DataService.Models
         }
 
         [NotMapped]
-        public TimeSpan Worktime
+        public TimeSpan WorkTime
         {
-            get => _worktime;
+            get => _workTime;
             set
             {
-                _worktime = value;
+                _workTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [NotMapped]
+        public TimeSpan BreakTime
+        {
+            get => _breakTime;
+            set
+            {
+                _breakTime = value;
                 OnPropertyChanged();
             }
         }

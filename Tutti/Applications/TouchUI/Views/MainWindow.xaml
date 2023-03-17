@@ -27,6 +27,9 @@
             <DataTemplate DataType="{x:Type viewmodels:HistoryViewModel}">
                 <views:HistoryView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:ExportViewModel}">
+                <views:ExportView />
+            </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />

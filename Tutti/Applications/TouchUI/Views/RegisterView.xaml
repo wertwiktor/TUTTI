@@ -113,7 +113,7 @@
             <userControls:ExtendedDatePicker Grid.Row="2"
                                              Grid.Column="1"
                                              SelectedDate="{Binding DateOfBirth, Mode=TwoWay}"
-                                             Margin="0,5,0,5"
+                                             Margin="0,0,0,5"
                                              FontSize="{StaticResource TableContentFontSize}">
             </userControls:ExtendedDatePicker>
             <mwpf:PathIcon Grid.Row="2"

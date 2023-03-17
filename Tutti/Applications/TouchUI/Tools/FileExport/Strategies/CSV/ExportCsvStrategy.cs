@@ -35,15 +35,20 @@ namespace TouchUI.Tools.FileExport.Strategies.CSV
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 csv.Context.RegisterClassMap<TimeStampMap>();
-           
-                csv.WriteField($"Export for user {exportContent.User.FullName}");
-                csv.NextRecord();
                 csv.WriteField($"Includes all records within: {exportContent.ReportingDatesMinimum} - {exportContent.ReportingDatesMaximum}");
                 csv.NextRecord();
                 csv.WriteField($"Created on: {exportContent.CreationDate}");
                 csv.NextRecord();
                 csv.NextRecord();
-                csv.WriteRecords(exportContent.User.TimeStamps);
+                foreach (var user in exportContent.Users)
+                {
+                    foreach(var timestamp in user.TimeStamps)
+                    {
+                        csv.WriteField(user.FullName);
+                        csv.WriteRecord(timestamp);
+                        csv.NextRecord();
+                    }
+                }
             }
         }
     }

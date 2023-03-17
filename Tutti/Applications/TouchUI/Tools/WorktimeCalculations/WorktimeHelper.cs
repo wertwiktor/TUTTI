@@ -20,36 +20,38 @@ namespace TouchUI.Tools.WorktimeCalculations
             foreach (var timeStamp in timeStamps)
             {
                 TimeSpan workTime = new TimeSpan(0, 0, 0);
+                TimeSpan breakTime = new TimeSpan(0, 0, 0);
                 DateTime entry;
                 DateTime exit;
-                TimeSpan breakDuration;
 
-                if (!timeStamp.EntryDate.HasValue || !timeStamp.ExitDate.HasValue || timeStamp.EntryDate.Value >= timeStamp.ExitDate.Value)
+                if (!timeStamp.ResultantEntryDate.HasValue || !timeStamp.ResultantExitDate.HasValue || timeStamp.ResultantEntryDate.Value >= timeStamp.ResultantExitDate.Value)
                 {
-                    timeStamp.Worktime = workTime;
+                    timeStamp.WorkTime = workTime;
+                    timeStamp.BreakTime = breakTime;
                     continue;
                 }
 
-                entry = timeStamp.EntryDate.Value;
-                exit = timeStamp.ExitDate.Value;
+                entry = timeStamp.ResultantEntryDate.Value;
+                exit = timeStamp.ResultantExitDate.Value;
 
                 var workDuration = exit - entry;
                 if(workDuration < _shortBreakTrigger)
                 {
-                    breakDuration = new TimeSpan(0, 0, 0);
+                    breakTime = new TimeSpan(0, 0, 0);
                 }
                 else if(workDuration > _shortBreakTrigger && workDuration < _longBreakTrigger)
                 {
-                    breakDuration = _shortBreakDuration;
+                    breakTime = _shortBreakDuration;
                 }    
                 else
                 {
-                    breakDuration = _longBreakDuration;
+                    breakTime = _longBreakDuration;
                 }
 
-                workTime = exit - entry - breakDuration;
+                workTime = exit - entry - breakTime;
                 workTime = new TimeSpan(workTime.Hours, workTime.Minutes, workTime.Seconds); //This prevents storing of anything smaller than seconds.
-                timeStamp.Worktime = workTime;
+                timeStamp.WorkTime = workTime;
+                timeStamp.BreakTime = breakTime;
             }
         }
     }

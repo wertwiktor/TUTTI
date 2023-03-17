@@ -15,6 +15,6 @@ namespace TouchUI.Tools.FileExport
         public DateTime CreationDate { get; set; }
         public DateOnly ReportingDatesMinimum { get; set; }
         public DateOnly ReportingDatesMaximum { get; set; }
-        public User User { get; set; }
+        public List<User> Users { get; set; }
     }
 }

@@ -18,7 +18,7 @@
                                                   UseCollapsed="True" />
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterInv"
                                                   UseCollapsed="True"
-                                                  Invert="True"/>
+                                                  Invert="True" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -57,11 +57,9 @@
         <Button Grid.Column="0"
                 Grid.Row="0"
                 Grid.RowSpan="2"
-                Visibility="{Binding CurrentUser, Converter={StaticResource NullToVisibilityConverter}}"
-                HorizontalAlignment="Center"
-                FontWeight="Bold"
+                Visibility="{Binding CurrentUser, Converter={StaticResource NullToVisibilityConverter}}"              
                 Command="{Binding ConfirmExitCommand}"
-                Background="Transparent">
+                Style="{StaticResource TouchButtonStyle}">
             <Button.Content>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -81,10 +79,8 @@
                 Grid.Row="0"
                 Grid.RowSpan="2"
                 Visibility="{Binding CurrentUser, Converter={StaticResource NullToVisibilityConverter}}"
-                HorizontalAlignment="Center"
-                FontWeight="Bold"
                 Command="{Binding ResumeWorkCommand}"
-                Background="Transparent">
+                Style="{StaticResource TouchButtonStyle}">
             <Button.Content>
                 <Grid>
                     <Grid.RowDefinitions>

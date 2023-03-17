@@ -24,7 +24,8 @@ namespace TouchUI.ViewModels
         private ObservableCollection<NavigationTarget> _navigatableViewModels = new ObservableCollection<NavigationTarget> {
             new NavigationTarget(typeof(HomeViewModel), "Home", true),
             new NavigationTarget(typeof(RegisterViewModel), "Register", true),
-            new NavigationTarget(typeof(HistoryViewModel), "History", false)};
+            new NavigationTarget(typeof(HistoryViewModel), "History", false),
+            new NavigationTarget(typeof(ExportViewModel), "Export", false)};
 
 
         public NavigationViewModelBase(INavigationService navigationService, ILoginService loginService)
@@ -116,6 +117,12 @@ namespace TouchUI.ViewModels
             if (historyNavigationTarget != null)
             {
                 historyNavigationTarget.IsEnabled = userLoggedIn;
+            }
+
+            var exportNavigationTarget = NavigatableViewModels.FirstOrDefault(x => x.Type == typeof(ExportViewModel));
+            if (exportNavigationTarget != null)
+            {
+                exportNavigationTarget.IsEnabled = userLoggedIn;
             }
         }
 
