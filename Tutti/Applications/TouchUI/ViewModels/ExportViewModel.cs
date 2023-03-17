@@ -2,6 +2,8 @@
 using Services.DataService;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -24,14 +26,15 @@ namespace TouchUI.ViewModels
         private DateTime _exportEndDate;
         private bool _exportForAllUsers;
         private ICommand _exportCommand;
+        private ICommand _openExportDirectoryCommand;
+        private string _exportPath;
         public ExportViewModel(INavigationService navigationService, ILoginService loginService, IDataService dataService) : base(navigationService, loginService)
         {
             _dataService = dataService;
+            _exportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "TUTTI\\Exports");
 
             InitializeDates();
             InitializeCommands();
-            //var exporter = new ExporterBuilder(new List<long>() { loginService.GetCurrentUser().Id, 8 }, ExportFormat.Csv, _dataService).Build();
-            //exporter.Export();
         }
 
         private void InitializeDates()
@@ -46,6 +49,7 @@ namespace TouchUI.ViewModels
         private void InitializeCommands()
         {
             _exportCommand = new RelayCommand(Export);
+            _openExportDirectoryCommand = new RelayCommand(OpenExportDirectory);
         }
 
         private void Export(object parameter)
@@ -81,6 +85,11 @@ namespace TouchUI.ViewModels
         private string AddTimeStampToString(string input)
         {
             return string.Join(" ", input, DateTime.Now.ToString("yyyyMMddHHmmss"));
+        }
+
+        private void OpenExportDirectory(object parameter)
+        {
+            Process.Start("explorer.exe", _exportPath);
         }
 
         public DateTime ExportStartDate
@@ -131,6 +140,19 @@ namespace TouchUI.ViewModels
             set
             {
                 _exportCommand = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand OpenExportDirectoryCommand
+        {
+            get
+            {
+                return _openExportDirectoryCommand;
+            }
+            set
+            {
+                _openExportDirectoryCommand = value;
                 OnPropertyChanged();
             }
         }

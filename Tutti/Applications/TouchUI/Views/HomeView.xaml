@@ -18,36 +18,7 @@
                                                   UseCollapsed="True" />
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterInv"
                                                   UseCollapsed="True"
-                                                  Invert="True"/>
-            <Style x:Key="BigTouchButtonStyle" 
-                   TargetType="{x:Type Button}">
-                <Setter Property="Background"
-                        Value="Transparent" />
-                <Setter Property="HorizontalAlignment"
-                        Value="Center" />
-                <Setter Property="VerticalAlignment"
-                        Value="Center" />
-                <Setter Property="FontWeight"
-                        Value="Bold" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border Background="{TemplateBinding Background}"
-                                    BorderThickness="0">
-                                <ContentPresenter HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver"
-                             Value="True">
-                        <Setter Property="Background"
-                                Value="Transparent" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
+                                                  Invert="True" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -88,7 +59,7 @@
                 Grid.RowSpan="2"
                 Visibility="{Binding CurrentUser, Converter={StaticResource NullToVisibilityConverter}}"              
                 Command="{Binding ConfirmExitCommand}"
-                Style="{StaticResource BigTouchButtonStyle}">
+                Style="{StaticResource TouchButtonStyle}">
             <Button.Content>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -109,7 +80,7 @@
                 Grid.RowSpan="2"
                 Visibility="{Binding CurrentUser, Converter={StaticResource NullToVisibilityConverter}}"
                 Command="{Binding ResumeWorkCommand}"
-                Style="{StaticResource BigTouchButtonStyle}">
+                Style="{StaticResource TouchButtonStyle}">
             <Button.Content>
                 <Grid>
                     <Grid.RowDefinitions>

@@ -31,7 +31,7 @@
             <Setter Property="VerticalContentAlignment"
                     Value="Center" />
         </Style>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -98,26 +98,21 @@
                                OffContent="Current user"
                                OnContent="All users" />
         </Grid>
-        <Grid Grid.Row="2"
-              Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0"
-                   Margin="0,5,0,5"
-                   Content="{Binding Message}"
-                   d:Content="Message"
-                   VerticalAlignment="Bottom"
-                   HorizontalAlignment="Center"
-                   FontSize="{StaticResource DescriptionFontSize}" />
-            <Button Grid.Row="1"
-                    Margin="0,5,0,5"
-                    Content="Export"
+        <DockPanel Grid.Row="2"
+                   Grid.Column="1">
+            <Button Margin="0,10,0,10"
                     Command="{Binding ExportCommand}"
                     FontSize="{StaticResource TableContentFontSize}"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Center" />
-        </Grid>
+                    Style="{StaticResource TouchButtonStyle}">
+                <mwpf:PathIcon Data="{Binding Source={StaticResource Export}}" />
+            </Button>
+            <Button HorizontalAlignment="Right"
+                    Margin="0,10,0,10"
+                    Command="{Binding OpenExportDirectoryCommand}"
+                    FontSize="{StaticResource TableContentFontSize}"
+                    Style="{StaticResource TouchButtonStyle}">
+                <mwpf:PathIcon Data="{Binding Source={StaticResource Folder}}" />
+            </Button>
+        </DockPanel>
     </Grid>
 </UserControl>
