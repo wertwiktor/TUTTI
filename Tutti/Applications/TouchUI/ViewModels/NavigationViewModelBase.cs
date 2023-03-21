@@ -1,8 +1,11 @@
 ﻿using DataService.Models;
+using Framework.ExtensionMethods;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TouchUI.Commands;
@@ -14,6 +17,7 @@ namespace TouchUI.ViewModels
 {
     public abstract class NavigationViewModelBase : ViewModelBase
     {
+        private readonly ILogger _logger = Log.Logger.ForContext<NavigationViewModelBase>();
         protected readonly INavigationService NavigationService;
         protected readonly ILoginService LoginService;
         private ICommand _navigationCommand;
@@ -30,6 +34,7 @@ namespace TouchUI.ViewModels
 
         public NavigationViewModelBase(INavigationService navigationService, ILoginService loginService)
         {
+            _logger.Debug($"Opening ViewModel of type {GetType()}.".Here());
             NavigationService = navigationService;
             LoginService = loginService;
             _navigationCommand = new NavigationCommand(NavigationService);
