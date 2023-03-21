@@ -40,7 +40,6 @@ namespace TouchUI.ViewModels
             ILoginService loginService)
             : base(navigationService, loginService)
         {
-            _logger.Debug("Creating main view model.".Here());
             _dataService = dataService;
             _idDeviceService = idDeviceService;
             InitializeSubscribtions();

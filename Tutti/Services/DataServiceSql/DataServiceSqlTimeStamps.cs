@@ -50,7 +50,7 @@ namespace Services.DataServiceSql
                 timeStamps.AddRange(context.TimeStamps.Where(timeStamp =>
                                                             timeStamp.UserId == userId
                                                             && timeStamp.EntryDate >= minDateTime
-                                                            && timeStamp.ExitDate <= maxDateTime));
+                                                            && (timeStamp.ExitDate <= maxDateTime || timeStamp.ExitDate == null)));
             }
             return timeStamps;
         }
