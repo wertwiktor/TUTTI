@@ -54,32 +54,57 @@ namespace TouchUI.ViewModels
 
         private void Export(object parameter)
         {
+            BusyMessage = "Exporting data";
+            IsBusy = true;
+
             var exporterBuilder = new ExporterBuilder(ExportFormat.Csv, _dataService)
                 .SetTimeRange(DateOnly.FromDateTime(ExportStartDate), DateOnly.FromDateTime(ExportEndDate));
+
+            string fileName;
+
             if (ExportForAllUsers)
             {
-                var allUsers = _dataService.GetAllUsers();
-                var allUserIds = allUsers.Select(x => x.Id).ToList();
-                exporterBuilder.SetUsers(allUserIds);
+                Task.Factory.StartNew(() =>
+                {
+                    fileName = AddTimeStampToString("_AllUsersExport");
+                    exporterBuilder.SetFileName(fileName);
 
-                var fileName = AddTimeStampToString("AllUsersExport");
-                exporterBuilder.SetFileName(fileName);
+                    var subdirectory = $"AllUsersExport_{DateTime.Now.ToString("yyyyMMddHHmmss")}";
+                    exporterBuilder.SetExportSubdirectory(subdirectory);
+
+                    var allUsers = _dataService.GetAllUsers();
+                    var allUserIds = allUsers.Select(x => x.Id).ToList();
+                    exporterBuilder.SetUsers(allUserIds);
+
+
+                    exporterBuilder.Build().Export();
+
+                    foreach(var user in allUsers ) 
+                    {
+                        exporterBuilder.SetUser(user.Id);
+
+                        fileName = AddTimeStampToString(user.FullName);
+                        exporterBuilder.SetFileName(fileName);
+
+                        exporterBuilder.Build().Export();
+                    }
+                    IsBusy = false;
+                });
             }
             else
             {
-                exporterBuilder.SetUser(CurrentUser.Id);
+                Task.Factory.StartNew(() =>
+                {
+                    exporterBuilder.SetUser(CurrentUser.Id);
 
-                var fileName = AddTimeStampToString(CurrentUser.FullName);
-                exporterBuilder.SetFileName(fileName);
+                    fileName = AddTimeStampToString(CurrentUser.FullName);
+                    exporterBuilder.SetFileName(fileName);
+
+                    exporterBuilder.Build().Export();
+
+                    IsBusy = false;
+                });
             }
-
-            BusyMessage = "Exporting data";
-            IsBusy = true;
-            Task.Factory.StartNew(() =>
-            {
-                exporterBuilder.Build().Export();
-                IsBusy = false;
-            });
         }
 
         private string AddTimeStampToString(string input)

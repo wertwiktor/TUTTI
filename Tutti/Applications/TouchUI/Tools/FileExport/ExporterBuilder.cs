@@ -2,6 +2,7 @@
 using Services.DataService;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using TouchUI.Tools.FileExport.Strategies;
 using TouchUI.Tools.FileExport.Strategies.CSV;
 using TouchUI.Tools.FileExport.Strategies.PDF;
@@ -30,6 +31,12 @@ namespace TouchUI.Tools.FileExport
         public ExporterBuilder SetExportDirectory(string exportDirectory)
         {
             _exporter.ExportDirectory = exportDirectory;
+            return this;
+        }
+
+        public ExporterBuilder SetExportSubdirectory(string subdirectory)
+        {
+            _exporter.ExportDirectory = Path.Combine(_exporter.ExportDirectory, subdirectory);
             return this;
         }
 
