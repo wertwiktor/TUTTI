@@ -14,10 +14,10 @@ namespace TouchUI.Tools.WorktimeCalculations
     public class WorktimeHelper
     {
         private readonly ILogger _logger = Log.Logger.ForContext<WorktimeHelper>();
-        private readonly TimeSpan _shortBreakDuration = new TimeSpan(0, 30, 0);
-        private readonly TimeSpan _shortBreakTrigger = new TimeSpan(6, 0, 0);
+        private readonly TimeSpan _shortBreakDuration = new TimeSpan(0, 15, 0);
+        private readonly TimeSpan _shortBreakTrigger = new TimeSpan(1, 0, 0);
         private readonly TimeSpan _longBreakDuration = new TimeSpan(0, 45, 0);
-        private readonly TimeSpan _longBreakTrigger = new TimeSpan(9, 0, 0);
+        private readonly TimeSpan _longBreakTrigger = new TimeSpan(8, 0, 0);
 
         public void CalculateWorktimesInTimeStamps(IEnumerable<TimeStamp> timeStamps)
         {
@@ -88,9 +88,17 @@ namespace TouchUI.Tools.WorktimeCalculations
             {
                 return new TimeSpan(0, 0, 0);
             }
-            else if (workDuration > _shortBreakTrigger && workDuration < _longBreakTrigger)
+            else if (workDuration >= _shortBreakTrigger && workDuration < (_shortBreakDuration + _shortBreakTrigger) && workDuration < _longBreakTrigger)
+            {
+                return workDuration - _shortBreakTrigger;
+            }
+            else if (workDuration >= _shortBreakTrigger && workDuration < _longBreakTrigger)
             {
                 return _shortBreakDuration;
+            }
+            else if (workDuration >= _longBreakTrigger && workDuration < (_longBreakDuration + _longBreakTrigger))
+            {
+                return workDuration - _longBreakTrigger;
             }
             else
             {
